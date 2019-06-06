@@ -4,13 +4,7 @@ import {Button, Form, Modal} from "react-bootstrap";
 class SignIn extends Component {
 
 
-    static contextTypes = {
-        router: PropTypes.object
-    }
-    redirectToTarget = () => {
-        this.context.router.history.push(`/target`)
-    }
-
+  
     logIn = ()=>{
         console.log("done");
     };
