@@ -14,13 +14,13 @@ code {
 }
 
 
-.nav-link:active{
+/*.nav-link:active{
   background-color: beige;
 }
 
 .nav-link{
   color: white;
-  /*text-align: center;*/
+  !*text-align: center;*!
 }
 
 .nav-link:hover{
@@ -37,15 +37,59 @@ code {
 
 .nav-link.active:hover{
   color: white;
+}*/
+
+
+
+.wrapper{
+  margin: 0 auto;
+  height: 500px;
+  width: 100%;
+  position: fixed;
+  max-height: 500px;
+  border: 3px solid #232960;
+  border-radius: 6px;
 }
+
+.handle{
+  background-color: #232937;
+  height: 5px;
+  cursor: row-resize;
+}
+
+.content{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+
+.textareaLayout{
+  height: 100%;
+  resize: none;
+}
+
 
 .dropdown-menu.show::after {
   content: "";
   position: absolute;
   bottom: 100%;
-  left: 25%;
+  left: 15%;
   margin-left: -5px;
   border-width: 8px;
   border-style: solid;
   border-color: transparent transparent white transparent;
+}
+
+
+/*user panel Button*/
+.dropdown-toggle.btn.btn-primary{
+  background-color: #43b581;
+  border:0;
+}
+.dropdown-toggle.btn.btn-primary:active{
+  background-color: #43b581;
+}
+.dropdown-toggle.btn.btn-primary::after {
+  vertical-align: 0;
 }

@@ -1,110 +1,65 @@
-import React, { Component } from 'react';
-import {Col, Button, InputGroup, FormControl, Form, Navbar} from 'react-bootstrap';
+import React, {Component} from 'react';
+import {Col, Button, Form, Navbar, Row, InputGroup} from 'react-bootstrap';
+import Container from "react-bootstrap/Container";
+import Header from "./Header";
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
 
-class Interface extends Component{
-    state={
-        session: "",
-        singedIn: false
+
+class Home extends Component {
+
+
+    state = {
+        signUpForm: false,
+        signInForm: false
+    };
+    constructor(props, context) {
+        super(props, context);
+    }
+
+    openSignUp = ()=>{
+        this.setState({signUpForm:true});
     };
 
-
-    createSession = async ()=>{
-        let response = await fetch("/createSession",
-            {
-                method:"POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ session : this.state.session }),
-            });
-        let data = await response.json();
-        if(data.exist)
-        {
-            alert("this already used name");
-            return;
-        }
-        this.props.history.push('/Session/'+this.state.session);
+    closeSignUp = ()=>{
+        this.setState({signUpForm:false});
     };
 
-    joinSession = async ()=>{
-        let response = await fetch("/joinSession",
-            {
-                method:"POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ session : this.state.session }),
-            });
-        let data = await response.json();
-        if(data.exist)
-            this.props.history.push('/Session/'+this.state.session);
-        else
-            alert("No Such Session");
+    openSignIn = ()=>{
+        this.setState({signInForm:true});
     };
 
-    updateSession = (event)=>{
-        console.log(event.target.value);
-        this.setState({session:event.target.value});
-    };
-
-    show = ()=>{
-        console.log("clicked");
-        this.setState({signedIn: true});
+    closeSignIn = ()=>{
+        this.setState({signInForm:false});
     };
 
     render() {
-        const {session} = this.state;
-        return(
-            <Navbar  bg="dark" variant="dark">
-                {console.log(this.state)}
-                <Col>
-                <InputGroup>
-                    <FormControl
-                        id={"sessionName"}
-                        onInput={this.updateSession}
-                        placeholder="Session's Name"
-                        aria-label="Session's Name"
-                        aria-describedby="basic-addon2"
-                    />
-                    <InputGroup.Append>
-                        <Button onClick={this.createSession} variant="outline-secondary">Create</Button>
-                        <Button  onClick={this.joinSession} variant="outline-secondary">Connect</Button>
-                    </InputGroup.Append>
-                </InputGroup>
-                </Col>
-                {/*<Col sm={"2"}>
-                    <h5>Welcome username</h5>
-                    <Button variant="primary" onClick={this.show}>
-                        Sign Out
-                    </Button>
-                </Col>*/}
-                <Col sm={"2.5"}>
-                    <form id={"form"} onSubmit={this.show}>
-                        <Form.Row>
-                            <Form.Label column>
-                                Username
-                            </Form.Label>
-                            <Col sm={"8"}>
-                                <Form.Control size={"sm"} placeholder="Username" />
-                            </Col>
-                        </Form.Row>
-                        <Form.Row>
-                            <Form.Label column>
-                                Password
-                            </Form.Label>
-                            <Col sm={"8"}>
-                                <Form.Control size={"sm"} type="password" placeholder="Password" />
-                            </Col>
-                        </Form.Row>
-                        <Button variant="primary" type={"submit"}>
-                            Sign in
-                        </Button>
-                    </form>
-                </Col>
-            </Navbar>
+        return (
+            <div>
+                <Header openSignUp={this.openSignUp} openSignIn={this.openSignIn} login={true} barOption={false}/>
+                <Container style={{marginTop:100}}>
+                    <Row>
+                        <Col sm={{span: 5}} style={{marginTop: 50}}>
+                            <h1>About Us</h1>
+                            <p style={{fontSize: 26}}>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua.
+                            </p>
+                        </Col>
+                        <SignUp
+                            show={this.state.signUpForm}
+                            onHide={this.closeSignUp}
+                        />
+                        <SignIn
+                            show={this.state.signInForm}
+                            onHide={this.closeSignIn}
+                        />
+                    </Row>
+                </Container>
+            </div>
         );
     }
 }
 
 
-export default Interface;
+export default Home;
