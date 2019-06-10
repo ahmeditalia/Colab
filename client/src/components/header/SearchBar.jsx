@@ -12,10 +12,12 @@ class SearchBar extends Component {
     };
 
     changeState= (e)=>{
+        this.setState({[e.target.id]: e.target.value});
+    };
+
+    enterSearch = (e)=>{
         if(e.keyCode === 13)
-            this.search();
-        else
-            this.setState({[e.target.id]: e.target.value});
+            this.props.getSessions(this.state.search);
     };
 
     search =()=>{
@@ -26,10 +28,10 @@ class SearchBar extends Component {
         return (
             <InputGroup  size="sm" className="p-1 mr-5" style={{width:500}}>
                 <FormControl
+                    id={"search"}
                     placeholder="Search Session"
-                    aria-label="Search Session"
-                    aria-describedby="basic-addon2"
-                    onKeyDown={this.changeState}
+                    onKeyDown={this.enterSearch}
+                    onChange={this.changeState}
                 />
                 <InputGroup.Append size="sm">
                     <Button className={"shadow-none"} variant="link" style={{borderColor: "white"}} onClick={this.search}>

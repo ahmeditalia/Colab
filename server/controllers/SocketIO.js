@@ -25,21 +25,36 @@ app.get("/getpic",(req,res)=>{
 
 app.post("/getSessions",(req,res)=>{
     let sessions = [];
-    let pictures = [
-        "/images/python.jpg",
-        "/images/abstract-matrix.jpg",
-        "/images/i_love_java_wallpaper.jpg",
-        "/images/Think_Different.jpg",
-        "/images/python.jpg",
-        "/images/abstract-matrix.jpg",
-        "/images/i_love_java_wallpaper.jpg",
-        "/images/Think_Different.jpg",
-    ];
-    for(let i=0;i < pictures.length;i++)
+    if(req.body.sessionName === "all")
     {
-        sessions[i] = {
-            img: pictures[i],
-            title: "Title",
+        console.log("alllll");
+        let pictures = [
+            "/images/python.jpg",
+            "/images/abstract-matrix.jpg",
+            "/images/i_love_java_wallpaper.jpg",
+            "/images/Think_Different.jpg",
+            "/images/python.jpg",
+            "/images/abstract-matrix.jpg",
+            "/images/i_love_java_wallpaper.jpg",
+            "/images/Think_Different.jpg",
+        ];
+        for(let i=0;i < pictures.length;i++)
+        {
+            sessions[i] = {
+                img: pictures[i],
+                title: "Title",
+                description: "write your description here for this session"
+            }
+        }
+
+    }
+    else
+    {
+
+        console.log(req.body.sessionName);
+        sessions[0] = {
+            img: "/images/python.jpg",
+            title: req.body.sessionName,
             description: "write your description here for this session"
         }
     }

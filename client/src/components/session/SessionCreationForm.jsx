@@ -58,9 +58,6 @@ const mapDispatchTpProps = (dispatch)=>{
     return {
         createSession: (sessionInfo,callback)=>{
             dispatch(createSession(sessionInfo,callback));
-/*
-            callback();
-*/
         }
     }
 };
