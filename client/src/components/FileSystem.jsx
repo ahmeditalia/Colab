@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Col, Form, FormControl, Image, InputGroup} from "react-bootstrap";
-import searchIcon from "../images/Zoom-icon.png";
+import searchIcon from "../../public/images/Zoom-icon.png";
 
 
 class FileSystem extends Component {

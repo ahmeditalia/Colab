@@ -6,7 +6,7 @@ import dropDown from "../images/dropdown.png";
 import user from "../images/user.png";
 import SessionLayout from "./SessionLayout";
 import TaskForm from "./TaskForm";
-import Header from "./Header";
+import Header from "./header/Header";
 
 
 class SessionUser extends Component{

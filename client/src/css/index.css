@@ -74,7 +74,7 @@ code {
   content: "";
   position: absolute;
   bottom: 100%;
-  left: 15%;
+  left: 7%;
   margin-left: -5px;
   border-width: 8px;
   border-style: solid;
@@ -83,13 +83,18 @@ code {
 
 
 /*user panel Button*/
-.dropdown-toggle.btn.btn-primary{
+/*.dropdown-toggle.btn.btn-primary{
   background-color: #43b581;
   border:0;
 }
 .dropdown-toggle.btn.btn-primary:active{
   background-color: #43b581;
-}
+}*/
 .dropdown-toggle.btn.btn-primary::after {
   vertical-align: 0;
+}
+
+
+a.nav-link:active{
+  color: yellow;
 }

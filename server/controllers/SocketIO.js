@@ -1,8 +1,51 @@
 let User = require("../classes/User").User;
-
+let fs = require("fs");
 let Session = require("../classes/Session").Session;
 let app = require("../app").app;
 let io = require("../app").io;
+
+app.post("/signIn",(req,res)=>{
+    let user = req.body.user;
+    res.send({user: user});
+});
+
+app.post("/createSession",(req,res)=>{
+    let session = req.body.session;
+    session["id"]= 123;
+    console.log(session);
+    res.send({session: session});
+});
+
+app.get("/getpic",(req,res)=>{
+    fs.readFile("ahmed.jpg",(err,img)=>{
+        res.writeHead(200,{'Content-type':'image/jpg'});
+        res.end(img);
+    });
+});
+
+app.post("/getSessions",(req,res)=>{
+    let sessions = [];
+    let pictures = [
+        "/images/python.jpg",
+        "/images/abstract-matrix.jpg",
+        "/images/i_love_java_wallpaper.jpg",
+        "/images/Think_Different.jpg",
+        "/images/python.jpg",
+        "/images/abstract-matrix.jpg",
+        "/images/i_love_java_wallpaper.jpg",
+        "/images/Think_Different.jpg",
+    ];
+    for(let i=0;i < pictures.length;i++)
+    {
+        sessions[i] = {
+            img: pictures[i],
+            title: "Title",
+            description: "write your description here for this session"
+        }
+    }
+    res.send({sessions: sessions});
+});
+
 
 app.post("/createSession",(req,res)=>{
     let sessionName = req.body.session;

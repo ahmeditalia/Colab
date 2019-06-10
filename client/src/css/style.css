@@ -1,28 +1,26 @@
-.data{
+.card-columns .card .card-body{
     background-color: white;
-    padding-top: 10px;
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
     width: 100%;
-    transform: translateY(calc(140px + 1em));
-    transition: transform 0.3s;
+    transform: translateY(calc(125px));
+    transition: transform 0.4s;
 }
-.content {
-    padding: 1em;
+.card-columns .card div {
     position: relative;
     z-index: 1;
 }
-.title{
-    text-align: center;
+.card-columns .card .card-title{
 }
-.img{
+.card-columns .card img{
     height: 100%;
     width: 100%;
 }
-.card{
-    margin-left: 17px;
+.card-columns .card{
+    /*margin-left: 17px;
     margin-right: 17px;
-    margin-bottom: 25px;
+    margin-bottom: 25px;*/
+    margin: 20px;
     height: 320px;
     width: 250px;
     position: relative;
@@ -30,7 +28,15 @@
     color: black;
     box-shadow: 0 19px 38px rgba(0,0,0, 0.3), 0 15px 12px rgba(0,0,0, 0.2);
 }
-.card:hover .data{
+.card-columns .card:hover .card-body{
     /*visibility: visible;*/
     transform: translateY(0);
+}
+
+.card-columns{
+    justify-content: center;
+    margin-top: 75px;
+    column-count: 4;
+    display: flex;
+    flex-flow: row wrap;
 }
