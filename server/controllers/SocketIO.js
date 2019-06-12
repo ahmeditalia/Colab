@@ -3,6 +3,23 @@ let fs = require("fs");
 let Session = require("../classes/Session").Session;
 let app = require("../app").app;
 let io = require("../app").io;
+let upload = require("../app").upload;
+let multer = require("multer");
+
+app.post('/updateProfilePicture',(req, res)=> {
+    upload(req, res, (err)=> {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        return res.status(200).send({imageURL: req.file.path});
+    })
+});
+
+app.post('/updateProfile',(req, res)=> {
+    res.end();
+});
 
 app.post("/signIn",(req,res)=>{
     let user = req.body.user;
@@ -17,9 +34,24 @@ app.post("/createSession",(req,res)=>{
 });
 
 app.get("/getpic",(req,res)=>{
-    fs.readFile("ahmed.jpg",(err,img)=>{
-        res.writeHead(200,{'Content-type':'image/jpg'});
+    fs.readFile("public/ahmed.jpg",(err,img)=>{
+        //res.writeHead(200,{'Content-type':'image/jpg'});
         res.end(img);
+    });
+});
+
+app.post("/getUserProfile",(req,res)=>{
+    let user = null;
+    fs.readFile("public/ahmed.jpg",(err,img)=>{
+        user = {
+            firstName: "ahmed",
+            lastName: "amr",
+            username: "italia",
+            password: "123",
+            email: "italia@gmail.com",
+            image: {URL:"public/ahmed.jpg"}
+        };
+        res.send({user:user})
     });
 });
 

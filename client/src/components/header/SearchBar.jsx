@@ -34,7 +34,8 @@ class SearchBar extends Component {
                     onChange={this.changeState}
                 />
                 <InputGroup.Append size="sm">
-                    <Button className={"shadow-none"} variant="link" style={{borderColor: "white"}} onClick={this.search}>
+                    <button onCl></button>
+                    <Button className={"shadow-none"} variant="link" style={{borderColor: "white"}} onClick={this.search} >
                         <MDBIcon icon="search" style={{color:"white"}}/>
                     </Button>
                 </InputGroup.Append>

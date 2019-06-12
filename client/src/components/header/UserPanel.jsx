@@ -26,6 +26,10 @@ class UserPanel extends Component {
         });
     };
 
+    profile = ()=>{
+        this.props.history.push("/profile");
+    };
+
     render() {
         return (
             <Dropdown size="sm" className={"mr-5"}>
@@ -42,7 +46,7 @@ class UserPanel extends Component {
                     />
                     <Dropdown.Divider />
                     <Dropdown.Header>User Settings</Dropdown.Header>
-                    <Dropdown.Item as="button">Profile</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={this.profile}>Profile</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={this.logOut}>Sign Out</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
