@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Col} from "react-bootstrap";
-import '../css/index.css';
+import '../../css/index.css';
 import Form from "react-bootstrap/Form";
 import Draggable from 'react-draggable';
 const serverURL="http://localhost:3001";
+
+
 class SessionLayout extends Component{
-
-
-
 
     constructor(props) {
         super(props);
@@ -63,8 +62,6 @@ class SessionLayout extends Component{
         return {height:rect.height,y:rect.top};
     };
 
-
-
     resize = (e)=>{
         e.stopPropagation();
         e.preventDefault();
@@ -76,11 +73,10 @@ class SessionLayout extends Component{
         this.setState({CodeSectionHeight:newHeight,OutputSectionHeight:99.01-newHeight-0.01});
     };
 
-
     render() {
         const {rooms} = this.state;
         return(
-            <Col style={{position:"fixed"}}>
+            <Col style={{position:"fixed", width: 600}}>
                 <div className={"wrapper"}>
                     <div  style={{height:this.state.CodeSectionHeight+"%"}}>
                         <Form.Control as={"textarea"} style={{resize: "none",height:"100%",borderRadius: 5,}} placeholder={"Write your Code ..."} /*onInput={this.send}*//>

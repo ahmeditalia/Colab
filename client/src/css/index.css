@@ -13,6 +13,11 @@ code {
     monospace;
 }
 
+.icons{
+    padding-right:3px;
+    color: black;
+}
+
 
 /*.nav-link:active{
   background-color: beige;
@@ -42,11 +47,11 @@ code {
 
 
 .wrapper{
-  margin: 0 auto;
-  height: 500px;
-  width: 100%;
+  margin-left: 258px;
+  height: 520px;
+  width: 80%;
   position: fixed;
-  max-height: 500px;
+  max-height: 520px;
   border: 3px solid #232960;
   border-radius: 6px;
 }
@@ -70,16 +75,16 @@ code {
 }
 
 
-.dropdown-menu.show::after {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 7%;
-  margin-left: -5px;
-  border-width: 8px;
-  border-style: solid;
-  border-color: transparent transparent white transparent;
-}
+/*.dropdown-menu.show::after {*/
+/*  content: "";*/
+/*  position: absolute;*/
+/*  bottom: 100%;*/
+/*  left: 7%;*/
+/*  margin-left: -5px;*/
+/*  border-width: 8px;*/
+/*  border-style: solid;*/
+/*  border-color: transparent transparent white transparent;*/
+/*}*/
 
 
 /*user panel Button*/
@@ -95,6 +100,75 @@ code {
 }
 
 
-a.nav-link:active{
-  color: yellow;
+/*a.nav-link:active{*/
+/*  color: yellow;*/
+/*}*/
+
+.sessionPanel{
+  width: 20%;
+  /*margin-left: 15px;*/
+  background-color: #232937;
+  max-height: 520px;
+  height: 520px;
+  color: white;
 }
+.navItem:hover{
+    background-color: #0f131b;
+    width: 100%;
+}
+.navItemRow{
+    padding-left:20px;
+    padding-top:4px;
+}
+.nav-link{
+    color: white;
+    max-height: 50px;
+}
+.nav-link:hover{
+    color: white;
+}
+.shadow-none.dropdown-toggle.btn.btn-link:hover{
+    color: white;
+}
+.nav.nav-tabs a.active{
+    background-color: #232937;
+    color: white;
+    border-bottom: none;
+    border-top: 2px solid;
+    border-right: 2px solid;
+    border-left: 2px solid;
+
+}
+.fade.tab-pane.active.show{
+    overflow: auto;
+    overflow-x: hidden;
+    max-height: 477px;
+}
+.nav.nav-tabs a:hover{
+    color: white;
+}
+.nav{
+    width:100%;
+}
+.tabImage{
+    width:30px;
+    height:30px;
+    border-radius:80px;
+    margin-top:5px;
+}
+.shadow-none{
+    color: white;
+}
+.dd{
+    width: 252px;
+}
+/*.dd.dropdown-menu.show::after {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    bottom: 100%;*/
+/*    left: 95%;*/
+/*    margin-left: -5px;*/
+/*    border-width: 8px;*/
+/*    border-style: solid;*/
+/*    border-color: transparent transparent white transparent;*/
+/*}*/
