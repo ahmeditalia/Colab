@@ -1,25 +1,16 @@
 import React, { Component } from 'react';
-import {Tabs, Tab, FormText, Row, Nav, Button, ButtonToolbar, OverlayTrigger, Popover, Tooltip} from 'react-bootstrap'
-import TabItem from "./TabItem";
+import {Tabs, Tab, Button, ButtonToolbar, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import { enableRipple } from '@syncfusion/ej2-base';
-import {TreeViewComponent} from "@syncfusion/ej2-react-navigations";
+import {TreeViewComponent, ContextMenuComponent} from "@syncfusion/ej2-react-navigations";
+import {CheckBoxComponent} from '@syncfusion/ej2-react-buttons';
 import {MDBIcon} from "mdbreact";
 enableRipple(true);
 
-
 class SessionPanel extends Component{
 
-    icons = [
-        {id:"edit",icon:"edit"},
-        {id:"copy",icon:"copy"},
-        {id:"paste",icon:"paste"},
-        {id:"cut",icon:"cut"},
-        {id:"Add Folder",icon:"folder-plus"},
-        {id:"Delete Folder",icon:"folder-minus"}];
     constructor() {
         super(...arguments);
-        // define the array of data
-        this.hierarchicalData = [
+        this.files = [
             { id: '01', name: 'Local Disk (C:)', expanded: true,
                 subChild: [
                     {
@@ -107,39 +98,133 @@ class SessionPanel extends Component{
                 ]
             }
         ];
-        this.fields = { dataSource: this.hierarchicalData, id: 'id', text: 'name', child: 'subChild' };
+        this.filesFields = { dataSource: this.files, id: 'id', text: 'name', child: 'subChild' };
+        this.icons = [
+            {id:"edit",icon:"edit"},
+            {id:"copy",icon:"copy"},
+            {id:"paste",icon:"paste"},
+            {id:"cut",icon:"cut"},
+            {id:"Add Folder",icon:"folder-plus"},
+            {id:"Delete Folder",icon:"folder-minus"}];
+        this.users =  [
+            { id: 1, name: 'Steven Buchanan', eimg: '8', ejob:"student" ,hasChild: true},
+            { id: 11, pid:1, name: 'Perm1'},
+            { id: 12, pid:1, name: 'Perm2'},
+            { id: 13, pid:1, name: 'Perm3'},
+            { id: 14, pid:1, name: 'Perm4'},
+            { id: 2, name: 'Laura Callahan', eimg: '9', ejob:"master" ,hasChild: true},
+            { id: 21, pid:2, name: 'Perm1'},
+            { id: 22, pid:2, name: 'Perm2'},
+            { id: 23, pid:2, name: 'Perm3'},
+            { id: 24, pid:2, name: 'Perm4'},
+            { id: 3, name: 'Andrew Fuller', eimg: '6', ejob:"master" ,hasChild: true},
+            { id: 31, pid:3, name: 'Perm1'},
+            { id: 32, pid:3, name: 'Perm2'},
+            { id: 33, pid:3, name: 'Perm3'},
+            { id: 34, pid:3, name: 'Perm4'},
+            { id: 4, name: 'Nancy Davolio', eimg: '7', ejob:"student" ,hasChild: true},
+            { id: 41, pid:4, name: 'Perm1'},
+            { id: 42, pid:4, name: 'Perm2'},
+            { id: 43, pid:4, name: 'Perm3'},
+            { id: 44, pid:4, name: 'Perm4'},
+
+        ];
+        this.usersFields = {
+            dataSource: this.users,
+            id: 'id',
+            parentID: 'pid',
+            text: 'name',
+            hasChildren: 'hasChild'
+        };
     }
+
+    permissionChangeHandler = (e)=>{
+        console.log(e.target.name + " ,"+ e.target.value+" ,"+e.target.checked);
+        e.target.checked = !e.target.checked;
+    };
+
+    nodeTemplate = (data)=> {
+        if(data.hasChild)
+        {
+            return (
+                <div>
+                    <img className="eimage" src={'https://ej2.syncfusion.com/demos/src/grid/images/' + data.eimg + '.png'}
+                         alt={data.eimg}/>
+                    <div className="ename">{data.name}</div>
+                    <div className="ejob">{data.ejob}</div>
+                </div>);
+        }
+        else{
+            return (
+                <div style={{paddingTop:10}}>
+                    <CheckBoxComponent
+                        name={data.pid}
+                        value={data.name}
+                        onClick={this.permissionChangeHandler}
+                        className="ename"
+                        label={data.name}
+                    />
+                </div>);
+        }
+    };
+
+    MenuItemModel = [
+        {
+            text: 'Cut',
+            iconCss: 'cut'
+        },
+        {
+            text: 'Copy',
+            iconCss: 'copy'
+        },
+        {
+            text: 'Paste',
+            iconCss: 'paste',
+        },
+        {
+            separator: true
+        },
+        {
+            text: 'Add Folder',
+            iconCss: 'folder-plus'
+        },
+        {
+            text: 'Add File',
+            iconCss: 'folder-minus'
+        }];
 
     render() {
         return(
             <div className={"sessionPanel"}>
                 <Tabs style={{width:"100%"}} id="controlled-tab-example">
                     <Tab eventKey="files" title="Files">
-                        <ButtonToolbar>
-                            {this.icons.map(placement => (
-                                <OverlayTrigger key={placement.id} placement={placement.id}
-                                    overlay={
-                                        <Tooltip id={`tooltip-${placement.id}`}>{placement.id}</Tooltip>
-                                    }>
-                                    <Button variant={"link"}><MDBIcon id={placement.id} icon={placement.icon} className={"icons"}/></Button>
-                                </OverlayTrigger>
-                            ))}
-                        </ButtonToolbar>
-                        <TreeViewComponent
-                            fields={this.fields}
-                            allowEditing={true}
-                            allowMultiSelection={true}
-                            allowDragAndDrop={true}
-                            style={{color:"white"}}
-                        />
-                    </Tab>
-                    <Tab eventKey="users" title="Users">
-                        <Row>
-                            <Nav variant="pills" className="flex-column">
-                                {this.props.items.map((item)=> <TabItem img={item.img} username={item.username} permissions={item.permissions}/>)}
-                            </Nav>
-                        </Row>
-                    </Tab>
+                    <ButtonToolbar>
+                        {this.icons.map(placement => (
+                            <OverlayTrigger key={placement.id} placement={placement.id}
+                                            overlay={
+                                                <Tooltip id={`tooltip-${placement.id}`}>{placement.id}</Tooltip>
+                                            }>
+                                <Button variant={"link"}><MDBIcon id={placement.id} icon={placement.icon} className={"icons"}/></Button>
+                            </OverlayTrigger>
+                        ))}
+                    </ButtonToolbar>
+                    <TreeViewComponent
+                        id={'target'}
+                        fields={this.filesFields}
+                        allowEditing={true}
+                        allowMultiSelection={true}
+                        allowDragAndDrop={true}
+                        style={{color:"white"}}
+                    />
+                    <ContextMenuComponent target="#target" items={this.MenuItemModel}/>
+                </Tab>
+                <Tab eventKey="users" title="Users">
+                    <TreeViewComponent
+                        fields={this.usersFields}
+                        nodeTemplate={this.nodeTemplate}
+                        cssClass={'custom'}
+                    />
+                </Tab>
                 </Tabs>
             </div>
         );

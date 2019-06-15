@@ -1,5 +1,17 @@
 @import "dashboard.css";
 @import "profile.css";
+@import "usersTab.css";
+@import "./ej2/ej2-base-material.css";
+@import "./ej2/ej2-buttons-material.css";
+@import "./ej2/ej2-grids-material.css";
+@import "./ej2/ej2-icons-material.css";
+@import "./ej2/ej2-inputs-material.css";
+@import "./ej2/ej2-layouts-material.css";
+@import "./ej2/ej2-navigations-material.css";
+@import "./ej2/ej2-popups-material.css";
+@import "./ej2/ej2-react-filemanager-material.css";
+@import "./ej2/ej2-react-navigations-material.css";
+@import "./ej2/ej2-splitbuttons-material.css";
 
 body {
   margin: 0;
@@ -110,10 +122,10 @@ code {
 .sessionPanel{
   width: 20%;
   /*margin-left: 15px;*/
-  background-color: #232937;
+  background-color: white;
   max-height: 520px;
   height: 520px;
-  color: white;
+  color: black;
 }
 .navItem:hover{
     background-color: #0f131b;
@@ -124,23 +136,30 @@ code {
     padding-top:4px;
 }
 .nav-link{
-    color: white;
+    color: black;
     max-height: 50px;
 }
 .nav-link:hover{
-    color: white;
+    color: black;
 }
 .shadow-none.dropdown-toggle.btn.btn-link:hover{
     color: white;
 }
+.nav.nav-tabs{
+    border-bottom: 2px solid black;
+}
 .nav.nav-tabs a.active{
-    background-color: #232937;
+    background-color: #070707;
     color: white;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
     border-bottom: none;
-    border-top: 2px solid;
-    border-right: 2px solid;
-    border-left: 2px solid;
-
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+}
+.nav.nav-tabs a.active:hover{
+    color: white;
 }
 .fade.tab-pane.active.show{
     overflow: auto;
@@ -148,7 +167,7 @@ code {
     max-height: 477px;
 }
 .nav.nav-tabs a:hover{
-    color: white;
+    color: black;
 }
 .nav{
     width:100%;
