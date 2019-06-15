@@ -3,29 +3,42 @@ import ProfileImage from "./ProfileImage";
 import {getProfile} from "../../store/actions/profileActions/getProfileAction";
 import ProfileInfo from "./ProfileInfo";
 import {connect} from "react-redux";
+import {Alert, Form} from "react-bootstrap";
+import {updateProfile} from "../../store/actions/profileActions/updateProfileAction";
 
 class UserProfile extends Component {
 
-    state = {
-        loading: true
+    state ={
+        validated: false
     };
 
-    componentDidMount() {
-        this.props.getProfile(()=>{
-            this.setState({loading: false});
-        });
+    componentWillMount() {
+        this.props.getProfile();
     }
 
+    saveChanges = (e)=>{
+        if(e.currentTarget.checkValidity()) {
+            e.preventDefault();
+            this.props.updateProfile(this.props.user, this.props.history)
+        }
+        e.preventDefault();
+        this.setState({validated: true});
+    };
+
     render() {
-        if(this.state.loading) {
-            return "loading..."
+        if(!this.props.user) {
+            return (
+                <Alert variant="success">
+                    <Alert.Heading>Loading...</Alert.Heading>
+                </Alert>
+            )
         }
         else{
             return (
-                <div className={"profile"}>
+                <Form id={"profile_form"} className={"profile"} onSubmit={this.saveChanges} noValidate validated={this.state.validated}>
                     <ProfileImage/>
                     <ProfileInfo/>
-                </div>
+                </Form>
             )}
     }
 }
@@ -38,7 +51,8 @@ const mapStateToProps = (combinedReducers)=>{
 
 const mapDispatchToProps = (dispatch)=>{
     return {
-        getProfile: (callback)=> dispatch(getProfile(callback))
+        getProfile: (callback)=> dispatch(getProfile(callback)),
+        updateProfile: (profile,history)=> dispatch(updateProfile(profile,history))
     }
 };
 

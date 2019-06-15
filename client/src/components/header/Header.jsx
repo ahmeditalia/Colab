@@ -7,63 +7,36 @@ import SearchBar from "./SearchBar";
 import UserPanel from "./UserPanel";
 import {connect} from "react-redux";
 import {NavLink} from "react-router-dom";
+import {DASHBOARD, HOME} from "../../store/dataMapping/URL";
+import {OPEN_FORM, SIGN_IN_FORM, SIGN_UP_FORM} from "../../store/dataMapping/form";
 
 class Header extends Component {
 
-    state = {
-        signUpForm: false,
-        signInForm: false
-    };
-
-    openSignUp = ()=>{
-        this.setState({signUpForm:true});
-    };
-
-    closeSignUp = ()=>{
-        this.setState({signUpForm:false});
-    };
-
-    openSignIn = ()=>{
-        this.setState({signInForm:true});
-    };
-
-    closeSignIn = ()=>{
-        this.setState({signInForm:false});
-    };
 
     loggedInUserView = ()=>{
         return (
-            <Navbar sticky="top">
-                <Navbar.Brand href="/Home">
-                    <img
-                        alt=""
-                        src={logo}
-                        width="170"
-                        height="45"
-                        className="d-inline-block align-top"
-                    />
-                </Navbar.Brand>
-                <Navbar.Collapse>
-                    <Nav className="mr-auto">
-                        <Nav.Item>
-                            <NavLink className={"nav-link"} to={"/"}>Home</NavLink>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <NavLink className={"nav-link"} to={"/dashboard"}>Dashboard</NavLink>
-                        </Nav.Item>
-                    </Nav>
-                    <Nav>
-                    <SearchBar/>
-                    <UserPanel/>
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
+            <Nav>
+                <SearchBar/>
+                <UserPanel/>
+            </Nav>
         );
     };
 
     loggedOutUserView = ()=>{
         return (
-            <Navbar sticky="top">
+            <ButtonToolbar>
+                <Button style={{color:"white"}} variant={"link mr-2"} onClick={this.props.openSignUp}>Sign Up</Button>
+                <Button style={{color:"white"}} variant={"link mr-2"} onClick={this.props.openSignIn}>Sign In</Button>
+                <SignUp/>
+                <SignIn/>
+            </ButtonToolbar>
+        );
+    };
+
+    render()
+    {
+        return(
+            <Navbar style={{backgroundColor: "#070C14", borderBottom: "1px solid white"}} sticky="top">
                 <Navbar.Brand href="/Home">
                     <img
                         alt=""
@@ -76,47 +49,32 @@ class Header extends Component {
                 <Navbar.Collapse>
                     <Nav className="mr-auto">
                         <Nav.Item>
-                            <NavLink className={"nav-link"} to={"/"}>Home</NavLink>
+                            <NavLink style={{color:"white"}} className={"nav-link"} to={HOME}>Home</NavLink>
                         </Nav.Item>
                         <Nav.Item>
-                            <NavLink className={"nav-link"} to={"/dashboard"}>Dashboard</NavLink>
+                            <NavLink style={{color:"white"}} className={"nav-link"} to={DASHBOARD}>Dashboard</NavLink>
                         </Nav.Item>
                     </Nav>
-                    <ButtonToolbar>
-                        <Button style={{color:"white"}} variant={"link mr-2"} onClick={this.openSignUp}>Sign Up</Button>
-                        <Button style={{color:"white"}} variant={"link mr-2"} onClick={this.openSignIn}>Sign In</Button>
-                    </ButtonToolbar>
+                    {this.props.authenticated ? this.loggedInUserView(): this.loggedOutUserView()}
                 </Navbar.Collapse>
-                <SignUp
-                    show={this.state.signUpForm}
-                    onHide={this.closeSignUp}
-                />
-                <SignIn
-                    show={this.state.signInForm}
-                    onHide={this.closeSignIn}
-                />
-
             </Navbar>
-        );
-    };
 
-    render()
-    {
-        if(this.props.user){
-            console.log("there is a user");
-            return this.loggedInUserView();
-        }
-        else {
-            console.log("no user");
-            return this.loggedOutUserView();
-        }
+        );
+
     }
 }
 
-const mapStateToProps = (combinedReducer)=>{
+const mapStateToProps = (state)=>{
     return{
-        user: combinedReducer.auth.user
+        authenticated: state.auth.authenticated,
     }
 };
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        openSignIn: ()=> dispatch({type:SIGN_IN_FORM, payload: OPEN_FORM}),
+        openSignUp: ()=> dispatch({type:SIGN_UP_FORM, payload: OPEN_FORM}),
+    }
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(Header);

@@ -2,13 +2,13 @@ import React, {Component} from "react";
 import {Button, Card, Image} from "react-bootstrap";
 import ImageUpload from "./ImageUpload";
 import {connect} from "react-redux";
+import {IMAGE, USERNAME} from "../../store/dataMapping/user";
 
 class ProfileImage extends Component {
 
 
     state={
         uploadForm: false,
-        username: this.props.username
     };
 
     openUploadForm = ()=>{
@@ -31,18 +31,7 @@ class ProfileImage extends Component {
                             src={this.props.img.URL}
                         />
                     </Button>
-                    {/*<Card className={"imageDiv"}>
-                        <Card.Img
-                            className={"myImage"}
-                            roundedCircle
-                            src={this.props.img.URL}
-                        />
-
-                        <Card.Body className={"imageBody"}>
-                            <Button variant={"light"} onClick={this.openUploadForm} >Edit</Button>
-                        </Card.Body>
-                    </Card>*/}
-                    <Card.Subtitle className="mt-2">{this.state.username}</Card.Subtitle>
+                    <Card.Subtitle className="mt-2">{localStorage.getItem(USERNAME)}</Card.Subtitle>
                 </Card.Body>
                 <ImageUpload
                     show={this.state.uploadForm}
@@ -56,10 +45,9 @@ class ProfileImage extends Component {
 
 const mapStateToProps = (combinedReducers)=>{
     return {
-        username: combinedReducers.profile.profile.username,
-        img: combinedReducers.profile.profile.image
+        img: combinedReducers.profile.profile[IMAGE]
     }
 };
 
 
-export default connect(mapStateToProps,null)(ProfileImage);
+export default connect(mapStateToProps)(ProfileImage);

@@ -14,9 +14,10 @@ class Dashboard extends Component{
 
     render() {
         return(
-            <CardColumns>
+            <h1>Nothing for now</h1>
+           /* <CardColumns>
                 {this.props.sessions.map((session)=> <DashboardCard session={session}/>)}
-            </CardColumns>
+            </CardColumns>*/
         );
     }
 }

@@ -1,10 +1,18 @@
 import axios from "axios/index";
+import {USERNAME} from "../../dataMapping/user";
+import {SIGN_UP} from "../../dataMapping/serverURLs";
+import {REGISTRATION_ERROR, REGISTERED} from "../../dataMapping/auth";
 
 export const signUp = (signUpData,callback)=>{
-    return (dispatch,getState)=>{
-        axios.post("/signUp",{user: signUpData})
-            .then((res)=>dispatch({type:"SIGNUP_SUCCESS" , user: res.body.user}))
+    return (dispatch)=>{
+        console.log(signUpData);
+        axios.post(SIGN_UP,{user: signUpData})
+            .then((res)=>{
+                localStorage.setItem(USERNAME,signUpData.username);
+                localStorage.setItem('user', res.data.token);
+                dispatch({type: REGISTERED});
+            })
             .then(()=> callback())
-            .catch((err)=> dispatch({type:"SIGNUP_FAIL", error: err}))
+            .catch((error) => dispatch({type: REGISTRATION_ERROR, payload: error.response.data.error}))
     }
 };

@@ -1,34 +1,55 @@
+import {UNAUTHENTICATED} from "../actions/authenticationActions/signOutAction";
+import {
+    AUTHENTICATED, AUTHENTICATION_ERROR,
+    CLEAR_SIGN_IN_ERROR,
+    CLEAR_SIGN_UP_ERROR,
+    REGISTRATION_ERROR,
+    REGISTERED,
+} from "../dataMapping/auth";
+
+
 const initState = {
-    user: null
+    authenticated: false,
+    [AUTHENTICATION_ERROR]: "",
+    [REGISTRATION_ERROR]: ""
 };
 
 const authReducer = (state = initState ,action)=>{
     switch (action.type) {
-        case "LOGIN_SUCCESS":
+        case AUTHENTICATED:
             return ({
                 ...state,
-                user: action.user
+                authenticated: true
             });
-        case "LOGIN_FAIL":
+        case UNAUTHENTICATED:
             return ({
                 ...state,
-                user: null,
-                authError: "Log in Failed"
+                authenticated: false,
             });
-        case "SIGNUP_SUCCESS":
+        case AUTHENTICATION_ERROR:
             return ({
                 ...state,
-                user: action.user
+                [AUTHENTICATION_ERROR]: action.payload
             });
-        case "SIGNUP_FAIL":
+        case REGISTERED:
             return ({
                 ...state,
-                user: null
+                authenticated: true
             });
-        case "LOGOUT":
+        case REGISTRATION_ERROR:
             return ({
                 ...state,
-                user: null
+                [REGISTRATION_ERROR]: action.payload,
+            });
+        case CLEAR_SIGN_IN_ERROR:
+            return ({
+                ...state,
+                [AUTHENTICATION_ERROR]: ""
+            });
+        case CLEAR_SIGN_UP_ERROR:
+            return ({
+                ...state,
+                [REGISTRATION_ERROR]: ""
             });
         default:
             return state;

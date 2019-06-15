@@ -2,14 +2,20 @@ import React, {Component} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {signUp} from "../../store/actions/authenticationActions/signUpAction";
-import {withRouter,Redirect} from "react-router-dom";
+import {withRouter} from "react-router-dom";
+import {DASHBOARD} from "../../store/dataMapping/URL";
+import {EMAIL, PASSWORD, USERNAME} from "../../store/dataMapping/user";
+import {CLEAR_SIGN_UP_ERROR, REGISTRATION_ERROR} from "../../store/dataMapping/auth";
+import {CLOSE_FORM, SIGN_UP_FORM} from "../../store/dataMapping/form";
+import {validate} from "../../store/actions/authenticationActions/Validation";
+import {EmailRegex, PasswordRegex, UsernameRegex} from "../../store/dataMapping/regexValidate";
 
 class SignUp extends Component {
 
     state = {
-        username: null,
-        email: null,
-        password: null
+        [USERNAME]: "",
+        [EMAIL]: "",
+        [PASSWORD]: "",
     };
 
     changeState = (e)=>{
@@ -17,40 +23,52 @@ class SignUp extends Component {
     };
 
     signUp = (e)=>{
-        this.props.signUp(this.state,()=>{
-            this.props.history.push("/dashboard");
-        });
+        if(e.currentTarget.checkValidity()) {
+            e.preventDefault();
+            if(this.state[USERNAME] && this.state[EMAIL] && this.state[PASSWORD])
+                this.props.signUp(this.state,()=>{
+                    this.props.closeSignUp();
+                    this.props.history.push(DASHBOARD);
+                });
+        }
+    };
+
+
+    hide = ()=>{
+        this.props.closeSignUp();
+        this.props.clearErrorMessage();
     };
 
     render() {
-        /*if(this.props.user){
-            return <Redirect to={"/dashboard"}/>
-        }*/
-        return (
-            <Modal {...this.props}  style={{color:"black"}} centered>
+        if(this.props.authenticated){
+            this.props.history.push(DASHBOARD);
+        }
+        else return (
+            <Modal {...this.props}  style={{color:"black"}} centered show={this.props.display} onHide={this.hide}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         Sign Up
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
-                        <Form.Group controlId="username">
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Username" onChange={this.changeState}/>
+                    <Form id={"sign_up_form"} onSubmit={this.signUp} validated={true}>
+                        <Form.Group controlId={USERNAME}>
+                            <Form.Label column={false}>Username</Form.Label><small>{this.state[[USERNAME+"Error"]]}</small>
+                            <Form.Control pattern={UsernameRegex} required type="text" placeholder="Username" onChange={this.changeState}/>
                         </Form.Group>
-                        <Form.Group controlId="email">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" onChange={this.changeState}/>
+                        <Form.Group controlId={EMAIL}>
+                            <Form.Label column={false}>Email address</Form.Label><small>{this.state[[EMAIL+"Error"]]}</small>
+                            <Form.Control pattern={EmailRegex} required type="email" placeholder="Enter email" onChange={this.changeState}/>
                         </Form.Group>
-                        <Form.Group controlId="password">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" onChange={this.changeState}/>
+                        <Form.Group controlId={PASSWORD}>
+                            <Form.Label column={false}>Password</Form.Label><small>{this.state[[PASSWORD+"Error"]]}</small>
+                            <Form.Control pattern={PasswordRegex} required type="password" placeholder="Password" onChange={this.changeState}/>
                         </Form.Group>
+                        <small>{this.props.error}</small>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="success" onClick={this.sigUp}>Sign up for Colab</Button>
+                    <Button form={"sign_up_form"} type={"submit"} variant="success" >Sign up for Colab</Button>
                 </Modal.Footer>
             </Modal>
         );
@@ -59,13 +77,17 @@ class SignUp extends Component {
 
 const mapStateToProps = (combinedReducer)=>{
     return{
-        user: combinedReducer.auth.user
+        authenticated: combinedReducer.auth.authenticated,
+        display: combinedReducer.forms[SIGN_UP_FORM],
+        error: combinedReducer.auth[REGISTRATION_ERROR]
     }
 };
 
 const mapDispatchToProps = (dispatch)=>{
     return{
-        signUp: (signUpData,callback)=> dispatch(signUp(signUpData,callback))
+        signUp: (signUpData,callback)=> dispatch(signUp(signUpData,callback)),
+        clearErrorMessage: ()=>dispatch({type: CLEAR_SIGN_UP_ERROR}),
+        closeSignUp: ()=> dispatch({type:SIGN_UP_FORM, payload: CLOSE_FORM}),
     };
 };
 

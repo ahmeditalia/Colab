@@ -1,10 +1,17 @@
 import axios from "axios/index";
+import {USERNAME} from "../../dataMapping/user";
+import {SIGN_IN} from "../../dataMapping/serverURLs";
+import {AUTHENTICATED, AUTHENTICATION_ERROR} from "../../dataMapping/auth";
 
 export const signIn = (signInData,callback)=>{
-    return (dispatch,getState)=>{
-        axios.post("/signIn",{user: signInData})
-            .then((res)=> dispatch({type: "LOGIN_SUCCESS", user: res.data.user}))
-            .then(()=> callback())
-            .catch((err)=> dispatch({type: "LOGIN_FAIL", error: err}))
+    return (dispatch)=> {
+        axios.post(SIGN_IN, {user: signInData})
+            .then((res) => {
+                localStorage.setItem(USERNAME,signInData.username);
+                localStorage.setItem('user', res.data.token);
+                dispatch({type: AUTHENTICATED});
+            })
+            .then(() => callback())
+            .catch((error) => dispatch({type: AUTHENTICATION_ERROR, payload: error.response.data.error}))
     };
 };

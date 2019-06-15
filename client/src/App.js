@@ -5,6 +5,10 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Session from "./components/session/Session";
 import Header from "./components/header/Header";
 import UserProfile from "./components/profile/UserProfile";
+import requireAuth from "./components/authentication/requireAuth";
+import notRequireAuth from "./components/authentication/notRequireAuth";
+import ErrorPage from "./components/Error/ErrorPage";
+
 
 
 class App extends Component {
@@ -14,10 +18,11 @@ class App extends Component {
             <div>
                 <Header/>
                 <Switch>
-                  <Route exact path="/" component={Home}/>
-                  <Route path="/dashboard" component={Dashboard}/>
-                    <Route path="/profile" component={UserProfile}/>
-                    <Route path="/session" component={Session}/>
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/error" component={ErrorPage}/>
+                    <Route path="/dashboard" component={Dashboard}/>
+                    <Route path="/profile" component={requireAuth(UserProfile)}/>
+                    <Route path="/session" component={requireAuth(Session)}/>
                   {/*<Route path="/SessionM" component={SessionMaster}/>
                   <Route path="/SessionU" component={SessionUser}/>*/}
                 </Switch>

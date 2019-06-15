@@ -2,51 +2,66 @@ import React, {Component} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {signIn} from "../../store/actions/authenticationActions/signInAction"
-import {Redirect, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
+import {PASSWORD, USERNAME} from "../../store/dataMapping/user";
+import {DASHBOARD} from "../../store/dataMapping/URL";
+import {AUTHENTICATION_ERROR, CLEAR_SIGN_IN_ERROR} from "../../store/dataMapping/auth";
+import {CLOSE_FORM, SIGN_IN_FORM} from "../../store/dataMapping/form";
 
 class SignIn extends Component {
 
     state = {
-        username: null,
-        password: null
+        [USERNAME]: "",
+        [PASSWORD]: "",
     };
 
     changeState = (e)=>{
+        this.props.clearErrorMessage();
         this.setState({[e.target.id]: e.target.value});
     };
 
-    logIn = (e)=>{
-        console.log(this.props);
-        this.props.signin(this.state,()=>{
-            this.props.onHide();
-            this.props.history.push("/dashboard");
-        });
+    close = ()=>{
+        this.props.closeSignIn();
+        this.props.clearErrorMessage();
     };
+
+    logIn = (e)=>{
+        if(e.currentTarget.checkValidity()) {
+            e.preventDefault();
+            this.props.signIn(this.state,()=>{
+                this.props.closeSignIn();
+                this.props.history.push(DASHBOARD);
+            });
+        }
+    };
+
     render() {
-/*        if(this.props.user){
-            return <Redirect to={"/dashboard"}/>
-        }*/
-        return (
-            <Modal {...this.props} style={{color:"black"}} centered>
+        if(this.props.authenticated){
+            this.props.history.push(DASHBOARD);
+        }
+        else return (
+            <Modal {...this.props} style={{color:"black"}} centered show={this.props.display} onHide={this.close}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         Sign In
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
-                        <Form.Group controlId="username">
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Username" onChange={this.changeState}/>
+                    <Form id={"sign_in_form"} onSubmit={this.logIn} validated={true}>
+                    <Form.Group controlId= {USERNAME}>
+                            <Form.Label column={false}>Username</Form.Label><small>{this.state[USERNAME+"Error"]}</small>
+                            <Form.Control required type="text" placeholder="Username" onChange={this.changeState}/>
                         </Form.Group>
-                        <Form.Group controlId="password">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" onChange={this.changeState}/>
+                        <Form.Group controlId={PASSWORD}>
+                            <Form.Label column={false}>Password</Form.Label><small>{this.state[PASSWORD+"Error"]}</small>
+                            <Form.Control required type="password" placeholder="Password" onChange={this.changeState}/>
                         </Form.Group>
+                        <small>{this.props.error}</small>
+
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="success" onClick={this.logIn}>Sign In</Button>
+                    <Button form="sign_in_form" type={"submit"} variant="success">Sign In</Button>
                 </Modal.Footer>
             </Modal>
         );
@@ -55,13 +70,17 @@ class SignIn extends Component {
 
 const mapStateToProps = (combinedReducer)=>{
     return{
-        user: combinedReducer.auth.user
+        authenticated: combinedReducer.auth.authenticated,
+        display: combinedReducer.forms[SIGN_IN_FORM],
+        error: combinedReducer.auth[AUTHENTICATION_ERROR]
     }
 };
 
 const mapDispatchToProps = (dispatch)=>{
     return{
-        signin: (signInData,callback) => dispatch(signIn(signInData,callback))
+        signIn: (signInData,callback) => dispatch(signIn(signInData,callback)),
+        clearErrorMessage: ()=>dispatch({type: CLEAR_SIGN_IN_ERROR}),
+        closeSignIn: ()=> dispatch({type:SIGN_IN_FORM, payload: CLOSE_FORM}),
     };
 };
 

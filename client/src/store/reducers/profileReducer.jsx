@@ -1,86 +1,93 @@
+import {
+    CONFIRM_PASSWORD,
+    EMAIL,
+    FIRST_NAME,
+    IMAGE,
+    LAST_NAME,
+    NEW_PASSWORD,
+    OLD_PASSWORD, PROFILE_RETRIEVAL_ERROR, PROFILE_RETRIEVED, PROFILE_UPDATE_ERROR, PROFILE_UPDATED,
+} from "../dataMapping/user";
+
 const initState = {
     profile: null
 };
 
 const profileReducer = (state = initState ,action)=>{
     switch (action.type) {
-        case "PROFILE_UPDATE_SUCCESS":
+        case PROFILE_UPDATED:
             return {
                 ...state,
                 profile: null
             };
-        case "PROFILE_UPDATE_FAIL":
+        case PROFILE_UPDATE_ERROR:
             return {
                 ...state,
                 error: "ERROR"
             };
-        case "PROFILE_DATA_SUCCESS":
+        case PROFILE_RETRIEVED:
             return {
                 ...state,
-                profile:action.user
+                profile: action.payload
             };
-        case "PROFILE_DATA_FAIL":
+        case PROFILE_RETRIEVAL_ERROR:
             return {
                 ...state,
-                profile: null
+                profileError: action.payload,
             };
-        case "firstName":
-            console.log(state.profile);
+        case FIRST_NAME:
             return {
                 ...state,
                 profile:{
                     ...state.profile,
-                    firstName:action.value
+                    [FIRST_NAME]: action.value
                 }
             };
-        case "lastName":
-            console.log(state.profile);
+        case LAST_NAME:
             return {
                 ...state,
                 profile:{
                     ...state.profile,
-                    lastName:action.value
+                    [LAST_NAME]: action.value
                 }
             };
-        case "username":
+        case OLD_PASSWORD:
             return {
                 ...state,
                 profile:{
                     ...state.profile,
-                    username:action.value
+                    [OLD_PASSWORD]:action.value
                 }
             };
-        case "password":
+        case NEW_PASSWORD:
             return {
                 ...state,
                 profile:{
                     ...state.profile,
-                    password:action.value
+                    [NEW_PASSWORD]:action.value
                 }
             };
-        case "confirmPassword":
+        case CONFIRM_PASSWORD:
             return {
                 ...state,
                 profile:{
                     ...state.profile,
-                    confirmPassword:action.value
+                    [CONFIRM_PASSWORD]:action.value
                 }
             };
-        case "email":
+        case EMAIL:
             return {
                 ...state,
                 profile:{
                     ...state.profile,
-                    email:action.value
+                    [EMAIL]:action.value
                 }
             };
-        case "image":
-            console.log(action.value);
+        case IMAGE:
             return {
                 ...state,
                 profile:{
                     ...state.profile,
-                    image:action.value
+                    [IMAGE]: action.value
                 }
             };
         default:

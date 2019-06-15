@@ -2,11 +2,13 @@ import authReducer from "./authReducer";
 import sessionReducer from "./sessionReducer";
 import {combineReducers} from "redux";
 import profileReducer from "./profileReducer";
+import formReducer from "./formReducer";
 
 const combinedReducers = combineReducers({
     auth: authReducer,
     sessionStorage: sessionReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    forms: formReducer
 });
 
 export default combinedReducers;
