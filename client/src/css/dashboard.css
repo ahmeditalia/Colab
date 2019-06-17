@@ -3,7 +3,7 @@
     position: absolute;
     bottom: 0px;
     width: 100%;
-    transform: translateY(calc(125px));
+    transform: translateY(calc(100% - 40px));
     transition: transform 0.4s;
 }
 .card-columns .card div {
@@ -11,6 +11,7 @@
     z-index: 1;
 }
 .card-columns .card .card-title{
+    margin-top: -10px;
 }
 .card-columns .card img{
     height: 100%;

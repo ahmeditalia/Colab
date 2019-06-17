@@ -19,7 +19,7 @@ class UserProfile extends Component {
     saveChanges = (e)=>{
         if(e.currentTarget.checkValidity()) {
             e.preventDefault();
-            this.props.updateProfile(this.props.user, this.props.history)
+            this.props.updateProfile(this.props.user, this.props.history);
         }
         e.preventDefault();
         this.setState({validated: true});

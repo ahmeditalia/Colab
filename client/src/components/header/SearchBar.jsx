@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Button, FormControl, InputGroup} from "react-bootstrap";
 import {MDBIcon} from "mdbreact";
 import {connect} from "react-redux";
-import {getSessions} from "../../store/actions/sessionActions/getSessionsAction";
 
 
 class SearchBar extends Component {
@@ -16,8 +15,10 @@ class SearchBar extends Component {
     };
 
     enterSearch = (e)=>{
-        if(e.keyCode === 13)
+        if(e.keyCode === 13){}
+/*
             this.props.getSessions(this.state.search);
+*/
     };
 
     search =()=>{
@@ -45,7 +46,9 @@ class SearchBar extends Component {
 
 const mapDispatchToProps = (dispatch)=>{
     return {
+/*
         getSessions: (sessionName)=> dispatch(getSessions(sessionName))
+*/
     }
 };
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Card} from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
+import {SESSION_DESCRIPTION, SESSION_NAME} from "../../store/dataMapping/session";
 
 class DashboardCard extends Component{
     state = {
@@ -8,15 +9,14 @@ class DashboardCard extends Component{
     };
 
     render() {
-        const {img,title,description} = this.props.session;
         return(
             <Card onMouseEnter={()=> this.setState({collapse:true})}
                   onMouseLeave={()=> this.setState({collapse:false})}>
-                <img src={img} alt={"python"}/>
+                <img src={"../../images/python.jpg"} alt={this.props.session[SESSION_NAME]}/>
                     <Card.Body>
-                        <Card.Title >{title}</Card.Title>
+                        <Card.Title >{this.props.session[SESSION_NAME]}</Card.Title>
                         <div>
-                            <Card.Text >{description}</Card.Text>
+                            <Card.Text >{this.props.session[SESSION_DESCRIPTION]}</Card.Text>
                             <Button>Join</Button>
                         </div>
                     </Card.Body>

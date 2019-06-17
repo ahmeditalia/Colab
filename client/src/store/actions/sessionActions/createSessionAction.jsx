@@ -1,11 +1,14 @@
 import axios from "axios";
+import {CREATE_SESSION} from "../../dataMapping/serverURLs";
+import {SESSION_CREATED} from "../../dataMapping/session";
 
-export const createSession = (sessionInfo,callback)=>{
+export const createSession = (session,callback)=>{
     return (dispatch)=>{
-        axios.post("/createSession",{session: sessionInfo})
-            .then((res)=>dispatch({type: "CREATION_SUCCESS",session: res.data.session}))
+        axios.post(CREATE_SESSION,{session: session} ,
+            {headers: {'Authorization': "bearer " + localStorage.getItem('user')}})
+            .then((res)=>dispatch({type: SESSION_CREATED , payload: res.data.session}))
             .then(()=> callback())
-            .catch((err)=> dispatch({type: "CREATION_FAIL"}));
+            .catch(()=> console.log("creation error"));
     };
 
 };

@@ -1,8 +1,9 @@
-import {SIGN_IN_FORM, SIGN_UP_FORM} from "../dataMapping/form";
+import {SESSION_CREATION_FORM, SIGN_IN_FORM, SIGN_UP_FORM} from "../dataMapping/form";
 
 const initState = {
     [SIGN_IN_FORM]: false,
-    [SIGN_UP_FORM]: false
+    [SIGN_UP_FORM]: false,
+    [SESSION_CREATION_FORM]: false
 };
 
 const formReducer = (state = initState ,action)=>{
@@ -17,6 +18,12 @@ const formReducer = (state = initState ,action)=>{
                 ...state,
                 [SIGN_UP_FORM]: action.payload
             };
+        case SESSION_CREATION_FORM:
+            return {
+                ...state,
+                [SESSION_CREATION_FORM]: action.payload
+            };
+
         default:
             return state;
     }

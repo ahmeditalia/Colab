@@ -3,7 +3,6 @@ import { Col} from "react-bootstrap";
 import '../../css/index.css';
 import Form from "react-bootstrap/Form";
 import Draggable from 'react-draggable';
-const serverURL="http://localhost:3001";
 
 
 class SessionLayout extends Component{

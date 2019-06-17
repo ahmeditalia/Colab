@@ -1,29 +1,34 @@
+import {
+    MY_SESSIONS_RETRIEVED,
+    MY_SESSIONS,
+    PUBLIC_SESSIONS,
+    PUBLIC_SESSIONS_RETRIEVED,
+    SESSION,
+    SESSION_CREATED
+} from "../dataMapping/session";
+
 const initState ={
-    openedSession: null,
-    sessions: []
+    [SESSION]: null,
+    [PUBLIC_SESSIONS]: null,
+    [MY_SESSIONS]: null,
 };
 
 const sessionReducer = (state = initState , action)=>{
     switch (action.type) {
-        case "CREATION_SUCCESS":
+        case SESSION_CREATED:
             return {
                 ...state,
-                openedSession: action.session
+                [SESSION]: action.payload
             };
-        case "CREATION_FAIL":
+        case PUBLIC_SESSIONS_RETRIEVED:
             return {
                 ...state,
-                sessionError: "Creation Failed"
+                [PUBLIC_SESSIONS]: action.payload
             };
-        case "SESSIONS_RETRIEVAL_SUCCESS":
+        case MY_SESSIONS_RETRIEVED:
             return {
                 ...state,
-                sessions: action.sessions
-            };
-        case "SESSIONS_RETRIEVAL_FAILED":
-            return {
-                ...state,
-                sessions: null
+                [MY_SESSIONS]: action.payload
             };
         default:
             return state;
