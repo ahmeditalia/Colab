@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import DashboardCard from "./DashboardCard";
 import {CardColumns} from "react-bootstrap";
 import {connect} from "react-redux";
-import {getSessions} from "../../store/actions/sessionActions/getSessionsAction";
+import {getPublicSessions} from "../../store/actions/sessionActions/getPublicSessionsAction";
+import {PUBLIC_SESSIONS} from "../../store/dataMapping/session";
 
 
 class Dashboard extends Component{
@@ -13,25 +14,24 @@ class Dashboard extends Component{
     }
 
     render() {
-        return(
-            <h1>Nothing for now</h1>
-           /* <CardColumns>
-                {this.props.sessions.map((session)=> <DashboardCard session={session}/>)}
-            </CardColumns>*/
-        );
-    }
+        return(!this.props[PUBLIC_SESSIONS]?
+                    <div>Loading...</div>:
+                <CardColumns>
+                    {this.props[PUBLIC_SESSIONS].map((session)=> <DashboardCard session={session}/>)}
+                </CardColumns>
+        )};
 }
 
 
 const mapStateToProps = (combineReducers)=>{
     return {
-        sessions: combineReducers.sessionStorage.sessions
+        [PUBLIC_SESSIONS]: combineReducers.sessionStorage[PUBLIC_SESSIONS]
     }
 };
 
 const mapDispatchToProps = (dispatch)=>{
     return {
-        getSessions: (sessionName = "all")=> dispatch(getSessions(sessionName))
+        getSessions: ()=> dispatch(getPublicSessions())
     }
 };
 

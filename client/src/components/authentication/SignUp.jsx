@@ -54,7 +54,7 @@ class SignUp extends Component {
                     <Form id={"sign_up_form"} onSubmit={this.signUp} validated={true}>
                         <Form.Group controlId={USERNAME}>
                             <Form.Label column={false}>Username</Form.Label><small>{this.state[[USERNAME+"Error"]]}</small>
-                            <Form.Control pattern={UsernameRegex} required type="text" placeholder="Username" onChange={this.changeState}/>
+                            <Form.Control cols="16" maxlength="16" pattern={UsernameRegex} required type="text" placeholder="Username" onChange={this.changeState}/>
                         </Form.Group>
                         <Form.Group controlId={EMAIL}>
                             <Form.Label column={false}>Email address</Form.Label><small>{this.state[[EMAIL+"Error"]]}</small>
@@ -62,7 +62,7 @@ class SignUp extends Component {
                         </Form.Group>
                         <Form.Group controlId={PASSWORD}>
                             <Form.Label column={false}>Password</Form.Label><small>{this.state[[PASSWORD+"Error"]]}</small>
-                            <Form.Control pattern={PasswordRegex} required type="password" placeholder="Password" onChange={this.changeState}/>
+                            <Form.Control cols="32" maxlength="32" pattern={PasswordRegex} required type="password" placeholder="Password" onChange={this.changeState}/>
                         </Form.Group>
                         <small>{this.props.error}</small>
                     </Form>
