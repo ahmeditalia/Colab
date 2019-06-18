@@ -8,17 +8,17 @@ const initState = {
 const socketReducer = (state = initState ,action)=>{
     switch (action.type) {
         case CONNECT_SOCKET:
-            console.log("ya sater");
+            /*console.log("ya sater");
             let socket = io.connect("/",{query: {token: localStorage.getItem('user')}});
             return {
                 ...state,
                 [SOCKET]: socket
-            };
+            };*/
         case DISCONNECT_SOCKET:
-            return {
+           /* return {
                 ...state,
                 [SOCKET]: state[SOCKET].disconnect()
-            };
+            };*/
         default:
             return state;
     }

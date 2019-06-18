@@ -78,10 +78,10 @@ class Session extends Component{
                     show={this.state.taskShow}
                     onHide={this.closeTask}
                 />
-                <Row style={{position:"fixed",width:"100%",height:"82%",marginTop:30,marginLeft:0,backgroundColor:"#232937"}}>
+                <div className={"wrapper"}>
                     <SessionPanel items={this.items}/>
                     <SessionLayout openTask={this.openTask} taskButtonValue={"Task"} rooms={["Master","Mourad"]}/>
-                </Row>
+                </div>
 
             </div>
         );

@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {signIn} from "../../store/actions/authenticationActions/signInAction"
 import {withRouter} from "react-router-dom";
 import {PASSWORD, USERNAME} from "../../store/dataMapping/user";
-import {DASHBOARD} from "../../store/dataMapping/URL";
+import {DASHBOARD_URL} from "../../store/dataMapping/URL";
 import {AUTHENTICATION_ERROR, CLEAR_SIGN_IN_ERROR} from "../../store/dataMapping/auth";
 import {CLOSE_FORM, SIGN_IN_FORM} from "../../store/dataMapping/form";
 
@@ -30,14 +30,14 @@ class SignIn extends Component {
             e.preventDefault();
             this.props.signIn(this.state,()=>{
                 this.props.closeSignIn();
-                this.props.history.push(DASHBOARD);
+                this.props.history.push(DASHBOARD_URL);
             });
         }
     };
 
     render() {
         if(this.props.authenticated){
-            this.props.history.push(DASHBOARD);
+            this.props.history.push(DASHBOARD_URL);
         }
         else return (
             <Modal {...this.props} style={{color:"black"}} centered show={this.props.display} onHide={this.close}>

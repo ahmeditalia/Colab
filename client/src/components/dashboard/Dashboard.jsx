@@ -14,12 +14,14 @@ class Dashboard extends Component{
     }
 
     render() {
-        return(!this.props[PUBLIC_SESSIONS]?
-                    <div>Loading...</div>:
-                <CardColumns>
-                    {this.props[PUBLIC_SESSIONS].map((session)=> <DashboardCard session={session}/>)}
-                </CardColumns>
-        )};
+        if (!this.props[PUBLIC_SESSIONS])
+            return <h2>Loading...</h2>;
+        else return (
+            <CardColumns>
+                {this.props[PUBLIC_SESSIONS].map((session) => <DashboardCard session={session}/>)}
+            </CardColumns>
+        );
+    }
 }
 
 

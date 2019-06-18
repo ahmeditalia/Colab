@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {Tabs, Tab, Button, ButtonToolbar, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Tabs, Tab, Button, ButtonToolbar, OverlayTrigger, Tooltip, Form, Col} from 'react-bootstrap';
 import { enableRipple } from '@syncfusion/ej2-base';
 import {TreeViewComponent, ContextMenuComponent} from "@syncfusion/ej2-react-navigations";
 import {CheckBoxComponent} from '@syncfusion/ej2-react-buttons';
 import {MDBIcon} from "mdbreact";
+import {SESSION_HIDDEN} from "../../store/dataMapping/session";
 enableRipple(true);
 
 class SessionPanel extends Component{
@@ -195,6 +196,7 @@ class SessionPanel extends Component{
 
     render() {
         return(
+            <Col xs={3}>
             <div className={"sessionPanel"}>
                 <Tabs style={{width:"100%"}} id="controlled-tab-example">
                     <Tab eventKey="files" title="Files">
@@ -227,6 +229,7 @@ class SessionPanel extends Component{
                 </Tab>
                 </Tabs>
             </div>
+            </Col>
         );
     }
 }

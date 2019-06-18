@@ -7,7 +7,7 @@ import SearchBar from "./SearchBar";
 import UserPanel from "./UserPanel";
 import {connect} from "react-redux";
 import {NavLink} from "react-router-dom";
-import {DASHBOARD, HOME} from "../../store/dataMapping/URL";
+import {DASHBOARD_URL, HOME_URL} from "../../store/dataMapping/URL";
 import {OPEN_FORM, SIGN_IN_FORM, SIGN_UP_FORM} from "../../store/dataMapping/form";
 
 class Header extends Component {
@@ -49,10 +49,10 @@ class Header extends Component {
                 <Navbar.Collapse>
                     <Nav className="mr-auto">
                         <Nav.Item>
-                            <NavLink style={{color:"white"}} className={"nav-link"} to={HOME}>Home</NavLink>
+                            <NavLink style={{color:"white"}} className={"nav-link"} to={HOME_URL}>Home</NavLink>
                         </Nav.Item>
                         <Nav.Item>
-                            <NavLink style={{color:"white"}} className={"nav-link"} to={DASHBOARD}>Dashboard</NavLink>
+                            <NavLink style={{color:"white"}} className={"nav-link"} to={DASHBOARD_URL}>Dashboard</NavLink>
                         </Nav.Item>
                     </Nav>
                     {this.props.authenticated ? this.loggedInUserView(): this.loggedOutUserView()}

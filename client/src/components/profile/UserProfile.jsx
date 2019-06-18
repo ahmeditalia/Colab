@@ -5,33 +5,35 @@ import ProfileInfo from "./ProfileInfo";
 import {connect} from "react-redux";
 import {Alert, Form} from "react-bootstrap";
 import {updateProfile} from "../../store/actions/profileActions/updateProfileAction";
+import requireAuth from "../authentication/requireAuth";
 
 class UserProfile extends Component {
 
     state ={
-        validated: false
+        validated: false,
+        loaded: false
     };
 
     componentWillMount() {
-        this.props.getProfile();
+        this.props.getProfile(()=>{
+            this.setState({loaded:true})
+        });
+    }
+    componentWillUnmount() {
+        this.setState({loaded:false})
     }
 
     saveChanges = (e)=>{
+        e.preventDefault();
         if(e.currentTarget.checkValidity()) {
-            e.preventDefault();
             this.props.updateProfile(this.props.user, this.props.history);
         }
-        e.preventDefault();
         this.setState({validated: true});
     };
 
     render() {
-        if(!this.props.user) {
-            return (
-                <Alert variant="success">
-                    <Alert.Heading>Loading...</Alert.Heading>
-                </Alert>
-            )
+        if(!this.state.loaded && !this.props.user) {
+            return <h2>Loading...</h2>;
         }
         else{
             return (
@@ -56,4 +58,4 @@ const mapDispatchToProps = (dispatch)=>{
     }
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(UserProfile);
+export default connect(mapStateToProps,mapDispatchToProps)(requireAuth(UserProfile));

@@ -9,7 +9,7 @@ import {
     PROFILE_UPDATE_ERROR,
     PROFILE_UPDATED
 } from "../../dataMapping/user";
-import {DASHBOARD} from "../../dataMapping/URL";
+import {DASHBOARD_URL} from "../../dataMapping/URL";
 import {UPDATE_PROFILE} from "../../dataMapping/serverURLs";
 
 
@@ -24,7 +24,7 @@ export const updateProfile = (profile,history)=>{
         data.append(IMAGE, profile[IMAGE].file);
         axios.post(UPDATE_PROFILE, data, {headers: {'Authorization': "bearer " + localStorage.getItem('user')}})
             .then(()=> dispatch({type:PROFILE_UPDATED}))
-            .then(()=> history.push(DASHBOARD))
+            .then(()=> history.push(DASHBOARD_URL))
             .catch((error) =>
                 dispatch({type: PROFILE_UPDATE_ERROR, payload: error.response.data.auth}))
 

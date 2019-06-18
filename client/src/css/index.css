@@ -2,6 +2,7 @@
 @import "profile.css";
 @import "usersTab.css";
 @import "errorPage.css";
+@import "session.css";
 @import "./ej2/ej2-base-material.css";
 @import "./ej2/ej2-buttons-material.css";
 @import "./ej2/ej2-grids-material.css";
@@ -39,60 +40,8 @@ small{
     float: right;
 }
 
-/*.nav-link:active{
-  background-color: beige;
-}
-
-.nav-link{
-  color: white;
-  !*text-align: center;*!
-}
-
-.nav-link:hover{
-  color: #43b581;
-}
-
-.nav-link:active{
-  background-color: #232937;
-}
-.nav-link.active{
-  background-color: #43b581;
-  border-radius: 6px;
-}
-
-.nav-link.active:hover{
-  color: white;
-}*/
 
 
-
-.wrapper{
-  margin-left: 258px;
-  height: 520px;
-  width: 80%;
-  position: fixed;
-  max-height: 520px;
-  border: 3px solid #232960;
-  border-radius: 6px;
-}
-
-.handle{
-  background-color: #232937;
-  height: 5px;
-  cursor: row-resize;
-}
-
-.content{
-  position: absolute;
-  height: 100%;
-  width: 100%;
-}
-
-
-.textareaLayout{
-  height: 100%;
-  resize: none;
-}
 
 
 /*.dropdown-menu.show::after {*/
@@ -125,12 +74,10 @@ small{
 /*}*/
 
 .sessionPanel{
-  width: 20%;
-  /*margin-left: 15px;*/
-  background-color: white;
-  max-height: 520px;
-  height: 520px;
-  color: black;
+    background-color: white;
+    max-height: 80%;
+    height: 100%;
+    color: black;
 }
 .navItem:hover{
     background-color: #0f131b;

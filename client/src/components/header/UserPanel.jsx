@@ -5,19 +5,23 @@ import {connect} from "react-redux";
 import {signOut} from "../../store/actions/authenticationActions/signOutAction";
 import {withRouter} from "react-router-dom";
 import {USERNAME} from "../../store/dataMapping/user";
-import {USER_PROFILE} from "../../store/dataMapping/URL";
+import {MY_SESSIONS_URL, USER_PROFILE_URL} from "../../store/dataMapping/URL";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {OPEN_FORM, SESSION_CREATION_FORM} from "../../store/dataMapping/form";
 import {MDBIcon} from "mdbreact";
 
 class UserPanel extends Component {
 
+    mySessions = ()=>{
+        this.props.history.push(MY_SESSIONS_URL);
+    };
+
     logOut = ()=>{
         this.props.signOut(this.props.history);
     };
 
     profile = ()=>{
-        this.props.history.push(USER_PROFILE);
+        this.props.history.push(USER_PROFILE_URL);
     };
 
     render() {
@@ -29,6 +33,7 @@ class UserPanel extends Component {
                     <p style={{display: "inline"}}>{localStorage.getItem(USERNAME)}</p>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
+                    <Dropdown.Item as="button" onClick={this.mySessions}><MDBIcon icon="th-list" /> {" My Sessions"}</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={this.props.openSessionCreator}><MDBIcon icon="plus" /> {" New Session"}</Dropdown.Item>
                     <SessionCreationForm/>
                     <Dropdown.Divider />

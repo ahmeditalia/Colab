@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Alert, Button} from "react-bootstrap";
+import {HOME_URL} from "../../store/dataMapping/URL";
 
 
 class ErrorPage extends Component {
 
-    goBack = ()=>{
-        this.props.history.go(-2);
-        console.log(this.props);
+    goToHomePage = ()=>{
+        this.props.history.push(HOME_URL);
     };
 
     render() {
@@ -20,8 +20,8 @@ class ErrorPage extends Component {
                     </p>
                     <hr />
                     <div className="d-flex justify-content-end">
-                        <Button onClick={this.goBack} variant="outline-success">
-                            Previous Page
+                        <Button onClick={this.goToHomePage} variant="outline-success">
+                            HomePage
                         </Button>
                     </div>
                 </Alert>

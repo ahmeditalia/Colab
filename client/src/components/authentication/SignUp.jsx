@@ -3,7 +3,7 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {signUp} from "../../store/actions/authenticationActions/signUpAction";
 import {withRouter} from "react-router-dom";
-import {DASHBOARD} from "../../store/dataMapping/URL";
+import {DASHBOARD_URL} from "../../store/dataMapping/URL";
 import {EMAIL, PASSWORD, USERNAME} from "../../store/dataMapping/user";
 import {CLEAR_SIGN_UP_ERROR, REGISTRATION_ERROR} from "../../store/dataMapping/auth";
 import {CLOSE_FORM, SIGN_UP_FORM} from "../../store/dataMapping/form";
@@ -28,7 +28,7 @@ class SignUp extends Component {
             if(this.state[USERNAME] && this.state[EMAIL] && this.state[PASSWORD])
                 this.props.signUp(this.state,()=>{
                     this.props.closeSignUp();
-                    this.props.history.push(DASHBOARD);
+                    this.props.history.push(DASHBOARD_URL);
                 });
         }
     };
@@ -41,7 +41,7 @@ class SignUp extends Component {
 
     render() {
         if(this.props.authenticated){
-            this.props.history.push(DASHBOARD);
+            this.props.history.push(DASHBOARD_URL);
         }
         else return (
             <Modal {...this.props}  style={{color:"black"}} centered show={this.props.display} onHide={this.hide}>
