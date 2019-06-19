@@ -1,92 +1,154 @@
 import React, { Component } from 'react';
-import {Row} from 'react-bootstrap';
+import {Button, Nav, Form, ProgressBar} from 'react-bootstrap';
 import SessionLayout from "./SessionLayout";
 import TaskForm from "../TaskForm";
 import SessionPanel from "./SessionPanel";
 import python from "../session/python.jpg";
+import {MDBIcon} from "mdbreact";
+import requireAuth from "../authentication/requireAuth";
+import {connect} from "react-redux";
+import {joinSession} from "../../store/actions/sessionActions/joinSessionAction";
+import {SESSION_SOCKET} from "../../store/dataMapping/socket";
+import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
+import {SESSION_CONNECTED_USERS} from "../../store/dataMapping/session";
+import axios from "axios";
+import {USERNAME} from "../../store/dataMapping/user";
+
+
 
 class Session extends Component{
 
     state = {
-        taskShow: false
+        id: this.props.match.params.sessionId,
+        taskShow: false,
+        loaded: false,
+        editor: "",
+        correct: 0,
+        wrong: 0,
+        grade: 0
     };
 
-    items = [
-        {img:python, username:"Tab 1",permissions:[
-                {name:"permisssdasdasdasdasdion1",value:true},
-                {name:"permission2",value:false},
-                {name:"permission3",value:true},
-                {name:"permission4",value:true},
-            ]},
-        {img:python, username:"Tab 1",permissions:[
-                {name:"permission1",value:true},
-                {name:"permission2",value:false},
-                {name:"permission3",value:true},
-                {name:"permission4",value:true},
-            ]},
-        {img:python, username:"Tab 1",permissions:[
-                {name:"permission1",value:true},
-                {name:"permission2",value:false},
-                {name:"permission3",value:true},
-                {name:"permission4",value:true},
-            ]},
-        {img:python, username:"Tab 1",permissions:[
-                {name:"permission1",value:true},
-                {name:"permission2",value:false},
-                {name:"permission3",value:true},
-                {name:"permission4",value:true},
-            ]},
-        {img:python, username:"Tab 1",permissions:[
-                {name:"permission1",value:true},
-                {name:"permission2",value:false},
-                {name:"permission3",value:true},
-                {name:"permission4",value:true},
-            ]},
-        {img:python, username:"Tab 2",permissions:[
-                {name:"permission1",value:true},
-                {name:"permission2",value:false},
-                {name:"permission3",value:false},
-                {name:"permission4",value:true},
-            ]},
-        {img:python, username:"Tab 3",permissions:[
-                {name:"permission1",value:false},
-                {name:"permission2",value:false},
-                {name:"permission3",value:false},
-                {name:"permission4",value:false},
-            ]},
-        {img:python, username:"Tab 4",permissions:[
-                {name:"permission1",value:true},
-                {name:"permission2",value:false},
-                {name:"permission3",value:true},
-                {name:"permission4",value:true},
-            ]},
-        {img:python, username:"Tab 5",permissions:[
-                {name:"permission1",value:true},
-                {name:"permission1",value:true},
-                {name:"permission1",value:true},
-                {name:"permission1",value:true},
-            ]},
-    ];
+    handler = (e)=>{
+        console.log(e);
+        this.setState({editor:e});
+    };
 
-    closeTask = () => this.setState({ taskShow: false });
-    openTask = () => this.setState({ taskShow: true });
+    componentDidMount() {
+        this.props.joinSession(this.state.id,()=>{
+           this.setState({loaded:true});
+           const {socket} = this.props;
+           socket.on("current-users",(users)=>{
+               var arr = [];
+               users.forEach((item,index)=>{
+                   index = index+1;
+                   arr[arr.length] = {id: 1, name: item, eimg: GET_PROFILE_PIC + item , ejob:"student" ,hasChild: true};
+                   arr[arr.length] = {id: 11 , pid: index, name: 'Perm1'};
+                   arr[arr.length] = {id: 12 , pid: index, name: 'Perm2'};
+                   arr[arr.length] = {id: 13 , pid: index, name: 'Perm3'};
+                   arr[arr.length] = {id: 14 , pid: index, name: 'Perm4'};
+                   /*
+                   array.push();
+                   array.push();
+                   array.push();
+                   array.push();*/
+               });
+               this.props.updateSessionUsers(arr);
+           });
+        });
+    }
+
+
+    componentWillUnmount() {
+    }
+
+
+    run = ()=>{
+        console.log("run function");
+        this.props.socket.emit("save-file",this.state.editor,(data)=>{
+            if(data) {
+                axios.post("/lsp/run-task",{
+                    sessionId: this.state.id,
+                    username: localStorage.getItem(USERNAME),
+                    taskId: 1
+                },{headers: {'Authorization': "bearer " + localStorage.getItem('user')}})
+                    .then((res)=> {
+                        let grade = res.data.correct/(res.data.correct+res.data.wrong)*100;
+                        this.setState({correct: res.data.correct, wrong:res.data.wrong, grade: grade})
+                    })
+                    .catch(()=> console.log("grade error"))
+            }
+        });
+    };
+
+    percent = ()=>{
+        if(this.state.correct+this.state.wrong === 0)
+            return 0;
+        return this.state.correct/(this.state.correct+this.state.wrong)*100;
+    };
 
     render() {
-        return(
-            <div style={{color:'white'}}>
-                <TaskForm
-                    show={this.state.taskShow}
-                    onHide={this.closeTask}
-                />
-                <div className={"wrapper"}>
-                    <SessionPanel items={this.items}/>
-                    <SessionLayout openTask={this.openTask} taskButtonValue={"Task"} rooms={["Master","Mourad"]}/>
-                </div>
+        if(!this.state.loaded){
+            return <h2>Loading...</h2>
+        }
+        else return(
+            <div>
+                <Nav className="justify-content-end" activeKey="/home">
+                    <Nav.Item>
+                        <ProgressBar now={this.state.grade} label={this.state.grade+"%"} variant={"success"} style={{width:100,fontSize:12}}/>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <span className="custom-dropdown small">
+                            <select>
+                                <option>tomorrow</option>
+                                <option>github</option>
+                            </select>
+                        </span>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <span className="custom-dropdown small">
+                            <select>
+                                <option>tomorrow</option>
+                                <option>github</option>
+                            </select>
+                        </span>
+                    </Nav.Item>
+                    <Nav.Item>
+                       <span className="custom-dropdown small">
+                            <select>
+                                <option>tomorrow</option>
+                                <option>github</option>
+                            </select>
+                        </span>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Button size={"sm"} variant={"outline-success"}><MDBIcon icon="tasks" />{" Tasks"}</Button>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Button onClick={this.run} size={"sm"} variant={"outline-success"}><MDBIcon icon="play" />{" Run"}</Button>
+                    </Nav.Item>
+                </Nav>
+            <div className={"wrapper"} style={{color:'white'}}>
 
+
+                <SessionPanel />
+                <SessionLayout handler={this.handler} taskButtonValue={"Task"} rooms={["Master","Mourad"]}/>
+            </div>
             </div>
         );
     }
 }
 
+const mapStateToProps = (combinedReducer)=> {
+    return {
+        socket: combinedReducer.sockets[SESSION_SOCKET]
+    }
+};
 
-export default Session;
+const mapDispatchToProps = (dispatch)=>{
+    return {
+        joinSession: (id,callback)=> dispatch(joinSession(id,callback)),
+        updateSessionUsers: (users)=> dispatch({type: SESSION_CONNECTED_USERS , payload: users})
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(requireAuth(Session));

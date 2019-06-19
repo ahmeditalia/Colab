@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {Card} from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
-import {SESSION_DESCRIPTION, SESSION_NAME} from "../../store/dataMapping/session";
+import {SESSION_DESCRIPTION, SESSION_ID, SESSION_NAME} from "../../store/dataMapping/session";
+import {JOIN_SESSION} from "../../store/dataMapping/serverURLs";
 
 class DashboardCard extends Component{
     state = {
@@ -17,7 +18,7 @@ class DashboardCard extends Component{
                         <Card.Title >{this.props.session[SESSION_NAME]}</Card.Title>
                         <div>
                             <Card.Text >{this.props.session[SESSION_DESCRIPTION]}</Card.Text>
-                            <Button>Join</Button>
+                            <Button href={JOIN_SESSION + this.props.session[SESSION_ID]}>Join</Button>
                         </div>
                     </Card.Body>
             </Card>

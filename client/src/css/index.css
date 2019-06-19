@@ -3,6 +3,7 @@
 @import "usersTab.css";
 @import "errorPage.css";
 @import "session.css";
+@import "select.css";
 @import "./ej2/ej2-base-material.css";
 @import "./ej2/ej2-buttons-material.css";
 @import "./ej2/ej2-grids-material.css";
@@ -11,9 +12,15 @@
 @import "./ej2/ej2-layouts-material.css";
 @import "./ej2/ej2-navigations-material.css";
 @import "./ej2/ej2-popups-material.css";
+@import "./ej2/ej2-react-dropdowns-material.css";
 @import "./ej2/ej2-react-filemanager-material.css";
 @import "./ej2/ej2-react-navigations-material.css";
 @import "./ej2/ej2-splitbuttons-material.css";
+
+html{
+    height: 100%;
+    width: 100%;
+}
 
 body {
   margin: 0;
@@ -23,6 +30,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.outerDiv{
+    height: 100%;
+    width: 100%;
 }
 
 code {
@@ -73,12 +85,7 @@ small{
 /*  color: yellow;*/
 /*}*/
 
-.sessionPanel{
-    background-color: white;
-    max-height: 80%;
-    height: 100%;
-    color: black;
-}
+
 .navItem:hover{
     background-color: #0f131b;
     width: 100%;
