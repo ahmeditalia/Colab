@@ -6,21 +6,18 @@ import {connect} from "react-redux";
 import {
     MY_SESSIONS,
     SESSION_DESCRIPTION,
-    SESSION_HIDDEN,
+    SESSION_PRIVACY,
     SESSION_ID,
-    SESSION_NAME
+    SESSION_NAME, SESSION_OWNER, SESSION_USER_ROLE
 } from "../../store/dataMapping/session";
 import {getMySessions} from "../../store/actions/sessionActions/getMySessionsAction";
+import {JOIN_SESSION} from "../../store/dataMapping/serverURLs";
 
 
 class MySessions extends Component {
 
     state={
         loaded: false
-    };
-
-    join = ()=>{
-
     };
 
     componentDidMount() {
@@ -39,8 +36,8 @@ class MySessions extends Component {
         }else if(!this.props[MY_SESSIONS]) {
             return <h2>No Sessions</h2>
         }else return (
-            <Accordion defaultActiveKey="0" style={{color:"black"}}>
-                {this.props[MySessions].map((session)=>
+            <Accordion style={{marginTop: 30,color:"black"}}>
+                {this.props[MY_SESSIONS].map((session)=>
                     <Card>
                         <Accordion.Toggle as={Card.Header} eventKey={session[SESSION_ID]}>
                             <Row>
@@ -50,18 +47,25 @@ class MySessions extends Component {
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey={session[SESSION_ID]} style={{paddingRight:"1%"}}>
                             <Row style={{marginTop:"1%", marginBottom:"1%"}}>
-                                <Col md={{ span: 5}} style={{paddingLeft:"30px"}}>
+                                <Col md={{ span: 3}} style={{paddingLeft:"30px"}}>
+                                    <h6> Description </h6>
                                     {session[SESSION_DESCRIPTION]}
                                 </Col>
                                 <Col md={{span: 1,offset:1}}>
-                                    {session[SESSION_HIDDEN]}
+                                    <h6> Owner </h6>
+                                    {session[SESSION_OWNER]}
                                 </Col>
-                                {/*<Col md={{span: 1,offset:1}}>
-                                    {session.owner}
-                                </Col>*/}
-                                <Col md={{span: 1,offset:2}}>
-                                    <Button onClick={this.join} style={{background:"none",color:"black",border:"none"}}>
-                                        <MDBIcon icon="sign-in-alt"/>{" Join "}
+                                <Col md={{span: 1,offset:1}}>
+                                    <h6> Privacy </h6>
+                                    {session[SESSION_PRIVACY]}
+                                </Col>
+                                <Col md={{span: 1,offset:1}}>
+                                    <h6> Role </h6>
+                                    {session[SESSION_USER_ROLE]}
+                                </Col>
+                                <Col md={{span: 1,offset:1}}>
+                                    <Button href={JOIN_SESSION + session[SESSION_ID]} style={{fontSize: 18, background:"none",color:"black",border:"none"}}>
+                                        <MDBIcon icon="sign-in-alt"/>{"  Join "}
                                     </Button>
                                 </Col>
                             </Row>
