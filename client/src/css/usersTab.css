@@ -20,10 +20,11 @@
     margin-left: -16px;
 }
 .custom .e-list-item .e-fullrow {
-    height: 35px;
+    height: 50px;
     margin-bottom: -8px;
 }
 .custom .e-list-item .e-list-text {
+    width: 100%;
     line-height: normal;
 }
 .custom .e-icons {
@@ -42,4 +43,10 @@
 .ejob {
     font-size: 11px;
     opacity: .60;
+}
+.progressbar {
+    margin-top: -5px;
+    height: 8px;
+    width: 95%;
+    font-size: 12px;
 }

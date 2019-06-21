@@ -19,7 +19,8 @@ class SessionLayout extends Component{
             resizing:false,
             CodeSectionHeight:70,
             OutputSectionHeight:29.01,
-            editor:""
+            editor:"",
+            output: ""
         };
     }
 
@@ -86,7 +87,6 @@ class SessionLayout extends Component{
     };
 
     render() {
-        const {rooms} = this.state;
         return(
             <Col xs={9}>
                 <div className={"codingSection"}>
@@ -101,13 +101,31 @@ class SessionLayout extends Component{
                             theme="tomorrow"
                             name="UNIQUE_ID_OF_DIV"
                             editorProps={{$blockScrolling: true}}
+                            setOptions={{
+                                enableBasicAutocompletion: true,
+                                enableLiveAutocompletion: true,
+                                enableSnippets: false,
+                                showLineNumbers: true,
+                                tabSize: 2,
+                            }}
                         />
                     </div>
                     <Draggable axis="y" onDrag={(e)=> this.resize(e)} scale={0} bounds={{bottom: 10}}>
                     <div className={"handle"}/>
                     </Draggable>
                     <div className={"content"} style={{height:this.state.OutputSectionHeight+"%"}}>
-                        <Form.Control as={"textarea"} style={{resize: "none",height:"100%",borderRadius: 0}} placeholder={"Output Section ..."}/>
+                        <AceEditor
+                            value={this.state.output}
+                            fontSize={"16px"}
+                            width={"100%"}
+                            height={"100%"}
+                            theme="tomorrow"
+                            name="outputArea"
+                            editorProps={{$blockScrolling: true}}
+                            readOnly={true}
+                            showGutter={false}
+                            highlightActiveLine={false}
+                        />
                     </div>
                 </div>
             </Col>

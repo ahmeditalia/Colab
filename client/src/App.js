@@ -7,7 +7,6 @@ import Header from "./components/header/Header";
 import UserProfile from "./components/profile/UserProfile";
 import ErrorPage from "./components/Error/ErrorPage";
 import MySessions from "./components/session/MySessions";
-import Notifications from "./components/session/Notifications";
 
 
 class App extends Component {
@@ -22,7 +21,6 @@ class App extends Component {
                         <Route exact path="/dashboard" component={Dashboard}/>
                         <Route exact path="/profile" component={UserProfile}/>
                         <Route exact path="/mysessions" component={MySessions}/>
-                        <Route exact path="/notifications" component={Notifications}/>
                         <Route path="/sessions/join/:sessionId" component={Session}/>
                       {/*<Route path="/SessionM" component={SessionMaster}/>
                       <Route path="/SessionU" component={SessionUser}/>*/}

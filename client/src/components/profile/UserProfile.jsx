@@ -3,7 +3,7 @@ import ProfileImage from "./ProfileImage";
 import {getProfile} from "../../store/actions/profileActions/getProfileAction";
 import ProfileInfo from "./ProfileInfo";
 import {connect} from "react-redux";
-import {Alert, Form} from "react-bootstrap";
+import {Alert, Form, Spinner} from "react-bootstrap";
 import {updateProfile} from "../../store/actions/profileActions/updateProfileAction";
 import requireAuth from "../authentication/requireAuth";
 
@@ -33,7 +33,9 @@ class UserProfile extends Component {
 
     render() {
         if(!this.state.loaded && !this.props.user) {
-            return <h2>Loading...</h2>;
+            return <div className={"loading"}>
+                <Spinner animation={"border"}/>
+            </div>;
         }
         else{
             return (

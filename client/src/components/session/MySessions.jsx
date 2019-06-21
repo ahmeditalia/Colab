@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Accordion, Button, Card, Col, Row} from "react-bootstrap";
+import {Accordion, Button, Card, Col, Row, Spinner} from "react-bootstrap";
 import {MDBIcon} from "mdbreact";
 import requireAuth from "../authentication/requireAuth";
 import {connect} from "react-redux";
@@ -32,9 +32,13 @@ class MySessions extends Component {
 
     render() {
         if (!this.state.loaded) {
-            return <h2>Loading...</h2>
+            return <div className={"loading"}>
+                <Spinner animation={"border"}/>
+            </div>;
         }else if(!this.props[MY_SESSIONS]) {
-            return <h2>No Sessions</h2>
+            return <div className={"loading"}>
+                <h2>No Sessions</h2>
+            </div>;
         }else return (
             <Accordion style={{marginTop: 30,color:"black"}}>
                 {this.props[MY_SESSIONS].map((session)=>

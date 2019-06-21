@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DashboardCard from "./DashboardCard";
-import {CardColumns} from "react-bootstrap";
+import {CardColumns, Spinner} from "react-bootstrap";
 import {connect} from "react-redux";
 import {getPublicSessions} from "../../store/actions/sessionActions/getPublicSessionsAction";
 import {PUBLIC_SESSIONS} from "../../store/dataMapping/session";
@@ -14,8 +14,11 @@ class Dashboard extends Component{
     }
 
     render() {
+
         if (!this.props[PUBLIC_SESSIONS])
-            return <h2>Loading...</h2>;
+            return <div className={"loading"}>
+                <Spinner animation={"border"}/>
+            </div>;
         else return (
             <CardColumns>
                 {this.props[PUBLIC_SESSIONS].map((session) => <DashboardCard session={session}/>)}
