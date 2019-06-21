@@ -143,6 +143,17 @@ small{
 .dd{
     width: 252px;
 }
+.inv button{
+    display: none;
+}
+#accept:hover{
+    cursor: pointer;
+    border-bottom: 1px solid green;
+}
+#reject:hover{
+    cursor: pointer;
+    border-bottom: 1px solid red;
+}
 /*.dd.dropdown-menu.show::after {*/
 /*    content: "";*/
 /*    position: absolute;*/

@@ -1,6 +1,6 @@
 #loader {
     color: #008cff;
-    height: 40px;
+    height: 35px;
     left: 45%;
     position: absolute;
     top: 45%;
@@ -20,8 +20,7 @@
     margin-left: -16px;
 }
 .custom .e-list-item .e-fullrow {
-    height: 50px;
-    margin-bottom: -8px;
+    height: 44px;
 }
 .custom .e-list-item .e-list-text {
     width: 100%;
@@ -32,8 +31,8 @@
 }
 .eimage {
     float: left;
-    padding: 5px 16px 11px 0;
-    height: 40px;
+    margin: 4px 9px 1px 3px;
+    height: 26px;
 }
 .ename {
     font-weight: bold;
@@ -44,9 +43,12 @@
     font-size: 11px;
     opacity: .60;
 }
+.custom .e-list-item .e-level-2{
+    /*height: 35px;*/
+}
 .progressbar {
-    margin-top: -5px;
     height: 8px;
-    width: 95%;
-    font-size: 12px;
+    width: 100%;
+    font-size: 10px;
+    background: none;
 }

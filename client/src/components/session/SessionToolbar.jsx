@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {USERNAME} from "../../store/dataMapping/user";
 import {AxiosInstance as axios} from "axios";
-import {Button, Nav} from "react-bootstrap";
+import {Button, Nav, Row} from "react-bootstrap";
 import {MDBIcon} from "mdbreact";
 
 
@@ -28,38 +28,37 @@ class SessionToolbar extends Component{
 
     render() {
         return(
-            <Nav className="justify-content-end" activeKey="/home">
-                <Nav.Item>
-                    <span className="custom-dropdown small">
-                        <select>
-                            <option>tomorrow</option>
-                            <option>github</option>
-                        </select>
-                    </span>
-                </Nav.Item>
-                <Nav.Item>
-                    <span className="custom-dropdown small">
-                        <select>
-                            <option>tomorrow</option>
-                            <option>github</option>
-                        </select>
-                    </span>
-                </Nav.Item>
-                <Nav.Item>
-                   <span className="custom-dropdown small">
-                        <select>
-                            <option>tomorrow</option>
-                            <option>github</option>
-                        </select>
-                    </span>
-                </Nav.Item>
-                <Nav.Item>
-                    <Button size={"sm"} variant={"outline-success"}><MDBIcon icon="tasks" />{" Tasks"}</Button>
-                </Nav.Item>
-                <Nav.Item>
-                    <Button onClick={this.run} size={"sm"} variant={"outline-success"}><MDBIcon icon="play" />{" Run"}</Button>
-                </Nav.Item>
-            </Nav>
+            <Row className={"sessionBar"}>
+                <Nav className="justify-content-end" activeKey="/home">
+                    <Nav.Item>
+                        <span className="custom-dropdown small">
+                            <select placeholder={"Font Size"}>
+                                <option>10</option>
+                                <option>12</option>
+                                <option>14</option>
+                                <option>16</option>
+                                <option>18</option>
+                            </select>
+                        </span>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <span className="custom-dropdown small">
+                            <select placeholder={"Them"}>
+                                <option>tomorrow</option>
+                                <option>github</option>
+                                <option>monokai</option>
+                                <option>terminal</option>
+                            </select>
+                        </span>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Button size={"sm"} variant={"outline-success"}><MDBIcon icon="tasks" />{" Tasks"}</Button>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Button onClick={this.run} size={"sm"} variant={"outline-success"}><MDBIcon icon="play" />{" Run"}</Button>
+                    </Nav.Item>
+                </Nav>
+            </Row>
         );
     }
 }

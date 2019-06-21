@@ -65,17 +65,17 @@ class SessionPanel extends Component{
         if(data.hasChild)
         {
             return (
-                <div style={{width:"100%"}}>
+                <div className={"parentItem"}>
                     <img className="eimage" src={data.eimg}
                          alt={data.eimg}/>
                     <div className="ename">{data.name}</div>
                     <div className="ejob">{data.ejob}</div>
-                    <ProgressBar className={"progressbar"} now={0} label={0+"%"} variant={"success"}/>
+                    <ProgressBar className={"progressbar"} now={100} label={100+"%"} variant={"success"}/>
                 </div>);
         }
         else{
             return (
-                <div style={{paddingTop:10}}>
+                <div style={{paddingTop:5}}>
                     <CheckBoxComponent
                         name={data.pid}
                         value={data.name}

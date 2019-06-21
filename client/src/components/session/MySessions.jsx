@@ -30,6 +30,10 @@ class MySessions extends Component {
         this.setState({loaded:false})
     }
 
+    toUpperFirstLetter = (data)=>{
+        return data.charAt(0).toUpperCase() + data.slice(1)
+    };
+
     render() {
         if (!this.state.loaded) {
             return <div className={"loading"}>
@@ -46,7 +50,7 @@ class MySessions extends Component {
                         <Accordion.Toggle as={Card.Header} eventKey={session[SESSION_ID]}>
                             <Row>
                                 <Col md={{span:2}}>{session[SESSION_NAME]}</Col>
-                                <Col md={{span:2,offset:8}}><MDBIcon far icon="plus-square" />{"  More Information"}</Col>
+                                <Col md={{span:2,offset:8}}><MDBIcon icon="info-circle" />{"  More Information"}</Col>
                             </Row>
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey={session[SESSION_ID]} style={{paddingRight:"1%"}}>
@@ -61,11 +65,11 @@ class MySessions extends Component {
                                 </Col>
                                 <Col md={{span: 1,offset:1}}>
                                     <h6> Privacy </h6>
-                                    {session[SESSION_PRIVACY]}
+                                    {this.toUpperFirstLetter(session[SESSION_PRIVACY])}
                                 </Col>
                                 <Col md={{span: 1,offset:1}}>
                                     <h6> Role </h6>
-                                    {session[SESSION_USER_ROLE]}
+                                    {this.toUpperFirstLetter(session[SESSION_USER_ROLE])}
                                 </Col>
                                 <Col md={{span: 1,offset:1}}>
                                     <Button href={JOIN_SESSION + session[SESSION_ID]} style={{fontSize: 18, background:"none",color:"black",border:"none"}}>

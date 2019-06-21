@@ -1,19 +1,31 @@
 import React, {Component} from 'react';
-import {Dropdown, Image} from "react-bootstrap";
+import {Badge, Button, Dropdown, Form, Image, Modal, ModalDialog} from "react-bootstrap";
 import SessionCreationForm from "../session/SessionCreationForm";
 import {connect} from "react-redux";
 import {signOut} from "../../store/actions/authenticationActions/signOutAction";
 import {withRouter} from "react-router-dom";
-import {USERNAME} from "../../store/dataMapping/user";
+import {PASSWORD, USERNAME} from "../../store/dataMapping/user";
 import {MY_SESSIONS_URL, USER_PROFILE_URL} from "../../store/dataMapping/URL";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {OPEN_FORM, SESSION_CREATION_FORM} from "../../store/dataMapping/form";
 import {MDBIcon} from "mdbreact";
+import Invitations from "./Invitations";
 
 class UserPanel extends Component {
+    state = {
+        invitations: false
+    };
 
     mySessions = ()=>{
         this.props.history.push(MY_SESSIONS_URL);
+    };
+
+    invitations = ()=>{
+      this.setState({invitations:true})
+    };
+
+    invitationsOff = ()=>{
+        this.setState({invitations:false})
     };
 
     logOut = ()=>{
@@ -26,6 +38,7 @@ class UserPanel extends Component {
 
     render() {
         return (
+            <div>
             <Dropdown size="sm" className={"mr-5"}>
                 <Image style={{border: "1px solid", padding: "3px", objectFit: "cover"}} roundedCircle src={GET_PROFILE_PIC+localStorage.getItem(USERNAME)} width={32}
                        height={32}/>
@@ -34,6 +47,10 @@ class UserPanel extends Component {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item as="button" onClick={this.mySessions}><MDBIcon icon="th-list" /> {" My Sessions"}</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={this.invitations}>
+                        <MDBIcon icon="user-plus" /> {" Invitations"}
+                        <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{"9"}</Badge>
+                    </Dropdown.Item>
                     <Dropdown.Item as="button" onClick={this.props.openSessionCreator}><MDBIcon icon="plus" /> {" New Session"}</Dropdown.Item>
                     <SessionCreationForm/>
                     <Dropdown.Divider />
@@ -42,6 +59,10 @@ class UserPanel extends Component {
                     <Dropdown.Item as="button" onClick={this.logOut}><MDBIcon icon="sign-out-alt" /> {" Sign Out"}  </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
+            <Modal style={{marginLeft:"80%",width:"270px",marginTop:"3.4%",maxHeight:"550px"}} show={this.state.invitations} onHide={this.invitationsOff}>
+                    <Invitations invitations={{name:"JAVA", owner:"Owner", description:"description description description description"}}/>
+            </Modal>
+            </div>
         );
     }
 }
