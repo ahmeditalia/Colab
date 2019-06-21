@@ -8,7 +8,7 @@ import {MDBIcon} from "mdbreact";
 import requireAuth from "../authentication/requireAuth";
 import {connect} from "react-redux";
 import {joinSession} from "../../store/actions/sessionActions/joinSessionAction";
-import {SESSION_SOCKET} from "../../store/dataMapping/socket";
+import {DISCONNECT_FROM_SESSION_SOCKET, SESSION_SOCKET} from "../../store/dataMapping/socket";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {SESSION_CONNECTED_USERS} from "../../store/dataMapping/session";
 import axios from "axios";
@@ -18,6 +18,7 @@ import {USERNAME} from "../../store/dataMapping/user";
 
 class Session extends Component{
 
+
     state = {
         id: this.props.match.params.sessionId,
         taskShow: false,
@@ -26,6 +27,7 @@ class Session extends Component{
         correct: 0,
         wrong: 0,
         grade: 0
+
     };
 
     handler = (e)=>{
@@ -36,29 +38,14 @@ class Session extends Component{
     componentDidMount() {
         this.props.joinSession(this.state.id,()=>{
            this.setState({loaded:true});
-           const {socket} = this.props;
-           socket.on("current-users",(users)=>{
-               var arr = [];
-               users.forEach((item,index)=>{
-                   index = index+1;
-                   arr[arr.length] = {id: 1, name: item, eimg: GET_PROFILE_PIC + item , ejob:"student" ,hasChild: true};
-                   arr[arr.length] = {id: 11 , pid: index, name: 'Perm1'};
-                   arr[arr.length] = {id: 12 , pid: index, name: 'Perm2'};
-                   arr[arr.length] = {id: 13 , pid: index, name: 'Perm3'};
-                   arr[arr.length] = {id: 14 , pid: index, name: 'Perm4'};
-                   /*
-                   array.push();
-                   array.push();
-                   array.push();
-                   array.push();*/
-               });
-               this.props.updateSessionUsers(arr);
-           });
+
         });
     }
 
 
     componentWillUnmount() {
+        this.setState({loaded: true});
+        this.props.disconnect();
     }
 
 
@@ -80,11 +67,6 @@ class Session extends Component{
         });
     };
 
-    percent = ()=>{
-        if(this.state.correct+this.state.wrong === 0)
-            return 0;
-        return this.state.correct/(this.state.correct+this.state.wrong)*100;
-    };
 
     render() {
         if(!this.state.loaded){
@@ -147,7 +129,8 @@ const mapStateToProps = (combinedReducer)=> {
 const mapDispatchToProps = (dispatch)=>{
     return {
         joinSession: (id,callback)=> dispatch(joinSession(id,callback)),
-        updateSessionUsers: (users)=> dispatch({type: SESSION_CONNECTED_USERS , payload: users})
+        updateSessionUsers: (users)=> dispatch({type: SESSION_CONNECTED_USERS , payload: users}),
+        disconnect: ()=> dispatch({type: DISCONNECT_FROM_SESSION_SOCKET})
     };
 };
 

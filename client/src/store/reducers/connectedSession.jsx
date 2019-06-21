@@ -1,4 +1,5 @@
 import {SESSION_CONNECTED_USERS} from "../dataMapping/session";
+import {GET_PROFILE_PIC} from "../dataMapping/serverURLs";
 
 const initState = {
     usersFields: {

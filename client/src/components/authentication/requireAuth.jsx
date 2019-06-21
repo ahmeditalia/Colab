@@ -21,7 +21,9 @@ export default function (ComposedComponent) {
 
 
         render() {
-            return <ComposedComponent {...this.props} />;
+            if (!this.props.authenticated) {
+                return <div></div>;
+            }else return <ComposedComponent {...this.props} />;
         }
     }
     const mapStateToProps = (state)=> {

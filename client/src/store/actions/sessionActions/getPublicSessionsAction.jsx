@@ -4,7 +4,7 @@ import {PUBLIC_SESSIONS_RETRIEVED} from "../../dataMapping/session";
 
 export const getPublicSessions = ()=>{
     return (dispatch)=>{
-        axios.get(GET_PUBLIC_SESSIONS , {headers: {'Authorization': "bearer " + localStorage.getItem('user')}})
+        axios.get(GET_PUBLIC_SESSIONS)
             .then((res)=> dispatch({type:PUBLIC_SESSIONS_RETRIEVED, payload: res.data.sessions}))
             .catch(()=> console.log("public sessions error"))
     };

@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {
     MY_SESSIONS,
     SESSION_DESCRIPTION,
-    SESSION_HIDDEN,
+    SESSION_PRIVACY,
     SESSION_ID,
     SESSION_NAME
 } from "../../store/dataMapping/session";

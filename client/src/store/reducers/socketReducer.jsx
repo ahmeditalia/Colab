@@ -12,29 +12,28 @@ const initState = {
 };
 
 const socketReducer = (state = initState ,action)=>{
-    let socket;
     switch (action.type) {
         case CONNECT_TO_DEFAULT_SOCKET:
-            socket = io.connect("/",{query: {token: localStorage.getItem('user')}});
             return {
                 ...state,
-                [DEFAULT_SOCKET]: socket
+                [DEFAULT_SOCKET]: io.connect("/",{query: {token: localStorage.getItem('user')}})
             };
         case DISCONNECT_FROM_DEFAULT_SOCKET:
+            state[DEFAULT_SOCKET].disconnect();
             return {
                 ...state,
-                [DEFAULT_SOCKET]: state[DEFAULT_SOCKET].disconnect()
+                [DEFAULT_SOCKET]: null
             };
         case CONNECT_TO_SESSION_SOCKET:
-            socket = io.connect("/"+action.payload,{query: {token: localStorage.getItem('user')}});
             return {
                 ...state,
-                [SESSION_SOCKET]: socket
+                [SESSION_SOCKET]: io.connect("/"+action.payload,{query: {token: localStorage.getItem('user')}})
             };
         case DISCONNECT_FROM_SESSION_SOCKET:
+            state[SESSION_SOCKET].disconnect();
             return {
                 ...state,
-                [SESSION_SOCKET]: state[SESSION_SOCKET].disconnect()
+                [SESSION_SOCKET]: null
             };
         default:
             return state;

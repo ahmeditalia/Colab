@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {Card, Col, Nav, ProgressBar} from 'react-bootstrap';
+import {Card, Col, Nav, ProgressBar, Spinner} from 'react-bootstrap';
 import { enableRipple } from '@syncfusion/ej2-base';
 import {TreeViewComponent} from "@syncfusion/ej2-react-navigations";
 import {CheckBoxComponent} from '@syncfusion/ej2-react-buttons';
-import { AutoCompleteComponent } from '@syncfusion/ej2-react-dropdowns';
 import {connect} from "react-redux";
-import {SESSION_SOCKET} from "../../store/dataMapping/socket";
+import {DISCONNECT_FROM_SESSION_SOCKET, SESSION_SOCKET} from "../../store/dataMapping/socket";
+import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {joinSession} from "../../store/actions/sessionActions/joinSessionAction";
 import {SESSION_CONNECTED_USERS} from "../../store/dataMapping/session";
 enableRipple(true);
@@ -14,36 +14,41 @@ class SessionPanel extends Component{
 
     constructor(props){
         super(props);
-        this.users =  [
-            { id: 1, name: 'Steven Buchanan', eimg: '8', ejob:"student" ,hasChild: true},
-            { id: 11, pid:1, name: 'Perm1'},
-            { id: 12, pid:1, name: 'Perm2'},
-            { id: 13, pid:1, name: 'Perm3'},
-            { id: 14, pid:1, name: 'Perm4'},
-            { id: 2, name: 'Laura Callahan', eimg: '9', ejob:"master" ,hasChild: true},
-            { id: 21, pid:2, name: 'Perm1'},
-            { id: 22, pid:2, name: 'Perm2'},
-            { id: 23, pid:2, name: 'Perm3'},
-            { id: 24, pid:2, name: 'Perm4'},
-            { id: 3, name: 'Andrew Fuller', eimg: '6', ejob:"master" ,hasChild: true},
-            { id: 31, pid:3, name: 'Perm1'},
-            { id: 32, pid:3, name: 'Perm2'},
-            { id: 33, pid:3, name: 'Perm3'},
-            { id: 34, pid:3, name: 'Perm4'},
-            { id: 4, name: 'Nancy Davolio', eimg: '7', ejob:"student" ,hasChild: true},
-            { id: 41, pid:4, name: 'Perm1'},
-            { id: 42, pid:4, name: 'Perm2'},
-            { id: 43, pid:4, name: 'Perm3'},
-            { id: 44, pid:4, name: 'Perm4'},
+        this.treeObj = null;
 
-        ];
-        this.usersFields = {
-            dataSource: this.users,
-            id: 'id',
-            parentID: 'pid',
-            text: 'name',
-            hasChildren: 'hasChild'
-        };
+    }
+    componentDidMount() {
+        const {socket} = this.props;
+        socket.on("current-users",(users)=>{
+            var dataSource = [];
+            users.forEach((username)=>{
+                dataSource[dataSource.length] = {id: username, name: username, eimg: GET_PROFILE_PIC + username , ejob:"student" ,hasChild: true};
+                dataSource[dataSource.length] = {id: username+1 , pid: username, name: 'Perm1'};
+                dataSource[dataSource.length] = {id: username+2 , pid: username, name: 'Perm2'};
+                dataSource[dataSource.length] = {id: username+3 , pid: username, name: 'Perm3'};
+            });
+            this.treeObj.fields.dataSource = dataSource;
+        });
+        socket.on("user-joined",(username)=>{
+            if(this.treeObj)
+            {
+                if(this.treeObj.getNode(username)) {
+                    this.treeObj.enableNodes(username);
+                }else{
+                    let node = [
+                        {id: username, name: username, eimg: GET_PROFILE_PIC + username , ejob:"student" ,hasChild: true},
+                        {id: username+1 , pid: username, name: 'Perm1'},
+                        {id: username+2 , pid: username, name: 'Perm2'},
+                        {id: username+3 , pid: username, name: 'Perm3'},
+                    ];
+                    this.treeObj.addNodes(node);
+                }
+            }
+        });
+        socket.on("user-left",(username)=>{
+            if(this.treeObj)
+                this.treeObj.disableNodes([username]);
+        });
     }
 
     permissionChangeHandler = (e)=>{
@@ -51,15 +56,11 @@ class SessionPanel extends Component{
         e.target.checked = !e.target.checked;
     };
 
-
-
-
     nodeTemplate = (data)=> {
         if(data.hasChild)
         {
-            console.log(data);
             return (
-                <div style={{width:252}}>
+                <div>
                     <img className="eimage" src={data.eimg}
                          alt={data.eimg}/>
                     <div className="ename">{data.name}</div>
@@ -67,6 +68,7 @@ class SessionPanel extends Component{
 {/*
                     <ProgressBar now={this.state.grade} label={this.state.grade+"%"} variant={"success"} style={{width:100,fontSize:12}}/>
 */}
+
                 </div>);
         }
         else{
@@ -86,14 +88,7 @@ class SessionPanel extends Component{
 
 
     render() {
-        console.log(this.props);
-        if(this.props.usersFields.dataSource.length === 0)
-        {
-            console.log(this.props) ;
-            return <h2>Loading</h2>
-
-        }
-        else return(
+        return(
             <Col xs={3}>
                 <div className={"panelSection"}>
                     <Card.Header as={"h4"}> Users </Card.Header>
@@ -103,8 +98,20 @@ class SessionPanel extends Component{
                     <TreeViewComponent
                         fields={this.props.usersFields}
                         nodeTemplate={this.nodeTemplate}
-                        cssClass={'custom'}
+                        cssClass={"custom"}
+                        ref={tree => (this.treeObj = tree)}
                     />
+                    {/*{
+                        this.props.usersFields[SESSION_CONNECTED_USERS].length === 0?
+                            <Spinner animation={"border"}/>:
+                            <TreeViewComponent
+                                fields={this.props.usersFields}
+                                nodeTemplate={this.nodeTemplate}
+                                cssClass={"custom"}
+                                ref={tree => (this.treeObj = tree)}
+                            />
+                    }*/}
+
                 </div>
             </Col>
         );
@@ -116,11 +123,11 @@ const mapStateToProps = (combinedReducer)=> {
         socket: combinedReducer.sockets[SESSION_SOCKET]
     }
 };
-
 const mapDispatchToProps = (dispatch)=>{
     return {
-
+        updateSessionUsers: (users)=> dispatch({type: SESSION_CONNECTED_USERS , payload: users}),
     };
 };
 
-export default connect(mapStateToProps)(SessionPanel);
+
+export default connect(mapStateToProps,mapDispatchToProps)(SessionPanel);
