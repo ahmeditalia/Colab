@@ -3,7 +3,7 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {createSession} from "../../store/actions/sessionActions/createSessionAction";
-import {SESSION_DESCRIPTION,SESSION_HIDDEN, SESSION_NAME} from "../../store/dataMapping/session";
+import {SESSION_DESCRIPTION,SESSION_PRIVACY, SESSION_NAME} from "../../store/dataMapping/session";
 import {CLOSE_FORM, SESSION_CREATION_FORM} from "../../store/dataMapping/form";
 
 class SessionCreationForm extends Component {
@@ -11,7 +11,7 @@ class SessionCreationForm extends Component {
     state={
         [SESSION_NAME]: "",
         [SESSION_DESCRIPTION]: "",
-        [SESSION_HIDDEN]: null
+        [SESSION_PRIVACY]: null
     };
 
     changeState = (e)=>{
@@ -47,12 +47,15 @@ class SessionCreationForm extends Component {
                             <Form.Control required as={"textarea"} style={{resize:"none"}} rows="4" cols="128" maxlength="128"  type="text" placeholder="Description" onChange={this.changeState}/>
                         </Form.Group>
                         <Form.Group inline>
-                                <Form.Check inline required  custom={true} value={false}
-                                            id ={"public"} type="radio" label="Public" name={SESSION_HIDDEN}
-                                            onClick={()=> this.setState({[SESSION_HIDDEN]: false})}/>
-                                <Form.Check inline required  custom={true} value={true}
-                                            id ={"private"} type="radio" label="Private" name={SESSION_HIDDEN}
-                                            onClick={()=> this.setState({[SESSION_HIDDEN]: true})}/>
+                            <Form.Check inline required  custom={true} value={true}
+                                        id ={"private"} type="radio" label="Private" name={SESSION_PRIVACY}
+                                        onClick={()=> this.setState({[SESSION_PRIVACY]: "private"})}/>
+                            <Form.Check inline required  custom={true} value={false}
+                                        id ={"public"} type="radio" label="Public" name={SESSION_PRIVACY}
+                                        onClick={()=> this.setState({[SESSION_PRIVACY]: "public"})}/>
+                            <Form.Check inline required  custom={true} value={true}
+                                        id ={"hidden"} type="radio" label="Hidden" name={SESSION_PRIVACY}
+                                        onClick={()=> this.setState({[SESSION_PRIVACY]: "hidden"})}/>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
