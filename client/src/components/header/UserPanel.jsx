@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Badge, Button, Dropdown, Form, Image, Modal, ModalDialog} from "react-bootstrap";
+import {Badge, Dropdown, Image, Modal} from "react-bootstrap";
 import SessionCreationForm from "../session/SessionCreationForm";
 import {connect} from "react-redux";
 import {signOut} from "../../store/actions/authenticationActions/signOutAction";
 import {withRouter} from "react-router-dom";
-import {PASSWORD, USERNAME} from "../../store/dataMapping/user";
+import {USERNAME} from "../../store/dataMapping/user";
 import {MY_SESSIONS_URL, USER_PROFILE_URL} from "../../store/dataMapping/URL";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {OPEN_FORM, SESSION_CREATION_FORM} from "../../store/dataMapping/form";

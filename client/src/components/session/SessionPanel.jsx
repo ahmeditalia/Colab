@@ -6,7 +6,8 @@ import {CheckBoxComponent} from '@syncfusion/ej2-react-buttons';
 import {connect} from "react-redux";
 import {SESSION_SOCKET} from "../../store/dataMapping/socket";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
-import {SESSION_CONNECTED_USERS} from "../../store/dataMapping/session";
+import {SESSION_CONNECTED_USERS, SESSION_USER_ROLE} from "../../store/dataMapping/session";
+import {USERNAME} from "../../store/dataMapping/user";
 enableRipple(true);
 
 class SessionPanel extends Component{
@@ -27,32 +28,32 @@ class SessionPanel extends Component{
         const {socket} = this.props;
         socket.on("current-users",(users,callback)=>{
             var dataSource = [];
-            users.forEach((username)=>{
-                dataSource[dataSource.length] = {id: username, name: username, eimg: GET_PROFILE_PIC + username , ejob:"student" ,hasChild: true};
-                dataSource[dataSource.length] = {id: username+1 , pid: username, name: 'Perm1'};
-                dataSource[dataSource.length] = {id: username+2 , pid: username, name: 'Perm2'};
-                dataSource[dataSource.length] = {id: username+3 , pid: username, name: 'Perm3'};
+            users.forEach((user)=>{
+                dataSource[dataSource.length] = {id: user[USERNAME], name: user[USERNAME], eimg: GET_PROFILE_PIC + user[USERNAME] , ejob:user[SESSION_USER_ROLE] ,hasChild: true};
+                dataSource[dataSource.length] = {id: user[USERNAME]+1 , pid: user[USERNAME], name: 'Perm1'};
+                dataSource[dataSource.length] = {id: user[USERNAME]+2 , pid: user[USERNAME], name: 'Perm2'};
+                dataSource[dataSource.length] = {id: user[USERNAME]+3 , pid: user[USERNAME], name: 'Perm3'};
             });
             this.treeObj.fields.dataSource = dataSource;
             callback();
 
         });
-        socket.on("user-joined",(username)=>{
-            if(this.treeObj.getTreeData().some( item => item['id'] === username )) {
-                this.treeObj.enableNodes([username]);
+        socket.on("user-joined",(user)=>{
+            if(this.treeObj.getTreeData().some( item => item['id'] === user[USERNAME] )) {
+                this.treeObj.enableNodes([user[USERNAME]]);
             }else{
                 let dataSource = [];
-                dataSource[dataSource.length] = {id: username, name: username, eimg: GET_PROFILE_PIC + username , ejob:"student" ,hasChild: true};
-                dataSource[dataSource.length] = {id: username+1 , pid: username, name: 'Perm1'};
-                dataSource[dataSource.length] = {id: username+2 , pid: username, name: 'Perm2'};
-                dataSource[dataSource.length] = {id: username+3 , pid: username, name: 'Perm3'};
+                dataSource[dataSource.length] = {id: user[USERNAME], name: user[USERNAME], eimg: GET_PROFILE_PIC + user[USERNAME] , ejob: user[SESSION_USER_ROLE] ,hasChild: true};
+                dataSource[dataSource.length] = {id: user[USERNAME]+1 , pid: user[USERNAME], name: 'Perm1'};
+                dataSource[dataSource.length] = {id: user[USERNAME]+2 , pid: user[USERNAME], name: 'Perm2'};
+                dataSource[dataSource.length] = {id: user[USERNAME]+3 , pid: user[USERNAME], name: 'Perm3'};
                 this.treeObj.addNodes(dataSource);
 
             }
         });
-        socket.on("user-left",(username)=>{
+        socket.on("user-left",(user)=>{
             if(this.treeObj)
-                this.treeObj.disableNodes([username]);
+                this.treeObj.disableNodes([user[USERNAME]]);
         });
     }
 
