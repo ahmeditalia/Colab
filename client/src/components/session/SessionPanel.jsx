@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Accordion, Card, Col, Form, ProgressBar, Row} from 'react-bootstrap';
+import {Accordion, Button, Card, Col, Form, ProgressBar, Row} from 'react-bootstrap';
 import {connect} from "react-redux";
 import {SESSION_SOCKET} from "../../store/dataMapping/socket";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
@@ -51,7 +51,7 @@ class SessionPanel extends Component{
             <Card>
                 <Row style={{height: 50, marginTop: 4, borderBottom:"1px solid #dcdcdc"}}>
                     <Col md={{span:2,offset:1}}>
-                        <Accordion.Toggle variant={"link"} className={"user"} eventKey="0"/>
+                        <Accordion.Toggle variant={"link"} className={"user"} eventKey={data[USERNAME]}/>
                     </Col>
                     <div className={"mydiv"}>
                         <a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>
@@ -61,16 +61,16 @@ class SessionPanel extends Component{
                         </a>
                     </div>
                 </Row>
-                <Accordion.Collapse eventKey="0">
+                <Accordion.Collapse eventKey={data[USERNAME]}>
                     <Form.Group className={"formGroup"}>
                         <Form.Check className={"formGroupItem"} custom={true} value={"owner"}
-                                    id ={"owner"} type="radio" label="Owner" name={data[USERNAME]}
+                                    type="radio" label="Owner" name={data[USERNAME]}
                                     defaultChecked={data[SESSION_USER_ROLE] === "owner"}/>
                         <Form.Check className={"formGroupItem"} custom={true} value={"mod"}
-                                    id ={"mod"} type="radio" label="Moderator" name={data[USERNAME]}
+                                    type="radio" label="Moderator" name={data[USERNAME]}
                                     defaultChecked={data[SESSION_USER_ROLE] === "mod"}/>
                         <Form.Check className={"formGroupItem"} custom={true} value={"ghost"}
-                                    id ={"ghost"} type="radio" label="Ghost" name={data[USERNAME]}
+                                    type="radio" label="Ghost" name={data[USERNAME]}
                                     defaultChecked={data[SESSION_USER_ROLE] === "ghost"}/>
                     </Form.Group>
                 </Accordion.Collapse>
@@ -82,7 +82,7 @@ class SessionPanel extends Component{
             <Card>
                 <Row style={{height: 50, marginTop: 4, borderBottom:"1px solid #dcdcdc"}}>
                     <Col md={{span:2,offset:1}}>
-                        <Accordion.Toggle variant={"link"} className={"user"} eventKey="0"/>
+                        <Accordion.Toggle variant={"link"} className={"user"} eventKey={data[USERNAME]}/>
                     </Col>
                     <div className={"mydiv"}>
                         <a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>
@@ -99,6 +99,10 @@ class SessionPanel extends Component{
         );
     };
 
+    invite=()=>{
+        const {socket} = this.props;
+        socket.emit("invite", "eto");
+    };
 
     state =  {
         [SESSION_CONNECTED_USERS]: []
@@ -120,11 +124,10 @@ class SessionPanel extends Component{
 
                     <Accordion>
                         {this.state[SESSION_CONNECTED_USERS].length > 0 && this.state[SESSION_CONNECTED_USERS].map((user)=>{
-                            console.log("fk u");
-                            console.log(user);
-                            return user[SESSION_USER_ROLE] === "ghost"? this.ghostComponent(user): this.ownerComponent(user);
+                            return this.props[MY_ROLE] === "ghost"? this.ghostComponent(user): this.ownerComponent(user);
                         })}
                     </Accordion>
+                    <Button onClick={this.invite}></Button>
                 </div>
             </Col>
         );

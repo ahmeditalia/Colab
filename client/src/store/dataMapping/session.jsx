@@ -8,8 +8,6 @@ export const MY_INVITATIONS_RETRIEVED = "my invitations retrieved";
 export const SESSION = "session";
 export const PUBLIC_SESSIONS = "public sessions";
 export const MY_SESSIONS = "my sessions";
-export const INVITATIONS = "invitations";
-
 
 export const SESSION_ID = "id";
 export const SESSION_NAME = "sname";

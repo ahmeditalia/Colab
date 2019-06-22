@@ -2,7 +2,7 @@ import {
     CONFIRM_PASSWORD,
     EMAIL,
     FIRST_NAME,
-    IMAGE, INVITATION_COUNTER,
+    IMAGE,
     LAST_NAME,
     NEW_PASSWORD,
     OLD_PASSWORD, PROFILE_RETRIEVAL_ERROR, PROFILE_RETRIEVED, PROFILE_UPDATE_ERROR, PROFILE_UPDATED,
@@ -10,7 +10,6 @@ import {
 
 const initState = {
     profile: null,
-    [INVITATION_COUNTER]: 0
 };
 
 const profileReducer = (state = initState ,action)=>{
@@ -90,11 +89,6 @@ const profileReducer = (state = initState ,action)=>{
                     ...state.profile,
                     [IMAGE]: action.value
                 }
-            };
-        case INVITATION_COUNTER:
-            return {
-                ...state,
-                INVITATION_COUNTER: action.payload
             };
         default:
             return state;

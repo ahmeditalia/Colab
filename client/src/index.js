@@ -9,11 +9,10 @@ import {Provider} from "react-redux";
 import {AUTHENTICATED} from "./store/dataMapping/auth";
 import {CONNECT_TO_DEFAULT_SOCKET} from "./store/dataMapping/socket";
 
-
 const user = localStorage.getItem('user');
 if(user) {
     store.dispatch({ type: AUTHENTICATED });
-    store.dispatch({ type: CONNECT_TO_DEFAULT_SOCKET})
+    store.dispatch({ type: CONNECT_TO_DEFAULT_SOCKET});
 }
 
 ReactDOM.render(

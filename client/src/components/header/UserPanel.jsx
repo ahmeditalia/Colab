@@ -4,28 +4,34 @@ import SessionCreationForm from "../session/SessionCreationForm";
 import {connect} from "react-redux";
 import {signOut} from "../../store/actions/authenticationActions/signOutAction";
 import {withRouter} from "react-router-dom";
-import {INVITATION_COUNTER, USERNAME} from "../../store/dataMapping/user";
+import {USERNAME} from "../../store/dataMapping/user";
 import {MY_SESSIONS_URL, USER_PROFILE_URL} from "../../store/dataMapping/URL";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {INVITATION_FORM, OPEN_FORM, SESSION_CREATION_FORM} from "../../store/dataMapping/form";
 import {MDBIcon} from "mdbreact";
+import {DEFAULT_SOCKET} from "../../store/dataMapping/socket";
+import {ADD_INVITATION, INIT_INVITATIONS, INVITATIONS} from "../../store/dataMapping/invitations";
 import Invitations from "./Invitations";
 
 class UserPanel extends Component {
-    state = {
-        invitations: false
-    };
+
+    componentDidMount() {
+        const {socket} = this.props;
+        if(socket)
+        {
+            socket.on("invited",(data)=>{
+                this.props.addInvitation(data);
+            });
+
+            socket.on("init-invites",(data)=>{
+                this.props.initInvitations(data);
+                console.log(data);
+            });
+        }
+    }
 
     mySessions = ()=>{
         this.props.history.push(MY_SESSIONS_URL);
-    };
-
-    invitations = ()=>{
-      this.setState({invitations:true})
-    };
-
-    invitationsOff = ()=>{
-        this.setState({invitations:false})
     };
 
     logOut = ()=>{
@@ -49,8 +55,9 @@ class UserPanel extends Component {
                     <Dropdown.Item as="button" onClick={this.mySessions}><MDBIcon icon="th-list" /> {" My Sessions"}</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={this.props.openInvitations}>
                         <MDBIcon icon="user-plus" /> {" Invitations"}
-                        <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{this.props[INVITATION_COUNTER]}</Badge>
+                        <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{this.props[INVITATIONS].length}</Badge>
                     </Dropdown.Item>
+                    <Invitations/>
                     <Dropdown.Item as="button" onClick={this.props.openSessionCreator}><MDBIcon icon="plus" /> {" New Session"}</Dropdown.Item>
                     <SessionCreationForm/>
                     <Dropdown.Divider />
@@ -65,7 +72,8 @@ class UserPanel extends Component {
 }
 const mapStateToProps = (combinedReducer)=>{
     return {
-        INVITATION_COUNTER: combinedReducer.profile[INVITATION_COUNTER]
+        socket: combinedReducer.sockets[DEFAULT_SOCKET],
+        [INVITATIONS]: combinedReducer.invitations[INVITATIONS],
     };
 };
 
@@ -73,7 +81,9 @@ const mapDispatchToProps = (dispatch)=>{
     return {
         signOut: (history)=> dispatch(signOut(history)),
         openSessionCreator:  ()=> dispatch({type:SESSION_CREATION_FORM, payload: OPEN_FORM}),
-        openInvitations:  ()=> dispatch({type:INVITATION_FORM, payload: OPEN_FORM})
+        openInvitations:  ()=> dispatch({type:INVITATION_FORM, payload: OPEN_FORM}),
+        addInvitation: (data)=> dispatch ({type:ADD_INVITATION, payload: data }),
+        initInvitations: (data) => dispatch ({type:INIT_INVITATIONS, payload: data })
     }
 };
 

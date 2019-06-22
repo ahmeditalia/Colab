@@ -10,7 +10,8 @@ import MySessions from "./components/session/MySessions";
 
 
 class App extends Component {
-  render() {
+
+    render() {
         return (
             <BrowserRouter>
                 <div>
@@ -30,5 +31,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default App;

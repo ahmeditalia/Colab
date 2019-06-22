@@ -1,6 +1,4 @@
 import {
-    MY_INVITATIONS_RETRIEVED,
-    INVITATIONS,
     MY_SESSIONS_RETRIEVED,
     MY_SESSIONS,
     PUBLIC_SESSIONS,
@@ -13,7 +11,6 @@ const initState ={
     [SESSION]: null,
     [PUBLIC_SESSIONS]: null,
     [MY_SESSIONS]: null,
-    [INVITATIONS]: null
 };
 
 const sessionReducer = (state = initState , action)=>{
@@ -29,11 +26,6 @@ const sessionReducer = (state = initState , action)=>{
                 [PUBLIC_SESSIONS]: action.payload
             };
         case MY_SESSIONS_RETRIEVED:
-            return {
-                ...state,
-                [MY_SESSIONS]: action.payload
-            };
-        case MY_INVITATIONS_RETRIEVED:
             return {
                 ...state,
                 [MY_SESSIONS]: action.payload

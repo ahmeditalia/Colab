@@ -29,6 +29,20 @@
 .custom .e-icons {
     margin-top: -6px;
 }
+.invitationImage{
+    float: left;
+    margin: 4px 9px 1px 3px;
+    height: 26px;
+
+}
+
+.invitationUser {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 3px 0 0;
+}
+
+
 .eimage {
     float: left;
     margin: 4px 5px 1px 3px;
@@ -73,6 +87,7 @@
 .parent{
     width: 80%;
     cursor: pointer;
+    background-color: white;
 }
 
 

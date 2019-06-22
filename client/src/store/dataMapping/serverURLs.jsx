@@ -10,5 +10,5 @@ export const CREATE_SESSION = "/sessions/create-session"; //POST
 export const JOIN_SESSION = "/sessions/join/";  //GET :sessionId
 export const GET_PUBLIC_SESSIONS = "/sessions/"; //GET
 export const GET_MY_SESSIONS = "/sessions/joined";  //GET
-export const GET_INVITATIONS =   "/sessions/invited"; //GET
+export const REJECT_SESSION_URL =   "/sessions/leave/"; //POST
 
