@@ -21,22 +21,15 @@ class Session extends Component{
         id: this.props.match.params.sessionId,
         taskShow: false,
         loaded: false,
-        editor: "",
         correct: 0,
         wrong: 0,
         grade: 0
 
     };
 
-    handler = (e)=>{
-        console.log(e);
-        this.setState({editor:e});
-    };
-
     componentDidMount() {
         this.props.joinSession(this.state.id,()=>{
            this.setState({loaded:true});
-
         });
     }
 

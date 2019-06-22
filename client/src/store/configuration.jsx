@@ -7,7 +7,8 @@ import sessionReducer from "./reducers/sessionReducer";
 import profileReducer from "./reducers/profileReducer";
 import formReducer from "./reducers/formReducer";
 import socketReducer from "./reducers/socketReducer";
-import connectedSession from "./reducers/connectedSession";
+import sessionData from "./reducers/sessionData";
+import editorReducer from "./reducers/editorReducer";
 
 
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     profile: profileReducer,
     forms: formReducer,
     sockets:  socketReducer,
-    connectedSession: connectedSession
+    sessionData: sessionData,
+    editor: editorReducer
 });
 
 

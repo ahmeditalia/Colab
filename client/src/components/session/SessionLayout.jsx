@@ -9,19 +9,28 @@ import 'brace/mode/java';
 import 'brace/mode/c_cpp';
 import 'brace/theme/github';
 import 'brace/theme/tomorrow';
+import 'brace/theme/monokai';
+import 'brace/theme/terminal';
+import {connect} from "react-redux";
+import {FONT_SIZE, THEME, INPUT_TEXT} from "../../store/dataMapping/ace";
+import {SESSION_SOCKET} from "../../store/dataMapping/socket";
 
 class SessionLayout extends Component{
 
-    constructor(props) {
-        super(props);
-        this.state={
-            rooms:this.props.rooms,
-            resizing:false,
-            CodeSectionHeight:70,
-            OutputSectionHeight:29.01,
-            editor:"",
-            output: ""
-        };
+    state={
+        resizing:false,
+        CodeSectionHeight:70,
+        OutputSectionHeight:29.01,
+        output: ""
+
+    };
+
+    componentDidMount() {
+        const {socket} = this.props;
+        socket.on("init-file", (textData)=>{
+            console.log(textData);
+            this.props.handleChange(INPUT_TEXT, textData);
+        });
     }
 
     /*componentWillMount() {
@@ -55,11 +64,11 @@ class SessionLayout extends Component{
     }
 */
 
-    handling = (e)=>{
-        this.setState({editor: e},()=>{
-            this.props.handler(this.state.editor);
-        });
-
+    handleChange = (e)=>{
+        this.props.handleChange(e);
+        console.log(e);
+        const {socket} = this.props;
+        socket.emit("update-file", e);
     };
 
     joinRoom = (event)=>{
@@ -92,18 +101,18 @@ class SessionLayout extends Component{
                 <div className={"codingSection"}>
                     <div className={"content"} style={{height:this.state.CodeSectionHeight+"%"}}>
                         <AceEditor
-                            value={this.state.editor}
-                            onChange={this.handling}
-                            fontSize={"16px"}
+                            value={this.props[INPUT_TEXT]}
+                            onChange={this.handleChange}
+                            fontSize={this.props[FONT_SIZE]+"px"}
                             mode="c_cpp"
                             width={"100%"}
                             height={"100%"}
-                            theme="tomorrow"
+                            theme={this.props[THEME]}
                             name="UNIQUE_ID_OF_DIV"
                             editorProps={{$blockScrolling: true}}
                             setOptions={{
-                                enableBasicAutocompletion: true,
-                                enableLiveAutocompletion: true,
+                                enableBasicAutoCompletion: true,
+                                enableLiveAutoCompletion: true,
                                 enableSnippets: false,
                                 showLineNumbers: true,
                                 tabSize: 2,
@@ -116,10 +125,10 @@ class SessionLayout extends Component{
                     <div className={"content"} style={{height:this.state.OutputSectionHeight+"%"}}>
                         <AceEditor
                             value={this.state.output}
-                            fontSize={"16px"}
+                            fontSize={this.props[FONT_SIZE]+"px"}
                             width={"100%"}
                             height={"100%"}
-                            theme="tomorrow"
+                            theme={this.props[THEME]}
                             name="outputArea"
                             editorProps={{$blockScrolling: true}}
                             readOnly={true}
@@ -133,5 +142,19 @@ class SessionLayout extends Component{
     }
 }
 
+const mapStateTpProps=(combinedReducer)=>{
+    return{
+        [THEME]: combinedReducer.editor[THEME],
+        [FONT_SIZE]: combinedReducer.editor[FONT_SIZE],
+        [INPUT_TEXT]: combinedReducer.editor[INPUT_TEXT],
+        socket: combinedReducer.sockets[SESSION_SOCKET]
+    };
+};
+const mapDispatchTpProps=(dispatch)=> {
+    return {
+        handleChange: (type,value) => dispatch({type:type , payload: value})
+    };
+};
 
-export default SessionLayout;
+
+export default connect(mapStateTpProps,mapDispatchTpProps)(SessionLayout);

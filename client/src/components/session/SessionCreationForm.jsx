@@ -47,13 +47,13 @@ class SessionCreationForm extends Component {
                             <Form.Control required as={"textarea"} style={{resize:"none"}} rows="4" cols="128" maxlength="128"  type="text" placeholder="Description" onChange={this.changeState}/>
                         </Form.Group>
                         <Form.Group inline>
-                            <Form.Check inline required  custom={true} value={true}
+                            <Form.Check inline required  custom={true} value={"private"}
                                         id ={"private"} type="radio" label="Private" name={SESSION_PRIVACY}
                                         onClick={()=> this.setState({[SESSION_PRIVACY]: "private"})}/>
-                            <Form.Check inline required  custom={true} value={false}
+                            <Form.Check inline required  custom={true} value={"public"}
                                         id ={"public"} type="radio" label="Public" name={SESSION_PRIVACY}
                                         onClick={()=> this.setState({[SESSION_PRIVACY]: "public"})}/>
-                            <Form.Check inline required  custom={true} value={true}
+                            <Form.Check inline required  custom={true} value={"hidden"}
                                         id ={"hidden"} type="radio" label="Hidden" name={SESSION_PRIVACY}
                                         onClick={()=> this.setState({[SESSION_PRIVACY]: "hidden"})}/>
                         </Form.Group>
