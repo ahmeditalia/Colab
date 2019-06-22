@@ -4,10 +4,10 @@ import SessionCreationForm from "../session/SessionCreationForm";
 import {connect} from "react-redux";
 import {signOut} from "../../store/actions/authenticationActions/signOutAction";
 import {withRouter} from "react-router-dom";
-import {USERNAME} from "../../store/dataMapping/user";
+import {INVITATION_COUNTER, USERNAME} from "../../store/dataMapping/user";
 import {MY_SESSIONS_URL, USER_PROFILE_URL} from "../../store/dataMapping/URL";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
-import {OPEN_FORM, SESSION_CREATION_FORM} from "../../store/dataMapping/form";
+import {INVITATION_FORM, OPEN_FORM, SESSION_CREATION_FORM} from "../../store/dataMapping/form";
 import {MDBIcon} from "mdbreact";
 import Invitations from "./Invitations";
 
@@ -47,9 +47,9 @@ class UserPanel extends Component {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item as="button" onClick={this.mySessions}><MDBIcon icon="th-list" /> {" My Sessions"}</Dropdown.Item>
-                    <Dropdown.Item as="button" onClick={this.invitations}>
+                    <Dropdown.Item as="button" onClick={this.props.openInvitations}>
                         <MDBIcon icon="user-plus" /> {" Invitations"}
-                        <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{"9"}</Badge>
+                        <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{this.props[INVITATION_COUNTER]}</Badge>
                     </Dropdown.Item>
                     <Dropdown.Item as="button" onClick={this.props.openSessionCreator}><MDBIcon icon="plus" /> {" New Session"}</Dropdown.Item>
                     <SessionCreationForm/>
@@ -59,19 +59,22 @@ class UserPanel extends Component {
                     <Dropdown.Item as="button" onClick={this.logOut}><MDBIcon icon="sign-out-alt" /> {" Sign Out"}  </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-            <Modal style={{marginLeft:"80%",width:"270px",marginTop:"3.4%",maxHeight:"550px"}} show={this.state.invitations} onHide={this.invitationsOff}>
-                    <Invitations invitations={{name:"JAVA", owner:"Owner", description:"description description description description"}}/>
-            </Modal>
             </div>
         );
     }
 }
+const mapStateToProps = (combinedReducer)=>{
+    return {
+        INVITATION_COUNTER: combinedReducer.profile[INVITATION_COUNTER]
+    };
+};
 
 const mapDispatchToProps = (dispatch)=>{
     return {
         signOut: (history)=> dispatch(signOut(history)),
-        openSessionCreator:  ()=> dispatch({type:SESSION_CREATION_FORM, payload: OPEN_FORM})
+        openSessionCreator:  ()=> dispatch({type:SESSION_CREATION_FORM, payload: OPEN_FORM}),
+        openInvitations:  ()=> dispatch({type:INVITATION_FORM, payload: OPEN_FORM})
     }
 };
 
-export default connect(null,mapDispatchToProps)(withRouter(UserPanel));
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(UserPanel));

@@ -1,131 +1,113 @@
 import React, { Component } from 'react';
-import {Card, Col, Form, Nav, ProgressBar, Spinner} from 'react-bootstrap';
-import { enableRipple } from '@syncfusion/ej2-base';
-import {TreeViewComponent} from "@syncfusion/ej2-react-navigations";
-import {CheckBoxComponent} from '@syncfusion/ej2-react-buttons';
+import {Accordion, Card, Col, Form, ProgressBar, Row} from 'react-bootstrap';
 import {connect} from "react-redux";
 import {SESSION_SOCKET} from "../../store/dataMapping/socket";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
-import {SESSION_CONNECTED_USERS, SESSION_PRIVACY, SESSION_USER_ROLE} from "../../store/dataMapping/session";
+import {SESSION_CONNECTED_USERS, SESSION_USER_ROLE} from "../../store/dataMapping/session";
 import {USERNAME} from "../../store/dataMapping/user";
 import {MY_ROLE} from "../../store/dataMapping/sessionUsersData";
-enableRipple(true);
 
 class SessionPanel extends Component{
 
-    constructor(props){
-        super(props);
-        this.treeObj = null;
-        this.fields = {
-            [SESSION_CONNECTED_USERS]: [],
-            id: 'id',
-            parentID: 'pid',
-            text: 'name',
-            hasChildren: 'hasChild'
-        }
-
-    }
-
-    state =  {
-
-    };
-
 
     componentDidMount() {
+        console.log("we came here");
         const {socket} = this.props;
 
         socket.on("current-users",(users, role ,callback)=>{
-            this.props.setMyRole(role , ()=>{
-                let dataSource = [];
-                if(this.props[MY_ROLE] === "ghost")
-                {
-                    users.forEach((user)=>{
-                        this.setState({[user[USERNAME]]: user[SESSION_USER_ROLE]});
-                        dataSource[dataSource.length] = {id: user[USERNAME], name: user[USERNAME], eimg: GET_PROFILE_PIC + user[USERNAME] , ejob:user[SESSION_USER_ROLE] ,hasChild: true};
-                    });
-                }else{
-                    users.forEach((user)=>{
-                        this.setState({[user[USERNAME]]: user[SESSION_USER_ROLE]});
-                        dataSource[dataSource.length] = {id: user[USERNAME], name: user[USERNAME], eimg: GET_PROFILE_PIC + user[USERNAME] , ejob:user[SESSION_USER_ROLE] ,hasChild: true};
-                        dataSource[dataSource.length] = {id: user[USERNAME]+1 , pid: user[USERNAME], name: 'owner'};
-                        dataSource[dataSource.length] = {id: user[USERNAME]+2 , pid: user[USERNAME], name: 'mod'};
-                        dataSource[dataSource.length] = {id: user[USERNAME]+3 , pid: user[USERNAME], name: 'ghost'};
-                    });
-                }
-                this.treeObj.fields.dataSource = dataSource;
+            this.props.setMyRole(role, ()=>{
+                this.setState({[SESSION_CONNECTED_USERS]: this.state[SESSION_CONNECTED_USERS].concat(users)});
                 callback();
             });
         });
 
         socket.on("user-joined",(user)=>{
-            let dataSource = [];
-            if(this.treeObj.getTreeData().some( item => item['id'] === user[USERNAME] )) {
-                this.treeObj.enableNodes([user[USERNAME]]);
-            }else if(this.props[MY_ROLE] === "ghost") {
-                this.setState({[user[USERNAME]]: user[SESSION_USER_ROLE]});
-                dataSource[dataSource.length] = {id: user[USERNAME], name: user[USERNAME], eimg: GET_PROFILE_PIC + user[USERNAME] , ejob: user[SESSION_USER_ROLE] ,hasChild: true};
-            }else{
-                this.setState({[user[USERNAME]]: user[SESSION_USER_ROLE]});
-                dataSource[dataSource.length] = {id: user[USERNAME], name: user[USERNAME], eimg: GET_PROFILE_PIC + user[USERNAME] , ejob: user[SESSION_USER_ROLE] ,hasChild: true};
-                dataSource[dataSource.length] = {id: user[USERNAME]+1 , pid: user[USERNAME] ,name: 'owner'};
-                dataSource[dataSource.length] = {id: user[USERNAME]+2 , pid: user[USERNAME] ,name: 'mod'};
-                dataSource[dataSource.length] = {id: user[USERNAME]+3 , pid: user[USERNAME] ,name: 'ghost'};
+            if(this.state[SESSION_CONNECTED_USERS].some( item => item[USERNAME] === user[USERNAME] )) {
+                console.log("enable it"); ////////////////////////////////////////////////////
+            }else {
+                this.setState({[SESSION_CONNECTED_USERS]: [...this.state[SESSION_CONNECTED_USERS],user]});
             }
-            this.treeObj.addNodes(dataSource);
         });
 
         socket.on("user-left",(user)=>{
-            if(this.treeObj)
-                this.treeObj.disableNodes([user[USERNAME]]);
+
         });
     }
 
 
-    treeClick = (e)=>{
-        console.log(this.state);
-        let targetNodeId = this.treeObj.selectedNodes[0];
-        let pid = this.treeObj.getNode(targetNodeId).parentID;
-        if(!pid)
-        {
-            const {socket} = this.props;
-            socket.emit("watch-user", targetNodeId);
-        }
-/*
-        let name = this.treeObj.getNode(targetNodeId).text;
-        console.log(this.treeObj.getNode(targetNodeId));
-        this.setState({[pid]: name});
-        document.getElementById(pid).setAttribute("checked","true");
-        console.log(this.state);
-
-        console.log(this.treeObj.selectedNodes[0]);
-        console.log();*/
+    watchUser = (e)=>{
+        console.log(e.currentTarget.id);
+        const {socket} = this.props;
+        socket.emit("watch-user", e.currentTarget.id);
 
     };
 
-    nodeTemplate = (data)=> {
-        if(data.hasChild)
-        {
-            return (
-                <div className={"parentItem"}>
-                    <img className="eimage" src={data.eimg}
-                         alt={data.eimg}/>
-                    <div className="ename">{data.name}</div>
-                    <div className="ejob">{data.ejob}</div>
-                    <ProgressBar className={"progressbar"} now={100} label={100+"%"} variant={"success"}/>
-                </div>);
-        }
-        else{
-            return (
-                <div style={{paddingTop:5}}>
-                    <Form.Check inline  custom={true} value={data.name}
-                                defaultChecked={this.state[data.pid] === data.name}
-                                id ={data.id} type="radio" label={data.name} name ={data.pid}
-                                onClick={this.permissionChangeHandler}/>
-                </div>);
-        }
+    changePermission = (e)=>{
+
+    };
+
+    ownerComponent = (data)=>{
+        return (
+            <Card>
+                <Row style={{height: 50, marginTop: 4, borderBottom:"1px solid #dcdcdc"}}>
+                    <Col md={{span:2,offset:1}}>
+                        <Accordion.Toggle variant={"link"} className={"user"} eventKey="0"/>
+                    </Col>
+                    <div className={"mydiv"}>
+                        <a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>
+                            <img className="eimage" src={ GET_PROFILE_PIC+data[USERNAME] }/>
+                            <div className="ename">{data[USERNAME]}</div>
+                            <div className="ejob">{data[SESSION_USER_ROLE]}</div>
+                        </a>
+                    </div>
+                </Row>
+                <Accordion.Collapse eventKey="0">
+                    <Form.Group className={"formGroup"}>
+                        <Form.Check className={"formGroupItem"} custom={true} value={"owner"}
+                                    id ={"owner"} type="radio" label="Owner" name={data[USERNAME]}
+                                    defaultChecked={data[SESSION_USER_ROLE] === "owner"}/>
+                        <Form.Check className={"formGroupItem"} custom={true} value={"mod"}
+                                    id ={"mod"} type="radio" label="Moderator" name={data[USERNAME]}
+                                    defaultChecked={data[SESSION_USER_ROLE] === "mod"}/>
+                        <Form.Check className={"formGroupItem"} custom={true} value={"ghost"}
+                                    id ={"ghost"} type="radio" label="Ghost" name={data[USERNAME]}
+                                    defaultChecked={data[SESSION_USER_ROLE] === "ghost"}/>
+                    </Form.Group>
+                </Accordion.Collapse>
+            </Card>
+        );
+    };
+    ghostComponent = (data)=> {
+        return(
+            <Card>
+                <Row style={{height: 50, marginTop: 4, borderBottom:"1px solid #dcdcdc"}}>
+                    <Col md={{span:2,offset:1}}>
+                        <Accordion.Toggle variant={"link"} className={"user"} eventKey="0"/>
+                    </Col>
+                    <div className={"mydiv"}>
+                        <a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>
+                            <img className="eimage" src={ GET_PROFILE_PIC+data[USERNAME] }/>
+                            <div className="ename">{data[USERNAME]}</div>
+                            <div className="ejob">{data[SESSION_USER_ROLE]}</div>
+                            <div className={"progressbarDiv"}>
+                                <ProgressBar className={"progressbar"} now={100} label={100+"%"} variant={"success"}/>
+                            </div>
+                        </a>
+                    </div>
+                </Row>
+            </Card>
+        );
     };
 
 
+    state =  {
+        [SESSION_CONNECTED_USERS]: []
+    };
+
+    changeClass = (e)=>{
+        e.target.className = e.target.className+" toggled";
+        console.log(e.target.className);
+    };
 
     render() {
         return(
@@ -135,13 +117,14 @@ class SessionPanel extends Component{
 {/*
                     <AutoCompleteComponent id="atcelement" placeholder="  Invite others" highlight={true} />
 */}
-                    <TreeViewComponent
-                        fields={this.fields}
-                        nodeTemplate={this.nodeTemplate}
-                        cssClass={"custom"}
-                        ref={tree => (this.treeObj = tree)}
-                        nodeClicked={this.treeClick}
-                    />
+
+                    <Accordion>
+                        {this.state[SESSION_CONNECTED_USERS].length > 0 && this.state[SESSION_CONNECTED_USERS].map((user)=>{
+                            console.log("fk u");
+                            console.log(user);
+                            return user[SESSION_USER_ROLE] === "ghost"? this.ghostComponent(user): this.ownerComponent(user);
+                        })}
+                    </Accordion>
                 </div>
             </Col>
         );

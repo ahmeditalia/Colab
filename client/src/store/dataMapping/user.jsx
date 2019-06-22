@@ -14,3 +14,5 @@ export const PROFILE_RETRIEVAL_ERROR = "profile_retrieval_error";
 
 export const PROFILE_UPDATED = "profile updated";
 export const PROFILE_UPDATE_ERROR = "profile update error";
+
+export const INVITATION_COUNTER="invitation counter";

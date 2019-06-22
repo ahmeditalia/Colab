@@ -6,12 +6,13 @@ import {
     SIGN_IN_FORM,
     SIGN_UP_FORM,
     TASK_FORM, TASK_HINTSFIELD,
-    TASK_INPUTFIELD, TASK_OUTPUTFIELD, TASK_WEIGHTFIELD
+    TASK_INPUTFIELD, TASK_OUTPUTFIELD, TASK_WEIGHTFIELD, INVITATION_FORM
 } from "../dataMapping/form";
 
 const initState = {
     [SIGN_IN_FORM]: false,
     [SIGN_UP_FORM]: false,
+    [INVITATION_FORM]: false,
     [SESSION_CREATION_FORM]: false,
     [TASK_FORM]: false,
     [CASES]:[]
@@ -33,6 +34,11 @@ const formReducer = (state = initState ,action)=>{
             return {
                 ...state,
                 [SESSION_CREATION_FORM]: action.payload
+            };
+        case INVITATION_FORM:
+            return {
+                ...state,
+                [INVITATION_FORM]: action.payload
             };
          case TASK_FORM:
             return {
