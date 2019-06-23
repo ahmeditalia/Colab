@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import {USERNAME} from "../../store/dataMapping/user";
-import {AxiosInstance as axios} from "axios";
 import {Button, Nav, Row} from "react-bootstrap";
 import {MDBIcon} from "mdbreact";
-import {FONT_SIZE, THEME} from "../../store/dataMapping/ace";
+import {ACE_FONT_SIZE, ACE_OUTPUT_READONLY, ACE_OUTPUT_TEXT, ACE_THEME} from "../../store/dataMapping/ace";
 import {connect} from "react-redux";
 import {OPEN_FORM, TASK_CREATION_FORM, TASK_VIEW_FORM} from "../../store/dataMapping/form";
 import TaskCreationForm from "../TaskCreationForm";
 import {MY_ROLE} from "../../store/dataMapping/sessionUsersData";
 import TaskViewForm from "../TaskViewForm";
-
+import {SESSION_ID} from "../../store/dataMapping/session";
+import {execute} from "../../store/actions/sessionActions/executeAction";
 
 
 class SessionToolbar extends Component{
@@ -28,21 +27,8 @@ class SessionToolbar extends Component{
     };
 
     run = ()=>{
-        console.log("run function");
-        this.props.socket.emit("save-file",this.state.editor,(data)=>{
-            if(data) {
-                axios.post("/lsp/run-task",{
-                    sessionId: this.state.id,
-                    username: localStorage.getItem(USERNAME),
-                    taskId: 1
-                },{headers: {'Authorization': "bearer " + localStorage.getItem('user')}})
-                    .then((res)=> {
-                        let grade = res.data.correct/(res.data.correct+res.data.wrong)*100;
-                        this.setState({correct: res.data.correct, wrong:res.data.wrong, grade: grade})
-                    })
-                    .catch(()=> console.log("grade error"))
-            }
-        });
+        /*this.props.changeAceReadonly(false);*/
+        this.props.execute({sessionId: this.props[SESSION_ID], inputs: [this.props[ACE_OUTPUT_TEXT]]});
     };
 
 
@@ -52,7 +38,7 @@ class SessionToolbar extends Component{
                 <Nav className="justify-content-end" activeKey="/home">
                     <Nav.Item>
                         <span className="custom-dropdown small">
-                            <select id={FONT_SIZE} onChange={this.handleChange} value={this.props[FONT_SIZE]}>
+                            <select id={ACE_FONT_SIZE} onChange={this.handleChange} value={this.props[ACE_FONT_SIZE]}>
                                 <option value={"10"}>10</option>
                                 <option value={"12"}>12</option>
                                 <option value={"14"}>14</option>
@@ -66,7 +52,7 @@ class SessionToolbar extends Component{
                     </Nav.Item>
                     <Nav.Item>
                         <span className="custom-dropdown small">
-                            <select id={THEME} onChange={this.handleChange} value={this.props[THEME]}>
+                            <select id={ACE_THEME} onChange={this.handleChange} value={this.props[ACE_THEME]}>
                                 <option value={"tomorrow"}>tomorrow</option>
                                 <option value={"github"}>github</option>
                                 <option value={"monokai"}>monokai</option>
@@ -90,8 +76,10 @@ class SessionToolbar extends Component{
 
 const mapStateTpProps=(combinedReducer)=>{
     return{
-        [THEME]: combinedReducer.editor[THEME],
-        [FONT_SIZE]: combinedReducer.editor[FONT_SIZE],
+        [SESSION_ID]: combinedReducer.sessionData[SESSION_ID],
+        [ACE_OUTPUT_TEXT]: combinedReducer.editor[ACE_OUTPUT_TEXT],
+        [ACE_THEME]: combinedReducer.editor[ACE_THEME],
+        [ACE_FONT_SIZE]: combinedReducer.editor[ACE_FONT_SIZE],
         role: combinedReducer.sessionData[MY_ROLE]
     };
 };
@@ -99,7 +87,9 @@ const mapDispatchTpProps=(dispatch)=> {
     return {
         handleChange: (type,value) => dispatch({type:type , payload: value}),
         openTaskCreationForm: ()=> dispatch({type:TASK_CREATION_FORM, payload: OPEN_FORM}),
-        openTaskViewForm: ()=> dispatch({type:TASK_VIEW_FORM, payload: OPEN_FORM})
+        openTaskViewForm: ()=> dispatch({type:TASK_VIEW_FORM, payload: OPEN_FORM}),
+        changeAceReadonly: (readonly)=> dispatch({type: ACE_OUTPUT_READONLY, payload: readonly}),
+        execute: (data)=> dispatch(execute(data))
     };
 };
 

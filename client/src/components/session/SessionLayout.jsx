@@ -11,7 +11,13 @@ import 'brace/theme/tomorrow';
 import 'brace/theme/monokai';
 import 'brace/theme/terminal';
 import {connect} from "react-redux";
-import {FONT_SIZE, THEME, INPUT_TEXT} from "../../store/dataMapping/ace";
+import {
+    ACE_FONT_SIZE,
+    ACE_THEME,
+    ACE_INPUT_TEXT,
+    ACE_OUTPUT_TEXT,
+    ACE_OUTPUT_READONLY
+} from "../../store/dataMapping/ace";
 import {SESSION_SOCKET} from "../../store/dataMapping/socket";
 import {GET_TASKS} from "../../store/dataMapping/form";
 
@@ -28,10 +34,9 @@ class SessionLayout extends Component{
     componentDidMount() {
         const {socket} = this.props;
         socket.on("init-file", (textData)=>{
-            this.props.handleChange(INPUT_TEXT, textData);
+            this.props.handleChange(ACE_INPUT_TEXT, textData);
         });
         socket.on("init-tasks", (tasks)=>{
-            console.log("tasks",tasks);
             tasks.forEach(function (task) {
                 task["grade"] = null;
                 task["messages"] = "";
@@ -40,42 +45,16 @@ class SessionLayout extends Component{
         });
     }
 
-    /*componentWillMount() {
-        console.log("mounted");
-
-        const {session} = this.props.match.params;
-
-        let socket = io.connect(serverURL+"/"+session);
-        socket.on("connect",()=>{
-            this.setState({connected:"Connected"});
-            socket.emit("newUser",this.state.user,(username)=>{
-                console.log(username);
-                this.setState({user:username});
-            });
-        });
-        socket.on("disconnect",()=>{
-            this.setState({connected:"Disconnected"});
-        });
-
-        socket.on("connectedClients", (clients)=>{
-            this.setState({rooms: clients});
-        });
-
-        socket.on("sharedCode", (id , code)=>{
-            console.log(code);
-            console.log(document.getElementById(id));
-            document.getElementById(id).value = code;
-
-        });
-        this.setState({socket: socket});
-    }
-*/
-
     handleChange = (e)=>{
+/*
         this.props.handleChange(e);
-        console.log(e);
+*/
         const {socket} = this.props;
         socket.emit("update-file", e);
+    };
+
+    handleOutputChange = (e)=>{
+        this.props.changeAceOutputText(e);
     };
 
     joinRoom = (event)=>{
@@ -108,13 +87,13 @@ class SessionLayout extends Component{
                 <div className={"codingSection"}>
                     <div className={"content"} style={{height:this.state.CodeSectionHeight+"%"}}>
                         <AceEditor
-                            value={this.props[INPUT_TEXT]}
+                            value={this.props[ACE_INPUT_TEXT]}
                             onChange={this.handleChange}
-                            fontSize={this.props[FONT_SIZE]+"px"}
+                            fontSize={this.props[ACE_FONT_SIZE]+"px"}
                             mode="c_cpp"
                             width={"100%"}
                             height={"100%"}
-                            theme={this.props[THEME]}
+                            theme={this.props[ACE_THEME]}
                             name="UNIQUE_ID_OF_DIV"
                             editorProps={{$blockScrolling: true}}
                             setOptions={{
@@ -131,14 +110,15 @@ class SessionLayout extends Component{
                     </Draggable>
                     <div className={"content"} style={{height:this.state.OutputSectionHeight+"%"}}>
                         <AceEditor
-                            value={this.state.output}
-                            fontSize={this.props[FONT_SIZE]+"px"}
+                            onChange={this.handleOutputChange}
+                            value={this.props[ACE_OUTPUT_TEXT]}
+                            fontSize={this.props[ACE_FONT_SIZE]+"px"}
                             width={"100%"}
                             height={"100%"}
-                            theme={this.props[THEME]}
+                            theme={this.props[ACE_THEME]}
                             name="outputArea"
                             editorProps={{$blockScrolling: true}}
-                            readOnly={true}
+                            readOnly={this.props[ACE_OUTPUT_READONLY]}
                             showGutter={false}
                             highlightActiveLine={false}
                         />
@@ -151,16 +131,19 @@ class SessionLayout extends Component{
 
 const mapStateTpProps=(combinedReducer)=>{
     return{
-        [THEME]: combinedReducer.editor[THEME],
-        [FONT_SIZE]: combinedReducer.editor[FONT_SIZE],
-        [INPUT_TEXT]: combinedReducer.editor[INPUT_TEXT],
+        [ACE_THEME]: combinedReducer.editor[ACE_THEME],
+        [ACE_FONT_SIZE]: combinedReducer.editor[ACE_FONT_SIZE],
+        [ACE_INPUT_TEXT]: combinedReducer.editor[ACE_INPUT_TEXT],
+        [ACE_OUTPUT_READONLY]: combinedReducer.editor[ACE_OUTPUT_READONLY],
+        [ACE_OUTPUT_TEXT]: combinedReducer.editor[ACE_OUTPUT_TEXT],
         socket: combinedReducer.sockets[SESSION_SOCKET]
     };
 };
 const mapDispatchTpProps=(dispatch)=> {
     return {
         handleChange: (type,value) => dispatch({type:type , payload: value}),
-        getTasks: (tasks) => dispatch({type:GET_TASKS, payload: tasks})
+        getTasks: (tasks) => dispatch({type:GET_TASKS, payload: tasks}),
+        changeAceOutputText: (text)=> dispatch({type: ACE_OUTPUT_TEXT, payload:text})
     };
 };
 

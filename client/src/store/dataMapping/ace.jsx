@@ -1,3 +1,6 @@
-export const THEME = "theme";
-export const FONT_SIZE = "font-size";
-export const INPUT_TEXT = "input text";
+export const ACE_THEME = "ace theme";
+export const ACE_FONT_SIZE = "ace font-size";
+export const ACE_INPUT_TEXT = "ace input text";
+export const ACE_OUTPUT_TEXT = "ace output text";
+export const ACE_OUTPUT_READONLY = "ace output read only";
+export const EXECUTION_OUTPUT = "execution output";

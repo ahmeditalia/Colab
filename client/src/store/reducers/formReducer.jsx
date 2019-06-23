@@ -16,8 +16,7 @@ const initState = {
     [TASK_CREATION_FORM]: false,
     [TASK_VIEW_FORM]: false,
     [CASES]:[],
-    [TASKS]:[],
-    [TASK_GRADE]:[]
+    [TASKS]:[]
 };
 
 const formReducer = (state = initState ,action)=>{
@@ -58,13 +57,17 @@ const formReducer = (state = initState ,action)=>{
                 [TASKS]: action.payload
             };
         case TASK_GRADE:
-            state[TASKS].forEach(function (task) {
+            let arr = state[TASKS].map((task) =>{
                if(task.taskId === parseInt(action.payload.taskId)){
                    task["grade"]= action.payload.score;
                    task["messages"]= action.payload.msgs;
                }
+               return task
             });
-            return state;
+            return {
+                ...state,
+                [TASKS]: arr
+            };
         case ADD_CASE:
             state[CASES].push({inputs:'', outputs:'', weight:null, hint:''});
             return state;

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {CLOSE_FORM, TASK_VIEW_FORM, TASKS} from "../store/dataMapping/form";
 import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
 import {SESSION_ID} from "../store/dataMapping/session";
 import {submitTask} from "../store/actions/sessionActions/submitTaskAction";
 
@@ -19,12 +18,11 @@ class TaskViewForm extends Component {
     render() {
         return (
             <Modal size="lg" {...this.props} style={{color:"black"}} show={this.props.display} onHide={this.props.closeTaskForm} aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header style={{backgroundColor:"#ededed"}}>
+                <Modal.Header style={{backgroundColor:"#ededed"}} closeButton>
                     <h3>Tasks</h3>
                 </Modal.Header>
                 <Modal.Body style={{width:"100%"}}>
                     {this.props.data.map((task)=>{
-                        console.log("task", task);
                         return(
                             <Form>
                                 <Form.Group>
@@ -67,4 +65,4 @@ const mapDispatchToProps = (dispatch)=>{
     };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(TaskViewForm));
+export default connect(mapStateToProps,mapDispatchToProps)(TaskViewForm);

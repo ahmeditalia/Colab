@@ -5,7 +5,7 @@ class TaskForm extends Component {
     render() {
         return (
             <Modal size="lg" {...this.props} aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header closeButton style={{backgroundColor:"#43b581"}}>
+                <Modal.Header closeButton style={{backgroundColor:"#43b581"}} >
                     <Modal.Title id="contained-modal-title-vcenter">
                         Task
                     </Modal.Title>
