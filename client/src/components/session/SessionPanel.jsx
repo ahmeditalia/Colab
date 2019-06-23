@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import {Accordion, Button, Card, Col, Form, ProgressBar, Row} from 'react-bootstrap';
+import {
+    Accordion, Button,
+    Card,
+    Col,
+    DropdownButton,
+    Form, FormControl,
+    InputGroup,
+    ProgressBar,
+    Row
+} from 'react-bootstrap';
 import {connect} from "react-redux";
 import {SESSION_SOCKET} from "../../store/dataMapping/socket";
 import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
@@ -10,124 +19,203 @@ import {MY_ROLE} from "../../store/dataMapping/sessionUsersData";
 class SessionPanel extends Component{
 
 
+    state =  {
+        [SESSION_CONNECTED_USERS]: [],
+        inviteeUser: "",
+        msg: ""
+    };
+
+    invite=()=>{
+        const {socket} = this.props;
+        socket.emit("invite", this.state.inviteeUser,(success)=>{
+            if(success) this.setState({msg:"  Successful Invitation"});
+            else this.setState({msg:"  *No Such User"});
+        });
+    };
+
     componentDidMount() {
         console.log("we came here");
         const {socket} = this.props;
 
         socket.on("current-users",(users, role ,callback)=>{
             this.props.setMyRole(role, ()=>{
-                this.setState({[SESSION_CONNECTED_USERS]: this.state[SESSION_CONNECTED_USERS].concat(users)});
+                let dataSource = users.map((user)=> {
+                    return{
+                        ...user,
+                        className: "user",
+                        disabled: false,
+                        grade:0
+                    };
+                });
+                console.log(dataSource);
+                this.setState({[SESSION_CONNECTED_USERS]: dataSource});
                 callback();
             });
         });
 
         socket.on("user-joined",(user)=>{
             if(this.state[SESSION_CONNECTED_USERS].some( item => item[USERNAME] === user[USERNAME] )) {
-                console.log("enable it"); ////////////////////////////////////////////////////
+                this.updateUsers(USERNAME,user[USERNAME],"disabled",false);
             }else {
-                this.setState({[SESSION_CONNECTED_USERS]: [...this.state[SESSION_CONNECTED_USERS],user]});
+                let dataSource = [...this.state[SESSION_CONNECTED_USERS]
+                    ,{
+                        ...user,
+                        className: "user",
+                        disabled: false,
+                        grade: 0
+                }];
+                console.log(dataSource);
+                this.setState({[SESSION_CONNECTED_USERS]: dataSource});
             }
+
         });
 
         socket.on("user-left",(user)=>{
+            this.updateUsers(USERNAME,user[USERNAME],"disabled",true);
+        });
 
+        socket.on("set-permission",(username,role)=>{
+            if(username === localStorage.getItem(USERNAME)) this.props.setMyRole(role,()=>{});
+            this.updateUsers(USERNAME,username,SESSION_USER_ROLE,role);
         });
     }
 
+
+    updateUsers = (key,username,attr,value)=>{
+        let dataSource = this.state[SESSION_CONNECTED_USERS].map((user)=> {
+            if(user[key] === username) {
+                user[attr] = value;
+            }
+            return user;
+        });
+        console.log(dataSource);
+        this.setState({[SESSION_CONNECTED_USERS]: dataSource})
+    };
 
     watchUser = (e)=>{
         console.log(e.currentTarget.id);
         const {socket} = this.props;
         socket.emit("watch-user", e.currentTarget.id);
-
     };
 
     changePermission = (e)=>{
-
+        const {socket} = this.props;
+        socket.emit("set-permission", e.target.name, e.target.value);
     };
 
     ownerComponent = (data)=>{
         return (
-            <Card>
+            <div key={data[USERNAME]}  disabled={data.disabled}>
+            <Card disabled={data.disabled}>
                 <Row style={{height: 50, marginTop: 4, borderBottom:"1px solid #dcdcdc"}}>
                     <Col md={{span:2,offset:1}}>
-                        <Accordion.Toggle variant={"link"} className={"user"} eventKey={data[USERNAME]}/>
+                        <Accordion.Toggle name={data[USERNAME]} onClick={this.changeClass} variant={"link"} className={data.className} eventKey={data[USERNAME]}/>
                     </Col>
                     <div className={"mydiv"}>
                         <a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>
                             <img className="eimage" src={ GET_PROFILE_PIC+data[USERNAME] }/>
                             <div className="ename">{data[USERNAME]}</div>
                             <div className="ejob">{data[SESSION_USER_ROLE]}</div>
+                            {data[SESSION_USER_ROLE] === "ghost"?
+                                <div className={"progressbarDiv"}>
+                                    <ProgressBar className={"progressbar"} now={data.grade} label={data.grade+"%"} variant={"success"}/>
+                                </div>: <></>}
                         </a>
                     </div>
                 </Row>
+                {data[SESSION_USER_ROLE] !== "owner"?
                 <Accordion.Collapse eventKey={data[USERNAME]}>
                     <Form.Group className={"formGroup"}>
-                        <Form.Check className={"formGroupItem"} custom={true} value={"owner"}
-                                    type="radio" label="Owner" name={data[USERNAME]}
-                                    defaultChecked={data[SESSION_USER_ROLE] === "owner"}/>
-                        <Form.Check className={"formGroupItem"} custom={true} value={"mod"}
+                        <Form.Check id={data[USERNAME]+"mod"} className={"formGroupItem"} custom={true} value={"mod"}
                                     type="radio" label="Moderator" name={data[USERNAME]}
-                                    defaultChecked={data[SESSION_USER_ROLE] === "mod"}/>
-                        <Form.Check className={"formGroupItem"} custom={true} value={"ghost"}
+                                    defaultChecked={data[SESSION_USER_ROLE] === "mod"}
+                                    onClick={this.changePermission}/>
+                        <Form.Check id={data[USERNAME]+"gh  ost"} className={"formGroupItem"} custom={true} value={"ghost"}
                                     type="radio" label="Ghost" name={data[USERNAME]}
-                                    defaultChecked={data[SESSION_USER_ROLE] === "ghost"}/>
+                                    defaultChecked={data[SESSION_USER_ROLE] === "ghost"}
+                                    onClick={this.changePermission}/>
                     </Form.Group>
-                </Accordion.Collapse>
+                </Accordion.Collapse>:<></>}
             </Card>
+            </div>
         );
     };
+
     ghostComponent = (data)=> {
         return(
+            <div key={data[USERNAME]} disabled={data.disabled}>
             <Card>
                 <Row style={{height: 50, marginTop: 4, borderBottom:"1px solid #dcdcdc"}}>
                     <Col md={{span:2,offset:1}}>
-                        <Accordion.Toggle variant={"link"} className={"user"} eventKey={data[USERNAME]}/>
+                        <Accordion.Toggle name={data[USERNAME]} onClick={this.changeClass} variant={"link"} className={data.className} eventKey={data[USERNAME]}/>
                     </Col>
                     <div className={"mydiv"}>
                         <a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>
                             <img className="eimage" src={ GET_PROFILE_PIC+data[USERNAME] }/>
                             <div className="ename">{data[USERNAME]}</div>
                             <div className="ejob">{data[SESSION_USER_ROLE]}</div>
-                            <div className={"progressbarDiv"}>
-                                <ProgressBar className={"progressbar"} now={100} label={100+"%"} variant={"success"}/>
-                            </div>
+                            {data[SESSION_USER_ROLE] === "ghost"?
+                                <div className={"progressbarDiv"}>
+                                    <ProgressBar className={"progressbar"} now={data.grade} label={data.grade+"%"} variant={"success"}/>
+                                </div>: <></>}
                         </a>
                     </div>
                 </Row>
             </Card>
+            </div>
         );
     };
 
-    invite=()=>{
-        const {socket} = this.props;
-        socket.emit("invite", "eto");
-    };
-
-    state =  {
-        [SESSION_CONNECTED_USERS]: []
+    showTaskGrades = (e)=>{
+        this.props.socket.emit("task-grades",e.target.id,(users)=>{
+            this.updateUsers(USERNAME, users.username, "grade" , users.grade);
+        });
     };
 
     changeClass = (e)=>{
-        e.target.className = e.target.className+" toggled";
-        console.log(e.target.className);
+        this.updateUsers(USERNAME,e.target.name,"className", e.target.className === "user"? "user toggled":"user");
     };
+
+    changeHandling = (e)=>{
+        this.setState({[e.target.id]: e.target.value});
+    };
+
 
     render() {
         return(
             <Col xs={3}>
                 <div className={"panelSection"}>
-                    <Card.Header as={"h4"}> Users </Card.Header>
-{/*
-                    <AutoCompleteComponent id="atcelement" placeholder="  Invite others" highlight={true} />
-*/}
-
+                    <Card.Header as={"h4"}>
+                        Users
+                        <DropdownButton variant={"secondary"} id="grades" title="Grades" style={{float:"right"}}>
+                            {
+                                /*this.props.tasks.map((task)=>{
+                                    return (
+                                    <Dropdown.Item id={task.taskId} onClick={this.showTaskGrades}>
+                                        {task.name}
+                                    </Dropdown.Item>
+                                )})*/
+                            }
+                        </DropdownButton>
+                    </Card.Header>
                     <Accordion>
                         {this.state[SESSION_CONNECTED_USERS].length > 0 && this.state[SESSION_CONNECTED_USERS].map((user)=>{
                             return this.props[MY_ROLE] === "ghost"? this.ghostComponent(user): this.ownerComponent(user);
                         })}
                     </Accordion>
-                    <Button onClick={this.invite}></Button>
+                    <div style={{display:"flex", flexDirection: "column"}}>
+                        <InputGroup style={{position:"absolute",bottom:4}} className="mb-3">
+                            <FormControl
+                                id={"inviteeUser"}
+                                placeholder="Recipient's username"
+                                onChange={this.changeHandling}
+                            />
+                            <InputGroup.Append>
+                                <Button id="invite" variant={"secondary"} onClick={this.invite}>Invite</Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                        <small style={{position:"absolute",bottom:4 , float:"right"}}>{this.state.msg}</small>
+                    </div>
                 </div>
             </Col>
         );
@@ -135,6 +223,7 @@ class SessionPanel extends Component{
 }
 const mapStateToProps = (combinedReducer)=> {
     return {
+        tasks: combinedReducer.forms.tasks,
         socket: combinedReducer.sockets[SESSION_SOCKET],
         [MY_ROLE]: combinedReducer.sessionData[MY_ROLE]
     }

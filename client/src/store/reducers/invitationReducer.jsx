@@ -26,9 +26,10 @@ const invitationReducer = (state = initState ,action)=>{
                 [INVITATIONS]: [...state[INVITATIONS], action.payload],
             };
         case DELETE_INVITATIONS:
+            let arr = state[INVITATIONS].filter((inv)=>{ return inv[SESSION_ID] !== action.payload;});
             return {
                 ...state,
-                [INVITATIONS]: [state[INVITATIONS].filter((inv)=>{ return inv[SESSION_ID] === action.payload;})]
+                [INVITATIONS]: arr
             };
         default:
             return state;

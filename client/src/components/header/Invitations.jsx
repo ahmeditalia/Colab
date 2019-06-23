@@ -24,6 +24,8 @@ class Invitations extends Component {
 
     render()
     {
+        console.log(this.props[INVITATIONS]);
+
         return(
             <Modal style={{marginLeft:"80%",width:"270px",marginTop:"3.4%",maxHeight:"550px"}} show={this.props[INVITATION_FORM]} onHide={this.props.closeInvitations}>
                 {

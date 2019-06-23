@@ -10,6 +10,7 @@
 
 .panelSection{
     background-color: white;
+    position: relative;
     overflow: auto;
     height: 100%;
     color: black;
