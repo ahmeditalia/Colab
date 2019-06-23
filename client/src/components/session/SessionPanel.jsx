@@ -15,6 +15,7 @@ import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {SESSION_CONNECTED_USERS, SESSION_USER_ROLE} from "../../store/dataMapping/session";
 import {USERNAME} from "../../store/dataMapping/user";
 import {MY_ROLE} from "../../store/dataMapping/sessionUsersData";
+import {Dropdown} from "mdbreact";
 
 class SessionPanel extends Component{
 
@@ -189,12 +190,12 @@ class SessionPanel extends Component{
                         Users
                         <DropdownButton variant={"secondary"} id="grades" title="Grades" style={{float:"right",marginTop: "-5px", marginRight:" -8px"}}>
                             {
-                                /*this.props.tasks.map((task)=>{
+                                this.props.tasks.map((task)=>{
                                     return (
                                     <Dropdown.Item id={task.taskId} onClick={this.showTaskGrades}>
                                         {task.name}
                                     </Dropdown.Item>
-                                )})*/
+                                )})
                             }
                         </DropdownButton>
                     </Card.Header>

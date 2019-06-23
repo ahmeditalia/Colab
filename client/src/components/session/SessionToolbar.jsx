@@ -38,7 +38,8 @@ class SessionToolbar extends Component{
                 <Nav className="justify-content-end" activeKey="/home">
                     <Nav.Item>
                         <Button
-                            href={"/"+this.props.sessionId+"/grades.pdf"}
+                            href={"/sessions/"+this.props.sessionId+"/grades-pdf"}
+                            disabled={this.props.role == "ghost" ? true:false}
                             target={"_blank"}
                             style={{marginRight: "575px",color: "white"}}
                             variant={"outline-dark"}>

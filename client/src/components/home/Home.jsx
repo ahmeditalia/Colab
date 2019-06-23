@@ -11,14 +11,14 @@ class Home extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{backgroundImage:process.env.PUBLIC_URL+"/colab15.jpg",backgroundSize:"cover"}}>
                 <Container style={{marginTop:100}}>
                     <Row>
                         <Col sm={{span: 5}} style={{marginTop: 50}}>
                             <h1>About Us</h1>
                             <p style={{fontSize: 26}}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua.
+                                Passionate students aiming to improve collaborative editing with an easy to use
+                                and extendable tool
                             </p>
                         </Col>
                     </Row>

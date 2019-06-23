@@ -39,7 +39,7 @@ class Invitations extends Component {
                                     <div style={{fontSize:12}}><MDBIcon icon="user" />{"  "+inv[SESSION_OWNER]}</div>
                                 </div>
                                 <div style={{paddingTop: "10px"}}>
-                                    <a name={inv[SESSION_ID]} id={"accept"} onClick={this.acceptInvitation} href={JOIN_SESSION + inv.sessionId} style={{color:"green",fontSize:11,marginRight:4}}><MDBIcon icon="check" /> Accept</a>
+                                    <a name={inv[SESSION_ID]} id={"accept"} onClick={this.acceptInvitation} href={JOIN_SESSION + inv[SESSION_ID]} style={{color:"green",fontSize:11,marginRight:4}}><MDBIcon icon="check" /> Accept</a>
                                     <a name={inv[SESSION_ID]} id={"reject"} onClick={this.rejectInvitation} style={{color:"red",fontSize:11,marginLeft:4}}><MDBIcon icon="times" /> Reject</a>
                                 </div>
                             </Row>
