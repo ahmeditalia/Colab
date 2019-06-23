@@ -37,6 +37,15 @@ class SessionToolbar extends Component{
             <Row className={"sessionBar"}>
                 <Nav className="justify-content-end" activeKey="/home">
                     <Nav.Item>
+                        <Button
+                            href={"/"+this.props.sessionId+"/grades.pdf"}
+                            target={"_blank"}
+                            style={{marginRight: "575px",color: "white"}}
+                            variant={"outline-dark"}>
+                            My Grades
+                        </Button>
+                    </Nav.Item>
+                    <Nav.Item>
                         <span className="custom-dropdown small">
                             <select id={ACE_FONT_SIZE} onChange={this.handleChange} value={this.props[ACE_FONT_SIZE]}>
                                 <option value={"10"}>10</option>
@@ -61,12 +70,12 @@ class SessionToolbar extends Component{
                         </span>
                     </Nav.Item>
                     <Nav.Item>
-                        <Button size={"sm"} variant={"outline-success"} onClick={this.openForm}><MDBIcon icon="tasks" />  {this.props.role === "owner" ? "Create Task" : "View Task"}</Button>
+                        <Button className={"barButtons"} size={"sm"} variant={"outline-success"} onClick={this.openForm}><MDBIcon icon="tasks" />  {this.props.role === "owner" ? "Create Task" : "View Task"}</Button>
                         <TaskCreationForm/>
                         <TaskViewForm/>
                     </Nav.Item>
                     <Nav.Item>
-                        <Button onClick={this.run} size={"sm"} variant={"outline-success"}><MDBIcon icon="play" />{" Run"}</Button>
+                        <Button className={"barButtons"} onClick={this.run} size={"sm"} variant={"outline-success"}><MDBIcon icon="play" />{" Run"}</Button>
                     </Nav.Item>
                 </Nav>
             </Row>
@@ -80,7 +89,8 @@ const mapStateTpProps=(combinedReducer)=>{
         [ACE_OUTPUT_TEXT]: combinedReducer.editor[ACE_OUTPUT_TEXT],
         [ACE_THEME]: combinedReducer.editor[ACE_THEME],
         [ACE_FONT_SIZE]: combinedReducer.editor[ACE_FONT_SIZE],
-        role: combinedReducer.sessionData[MY_ROLE]
+        role: combinedReducer.sessionData[MY_ROLE],
+        sessionId: combinedReducer.sessionData[SESSION_ID]
     };
 };
 const mapDispatchTpProps=(dispatch)=> {

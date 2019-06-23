@@ -66,7 +66,7 @@ class Session extends Component{
             </div>;
         }
         else return(
-            <div>
+            <div className={"sessionBody"}>
                 <SessionToolbar/>
                 <div className={"wrapper"} style={{color:'white'}}>
                     <SessionPanel />

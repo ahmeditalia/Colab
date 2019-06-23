@@ -187,7 +187,7 @@ class SessionPanel extends Component{
                 <div className={"panelSection"}>
                     <Card.Header as={"h4"}>
                         Users
-                        <DropdownButton variant={"secondary"} id="grades" title="Grades" style={{float:"right"}}>
+                        <DropdownButton variant={"secondary"} id="grades" title="Grades" style={{float:"right",marginTop: "-5px", marginRight:" -8px"}}>
                             {
                                 /*this.props.tasks.map((task)=>{
                                     return (
