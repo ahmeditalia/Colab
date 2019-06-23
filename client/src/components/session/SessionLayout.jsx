@@ -27,7 +27,6 @@ class SessionLayout extends Component{
         resizing:false,
         CodeSectionHeight:70,
         OutputSectionHeight:29.01,
-        output: ""
 
     };
 
@@ -46,9 +45,7 @@ class SessionLayout extends Component{
     }
 
     handleChange = (e)=>{
-/*
-        this.props.handleChange(e);
-*/
+        this.props.changeAceInputText(e);
         const {socket} = this.props;
         socket.emit("update-file", e);
     };
@@ -87,6 +84,7 @@ class SessionLayout extends Component{
                 <div className={"codingSection"}>
                     <div className={"content"} style={{height:this.state.CodeSectionHeight+"%"}}>
                         <AceEditor
+                            id={"output"}
                             value={this.props[ACE_INPUT_TEXT]}
                             onChange={this.handleChange}
                             fontSize={this.props[ACE_FONT_SIZE]+"px"}
@@ -94,7 +92,7 @@ class SessionLayout extends Component{
                             width={"100%"}
                             height={"100%"}
                             theme={this.props[ACE_THEME]}
-                            name="UNIQUE_ID_OF_DIV"
+                            name="input"
                             editorProps={{$blockScrolling: true}}
                             setOptions={{
                                 enableBasicAutoCompletion: true,
@@ -110,6 +108,7 @@ class SessionLayout extends Component{
                     </Draggable>
                     <div className={"content"} style={{height:this.state.OutputSectionHeight+"%"}}>
                         <AceEditor
+                            id={"output"}
                             onChange={this.handleOutputChange}
                             value={this.props[ACE_OUTPUT_TEXT]}
                             fontSize={this.props[ACE_FONT_SIZE]+"px"}
@@ -143,7 +142,8 @@ const mapDispatchTpProps=(dispatch)=> {
     return {
         handleChange: (type,value) => dispatch({type:type , payload: value}),
         getTasks: (tasks) => dispatch({type:GET_TASKS, payload: tasks}),
-        changeAceOutputText: (text)=> dispatch({type: ACE_OUTPUT_TEXT, payload:text})
+        changeAceOutputText: (text)=> dispatch({type: ACE_OUTPUT_TEXT, payload:text}),
+        changeAceInputText: (text)=> dispatch({type: ACE_INPUT_TEXT, payload:text})
     };
 };
 

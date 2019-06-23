@@ -15,7 +15,7 @@ class Header extends Component {
     loggedInUserView = ()=>{
         return (
             <Nav>
-                <SearchBar/>
+                {/*<SearchBar/>*/}
                 <UserPanel/>
             </Nav>
         );

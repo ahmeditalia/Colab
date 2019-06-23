@@ -11,7 +11,7 @@ class Home extends Component {
 
     render() {
         return (
-            <div style={{backgroundImage:process.env.PUBLIC_URL+"/colab15.jpg",backgroundSize:"cover"}}>
+            <div>
                 <Container style={{marginTop:100}}>
                     <Row>
                         <Col sm={{span: 5}} style={{marginTop: 50}}>

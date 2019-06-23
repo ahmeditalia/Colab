@@ -4,6 +4,7 @@ import {
     Card,
     Col,
     DropdownButton,
+    Dropdown,
     Form, FormControl,
     InputGroup,
     ProgressBar,
@@ -15,7 +16,6 @@ import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {SESSION_CONNECTED_USERS, SESSION_USER_ROLE} from "../../store/dataMapping/session";
 import {USERNAME} from "../../store/dataMapping/user";
 import {MY_ROLE} from "../../store/dataMapping/sessionUsersData";
-import {Dropdown} from "mdbreact";
 
 class SessionPanel extends Component{
 
@@ -89,8 +89,8 @@ class SessionPanel extends Component{
             }
             return user;
         });
+        this.setState({[SESSION_CONNECTED_USERS]: dataSource});
         console.log(dataSource);
-        this.setState({[SESSION_CONNECTED_USERS]: dataSource})
     };
 
     watchUser = (e)=>{
@@ -157,7 +157,7 @@ class SessionPanel extends Component{
                             <div className="ejob">{data[SESSION_USER_ROLE]}</div>
                             {data[SESSION_USER_ROLE] === "ghost"?
                                 <div className={"progressbarDiv"}>
-                                    <ProgressBar className={"progressbar"} now={data.grade} label={data.grade+"%"} variant={"success"}/>
+                                    <ProgressBar className={"progressbar"} now={parseInt(data.grade)} label={data.grade+"%"} variant={"success"}/>
                                 </div>: <></>}
                         </a>
                     </div>
@@ -169,7 +169,10 @@ class SessionPanel extends Component{
 
     showTaskGrades = (e)=>{
         this.props.socket.emit("task-grades",e.target.id,(users)=>{
-            this.updateUsers(USERNAME, users.username, "grade" , users.grade);
+            users.forEach((user)=>{
+                this.updateUsers(USERNAME, user.username, "grade" , user.grade);
+            });
+            console.log("af",this.state[SESSION_CONNECTED_USERS]);
         });
     };
 
