@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import {Button, ButtonToolbar, Nav, Navbar} from "react-bootstrap";
-import logo from "../../images/logo_icon.png";
 import SignUp from "../authentication/SignUp";
 import SignIn from "../authentication/SignIn";
 import SearchBar from "./SearchBar";
@@ -40,7 +39,7 @@ class Header extends Component {
                 <Navbar.Brand href="/Home">
                     <img
                         alt=""
-                        src={logo}
+                        src={process.env.PUBLIC_URL + "/images/logo2.png"}
                         width="170"
                         height="45"
                         className="d-inline-block align-top"

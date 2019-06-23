@@ -1,12 +1,11 @@
 import {
     ADD_CASE,
-    ADD_TASK,
     CASES,
     SESSION_CREATION_FORM,
     SIGN_IN_FORM,
     SIGN_UP_FORM,
-    TASK_FORM, TASK_HINTSFIELD,
-    TASK_INPUTFIELD, TASK_OUTPUTFIELD, TASK_WEIGHTFIELD, INVITATION_FORM
+    TASK_CREATION_FORM, TASK_HINTSFIELD,
+    TASK_INPUTFIELD, TASK_OUTPUTFIELD, TASK_WEIGHTFIELD, INVITATION_FORM, TASK_VIEW_FORM, TASKS, GET_TASKS, TASK_GRADE
 } from "../dataMapping/form";
 
 const initState = {
@@ -14,8 +13,11 @@ const initState = {
     [SIGN_UP_FORM]: false,
     [INVITATION_FORM]: false,
     [SESSION_CREATION_FORM]: false,
-    [TASK_FORM]: false,
-    [CASES]:[]
+    [TASK_CREATION_FORM]: false,
+    [TASK_VIEW_FORM]: false,
+    [CASES]:[],
+    [TASKS]:[],
+    [TASK_GRADE]:[]
 };
 
 const formReducer = (state = initState ,action)=>{
@@ -40,33 +42,43 @@ const formReducer = (state = initState ,action)=>{
                 ...state,
                 [INVITATION_FORM]: action.payload
             };
-         case TASK_FORM:
+         case TASK_CREATION_FORM:
             return {
                 ...state,
-                [TASK_FORM]: action.payload
+                [TASK_CREATION_FORM]: action.payload
             };
+        case TASK_VIEW_FORM:
+            return {
+                ...state,
+                [TASK_VIEW_FORM]: action.payload
+            };
+        case GET_TASKS:
+            return {
+                ...state,
+                [TASKS]: action.payload
+            };
+        case TASK_GRADE:
+            state[TASKS].forEach(function (task) {
+               if(task.taskId === parseInt(action.payload.taskId)){
+                   task["grade"]= action.payload.score;
+                   task["messages"]= action.payload.msgs;
+               }
+            });
+            return state;
         case ADD_CASE:
-            state[CASES].push({input:'',output:'',weight:'',hints:''});
+            state[CASES].push({inputs:'', outputs:'', weight:null, hint:''});
             return state;
         case TASK_INPUTFIELD:
                 state[CASES][action.payload.index][TASK_INPUTFIELD] = action.payload.value;
-                console.log('input');
-                console.log(state[CASES]);
             return state;
         case TASK_OUTPUTFIELD:
             state[CASES][action.payload.index][TASK_OUTPUTFIELD] = action.payload.value;
-            console.log('output');
-            console.log(state[CASES]);
             return state;
         case TASK_HINTSFIELD:
             state[CASES][action.payload.index][TASK_HINTSFIELD] = action.payload.value;
-            console.log('hints');
-            console.log(state[CASES]);
             return state;
         case TASK_WEIGHTFIELD:
             state[CASES][action.payload.index][TASK_WEIGHTFIELD] = action.payload.value;
-            console.log('weight');
-            console.log(state[CASES]);
             return state;
         default:
             return state;

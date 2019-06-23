@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Col} from "react-bootstrap";
 import '../../css/index.css';
-import Form from "react-bootstrap/Form";
 import Draggable from 'react-draggable';
 import AceEditor from 'react-ace';
 
@@ -14,6 +13,7 @@ import 'brace/theme/terminal';
 import {connect} from "react-redux";
 import {FONT_SIZE, THEME, INPUT_TEXT} from "../../store/dataMapping/ace";
 import {SESSION_SOCKET} from "../../store/dataMapping/socket";
+import {GET_TASKS} from "../../store/dataMapping/form";
 
 class SessionLayout extends Component{
 
@@ -28,8 +28,15 @@ class SessionLayout extends Component{
     componentDidMount() {
         const {socket} = this.props;
         socket.on("init-file", (textData)=>{
-            console.log(textData);
             this.props.handleChange(INPUT_TEXT, textData);
+        });
+        socket.on("init-tasks", (tasks)=>{
+            console.log("tasks",tasks);
+            tasks.forEach(function (task) {
+                task["grade"] = null;
+                task["messages"] = "";
+            });
+            this.props.getTasks(tasks);
         });
     }
 
@@ -152,7 +159,8 @@ const mapStateTpProps=(combinedReducer)=>{
 };
 const mapDispatchTpProps=(dispatch)=> {
     return {
-        handleChange: (type,value) => dispatch({type:type , payload: value})
+        handleChange: (type,value) => dispatch({type:type , payload: value}),
+        getTasks: (tasks) => dispatch({type:GET_TASKS, payload: tasks})
     };
 };
 

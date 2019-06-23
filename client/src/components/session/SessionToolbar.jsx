@@ -5,14 +5,26 @@ import {Button, Nav, Row} from "react-bootstrap";
 import {MDBIcon} from "mdbreact";
 import {FONT_SIZE, THEME} from "../../store/dataMapping/ace";
 import {connect} from "react-redux";
+import {OPEN_FORM, TASK_CREATION_FORM, TASK_VIEW_FORM} from "../../store/dataMapping/form";
+import TaskCreationForm from "../TaskCreationForm";
+import {MY_ROLE} from "../../store/dataMapping/sessionUsersData";
+import TaskViewForm from "../TaskViewForm";
+
 
 
 class SessionToolbar extends Component{
 
     handleChange= (e)=>{
-        console.log(e.target.id);
-        console.log(e.target.value);
         this.props.handleChange(e.target.id,e.target.value);
+    };
+
+    openForm = ()=>{
+        if(this.props.role === "owner") {
+            this.props.openTaskCreationForm();
+        }
+        else {
+            this.props.openTaskViewForm();
+        }
     };
 
     run = ()=>{
@@ -63,7 +75,9 @@ class SessionToolbar extends Component{
                         </span>
                     </Nav.Item>
                     <Nav.Item>
-                        <Button size={"sm"} variant={"outline-success"}><MDBIcon icon="tasks" />{" Tasks"}</Button>
+                        <Button size={"sm"} variant={"outline-success"} onClick={this.openForm}><MDBIcon icon="tasks" />  {this.props.role === "owner" ? "Create Task" : "View Task"}</Button>
+                        <TaskCreationForm/>
+                        <TaskViewForm/>
                     </Nav.Item>
                     <Nav.Item>
                         <Button onClick={this.run} size={"sm"} variant={"outline-success"}><MDBIcon icon="play" />{" Run"}</Button>
@@ -77,12 +91,15 @@ class SessionToolbar extends Component{
 const mapStateTpProps=(combinedReducer)=>{
     return{
         [THEME]: combinedReducer.editor[THEME],
-        [FONT_SIZE]: combinedReducer.editor[FONT_SIZE]
+        [FONT_SIZE]: combinedReducer.editor[FONT_SIZE],
+        role: combinedReducer.sessionData[MY_ROLE]
     };
 };
 const mapDispatchTpProps=(dispatch)=> {
     return {
-        handleChange: (type,value) => dispatch({type:type , payload: value})
+        handleChange: (type,value) => dispatch({type:type , payload: value}),
+        openTaskCreationForm: ()=> dispatch({type:TASK_CREATION_FORM, payload: OPEN_FORM}),
+        openTaskViewForm: ()=> dispatch({type:TASK_VIEW_FORM, payload: OPEN_FORM})
     };
 };
 
