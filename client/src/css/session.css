@@ -54,3 +54,16 @@
     height: 100%;
     resize: none;
 }
+
+#tasksList{
+    background: none;
+    color: black;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-radius: 0;
+    border: none;
+}
+
+#tasksList:hover{
+    border: none;
+}

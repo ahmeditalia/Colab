@@ -9,10 +9,6 @@ import {SESSION_SOCKET} from "../store/dataMapping/socket";
 
 class TaskCreationForm extends Component {
 
-    componentDidMount() {
-        this.props.addCase();
-    }
-
     id = 0;
     state = {
         taskName:"",
@@ -20,6 +16,10 @@ class TaskCreationForm extends Component {
         taskHints:"",
         cases: [<CaseForm id={this.id}/>]
     };
+
+    componentDidMount() {
+        this.props.addCase();
+    }
 
     changeHandler = (e)=>{
         this.setState({[e.target.id] : e.target.value});
@@ -51,6 +51,7 @@ class TaskCreationForm extends Component {
                 tmp["hint"] = item.hint;
             cases.push(tmp);
         });
+        console.log(cases);
         const task =
             {
                 "name": this.state.taskName,
