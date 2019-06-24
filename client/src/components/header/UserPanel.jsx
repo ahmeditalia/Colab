@@ -45,27 +45,27 @@ class UserPanel extends Component {
     render() {
         return (
             <div>
-                <Dropdown size="sm" className={"mr-5"}>
-                    <Image style={{border: "1px solid", padding: "3px", objectFit: "cover"}} roundedCircle src={GET_PROFILE_PIC+localStorage.getItem(USERNAME)} width={32}
-                           height={32}/>
-                    <Dropdown.Toggle style={{color:"white"}} variant={"link"} className={"shadow-none"}>
-                        <p style={{display: "inline"}}>{localStorage.getItem(USERNAME)}</p>
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item as="button" onClick={this.mySessions}><MDBIcon icon="th-list" /> {" My Sessions"}</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={this.props.openInvitations}>
-                            <MDBIcon icon="user-plus" /> {" Invitations"}
-                            <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{this.props[INVITATIONS].length}</Badge>
-                        </Dropdown.Item>
-                        <Invitations/>
-                        <Dropdown.Item as="button" onClick={this.props.openSessionCreator}><MDBIcon icon="plus" /> {" New Session"}</Dropdown.Item>
-                        <SessionCreationForm/>
-                        <Dropdown.Divider />
-                        <Dropdown.Header>Account Settings</Dropdown.Header>
-                        <Dropdown.Item as="button" onClick={this.profile}><MDBIcon icon="user-alt" />{" Profile"}</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={this.logOut}><MDBIcon icon="sign-out-alt" /> {" Sign Out"}  </Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+            <Dropdown size="sm" className={"mr-5"}>
+                <Image style={{border: "1px solid", padding: "3px", objectFit: "cover"}} roundedCircle src={GET_PROFILE_PIC+localStorage.getItem(USERNAME)} width={32}
+                       height={32}/>
+                <Dropdown.Toggle style={{color:"white"}} variant={"link"} className={"shadow-none"}>
+                    <p style={{display: "inline"}}>{localStorage.getItem(USERNAME)}</p>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    <Dropdown.Item as="button" onClick={this.mySessions}><MDBIcon icon="th-list" /> {" My Sessions"}</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={this.props.openInvitations}>
+                        <MDBIcon icon="user-plus" /> {" Invitations"}
+                        <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{this.props[INVITATIONS].length}</Badge>
+                    </Dropdown.Item>
+                    <Invitations/>
+                    <Dropdown.Item as="button" onClick={this.props.openSessionCreator}><MDBIcon icon="plus" /> {" New Session"}</Dropdown.Item>
+                    <SessionCreationForm/>
+                    <Dropdown.Divider />
+                    <Dropdown.Header>Account Settings</Dropdown.Header>
+                    <Dropdown.Item as="button" onClick={this.profile}><MDBIcon icon="user-alt" />{" Profile"}</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={this.logOut}><MDBIcon icon="sign-out-alt" /> {" Sign Out"}  </Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
             </div>
         );
     }

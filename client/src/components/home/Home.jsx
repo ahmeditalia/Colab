@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
-import {Col, Row} from 'react-bootstrap';
+import {Col, Dropdown, Modal, Row} from 'react-bootstrap';
 import Container from "react-bootstrap/Container";
+import Invitations from "../header/Invitations";
 
 
 class Home extends Component {
+
+
+
 
     render() {
         return (
