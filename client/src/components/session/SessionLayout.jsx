@@ -16,7 +16,7 @@ import {
     ACE_THEME,
     ACE_INPUT_TEXT,
     ACE_OUTPUT_TEXT,
-    ACE_OUTPUT_READONLY
+    ACE_OUTPUT_READONLY, ACE_CURRENT_USER_VIEW, ACE_INPUT_READONLY
 } from "../../store/dataMapping/ace";
 import {SESSION_SOCKET} from "../../store/dataMapping/socket";
 import {GET_TASKS} from "../../store/dataMapping/form";
@@ -85,6 +85,7 @@ class SessionLayout extends Component{
                     <div className={"content"} style={{height:this.state.CodeSectionHeight+"%"}}>
                         <AceEditor
                             id={"output"}
+                            readOnly={this.props[ACE_INPUT_READONLY]}
                             value={this.props[ACE_INPUT_TEXT]}
                             onChange={this.handleChange}
                             fontSize={this.props[ACE_FONT_SIZE]+"px"}
@@ -104,7 +105,7 @@ class SessionLayout extends Component{
                         />
                     </div>
                     <Draggable axis="y" onDrag={(e)=> this.resize(e)} scale={0} bounds={{bottom: 10}}>
-                    <div className={"handle"}/>
+                        <div className={"handle"}/>
                     </Draggable>
                     <div className={"content"} style={{height:this.state.OutputSectionHeight+"%"}}>
                         <AceEditor
@@ -133,8 +134,10 @@ const mapStateTpProps=(combinedReducer)=>{
         [ACE_THEME]: combinedReducer.editor[ACE_THEME],
         [ACE_FONT_SIZE]: combinedReducer.editor[ACE_FONT_SIZE],
         [ACE_INPUT_TEXT]: combinedReducer.editor[ACE_INPUT_TEXT],
+        [ACE_INPUT_READONLY]: combinedReducer.editor[ACE_INPUT_READONLY],
         [ACE_OUTPUT_READONLY]: combinedReducer.editor[ACE_OUTPUT_READONLY],
         [ACE_OUTPUT_TEXT]: combinedReducer.editor[ACE_OUTPUT_TEXT],
+        [ACE_CURRENT_USER_VIEW]: combinedReducer.editor[ACE_CURRENT_USER_VIEW],
         socket: combinedReducer.sockets[SESSION_SOCKET]
     };
 };

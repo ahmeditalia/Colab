@@ -18,11 +18,11 @@ class SessionToolbar extends Component{
     };
 
     openForm = ()=>{
-        if(this.props.role === "owner") {
-            this.props.openTaskCreationForm();
+        if(this.props.role === "ghost") {
+            this.props.openTaskViewForm();
         }
         else {
-            this.props.openTaskViewForm();
+            this.props.openTaskCreationForm();
         }
     };
 
@@ -38,7 +38,7 @@ class SessionToolbar extends Component{
                 <Nav className="justify-content-end" activeKey="/home">
                     <Nav.Item>
                         <Button
-                            href={"http://192.168.8.100:4213/sessions/"+this.props.sessionId+"/grades-pdf"}
+                            href={"http://41.232.114.112:4213/reports/"+this.props.sessionId+"/grades-pdf"}
                             disabled={this.props.role == "ghost" ? true:false}
                             target={"_blank"}
                             style={{marginRight: "575px",color: "white"}}
@@ -71,7 +71,7 @@ class SessionToolbar extends Component{
                         </span>
                     </Nav.Item>
                     <Nav.Item>
-                        <Button className={"barButtons"} size={"sm"} variant={"outline-success"} onClick={this.openForm}><MDBIcon icon="tasks" />  {this.props.role === "owner" ? "Create Task" : "View Task"}</Button>
+                        <Button className={"barButtons"} size={"sm"} variant={"outline-success"} onClick={this.openForm}><MDBIcon icon="tasks" />  {this.props.role === "ghost" ? "View Task":"Create Task" }</Button>
                         <TaskCreationForm/>
                         <TaskViewForm/>
                     </Nav.Item>

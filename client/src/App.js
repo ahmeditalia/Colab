@@ -22,9 +22,10 @@ class App extends Component {
                         <Route exact path="/dashboard" component={Dashboard}/>
                         <Route exact path="/profile" component={UserProfile}/>
                         <Route exact path="/mysessions" component={MySessions}/>
-                        <Route path="/sessions/join/:sessionId" component={Session}/>
-                      {/*<Route path="/SessionM" component={SessionMaster}/>
-                      <Route path="/SessionU" component={SessionUser}/>*/}
+                        <Route exact path="/sessions/join/:sessionId" component={Session}/>
+{/*
+                        <Route exact path="/reports/:sessionId/grades-pdf"/>
+*/}
                     </Switch>
                 </div>
             </BrowserRouter>

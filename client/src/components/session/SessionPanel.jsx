@@ -16,6 +16,7 @@ import {GET_PROFILE_PIC} from "../../store/dataMapping/serverURLs";
 import {SESSION_CONNECTED_USERS, SESSION_USER_ROLE} from "../../store/dataMapping/session";
 import {USERNAME} from "../../store/dataMapping/user";
 import {MY_ROLE} from "../../store/dataMapping/sessionUsersData";
+import {ACE_INPUT_READONLY} from "../../store/dataMapping/ace";
 
 class SessionPanel extends Component{
 
@@ -37,8 +38,10 @@ class SessionPanel extends Component{
     componentDidMount() {
         console.log("we came here");
         const {socket} = this.props;
-
+        console.log(socket);
         socket.on("current-users",(users, role ,callback)=>{
+            console.log("current users",users);
+            console.log("my role",role);
             this.props.setMyRole(role, ()=>{
                 let dataSource = users.map((user)=> {
                     return{
@@ -74,11 +77,6 @@ class SessionPanel extends Component{
         socket.on("user-left",(user)=>{
             this.updateUsers(USERNAME,user[USERNAME],"disabled",true);
         });
-
-        socket.on("set-permission",(username,role)=>{
-            if(username === localStorage.getItem(USERNAME)) this.props.setMyRole(role,()=>{});
-            this.updateUsers(USERNAME,username,SESSION_USER_ROLE,role);
-        });
     }
 
 
@@ -94,7 +92,13 @@ class SessionPanel extends Component{
     };
 
     watchUser = (e)=>{
-        console.log(e.currentTarget.id);
+        if(this.props[MY_ROLE] === "ghost" && localStorage.getItem(USERNAME) !== e.currentTarget.id) {
+            this.props.updateEditorInputReadOnly(true);
+            console.log("true");
+        } else {
+            this.props.updateEditorInputReadOnly(false);
+            console.log("false");
+        }
         const {socket} = this.props;
         socket.emit("watch-user", e.currentTarget.id);
     };
@@ -238,7 +242,8 @@ const mapDispatchToProps = (dispatch)=>{
         setMyRole: (role,callback) => {
             dispatch({type: MY_ROLE, payload: role});
             callback();
-        }
+        },
+        updateEditorInputReadOnly: (value)=> dispatch({type: ACE_INPUT_READONLY , payload: value})
     };
 };
 

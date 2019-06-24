@@ -36,7 +36,7 @@ const mapStateToProps = (combineReducers)=>{
 
 const mapDispatchToProps = (dispatch)=>{
     return {
-        getSessions: ()=> dispatch(getPublicSessions())
+        getSessions: ()=> dispatch(getPublicSessions(""))
     }
 };
 
