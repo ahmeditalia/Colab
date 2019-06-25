@@ -93,6 +93,7 @@ class SessionLayout extends Component{
                             width={"100%"}
                             height={"100%"}
                             theme={this.props[ACE_THEME]}
+                            showPrintMargin={false}
                             name="input"
                             editorProps={{$blockScrolling: true}}
                             setOptions={{
@@ -116,6 +117,7 @@ class SessionLayout extends Component{
                             width={"100%"}
                             height={"100%"}
                             theme={this.props[ACE_THEME]}
+                            showPrintMargin={false}
                             name="outputArea"
                             editorProps={{$blockScrolling: true}}
                             readOnly={this.props[ACE_OUTPUT_READONLY]}

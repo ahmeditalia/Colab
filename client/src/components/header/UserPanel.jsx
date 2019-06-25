@@ -53,9 +53,9 @@ class UserPanel extends Component {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item as="button" onClick={this.mySessions}><MDBIcon icon="th-list" /> {" My Sessions"}</Dropdown.Item>
-                    <Dropdown.Item as="button" onClick={this.props.openInvitations}>
-                        <MDBIcon icon="user-plus" /> {" Invitations"}
-                        <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{this.props[INVITATIONS].length}</Badge>
+                    <Dropdown.Item as="button" onClick={this.props.openInvitations} disabled={this.props[INVITATIONS].length === 0}>
+                        <MDBIcon icon="user-plus" /> {" Invitations" }
+                        <Badge variant="danger" style={{borderRadius:6,marginLeft:15}}>{this.props[INVITATIONS].length>0 ? this.props[INVITATIONS].length:""}</Badge>
                     </Dropdown.Item>
                     <Invitations/>
                     <Dropdown.Item as="button" onClick={this.props.openSessionCreator}><MDBIcon icon="plus" /> {" New Session"}</Dropdown.Item>

@@ -36,15 +36,17 @@ class SessionToolbar extends Component{
         return(
             <Row className={"sessionBar"}>
                 <Nav className="justify-content-end" activeKey="/home">
-                    <Nav.Item>
-                        <Button
-                            href={"http://41.232.114.112:4213/reports/"+this.props.sessionId+"/grades-pdf"}
-                            disabled={this.props.role == "ghost" ? true:false}
-                            target={"_blank"}
-                            style={{marginRight: "575px",color: "white"}}
-                            variant={"outline-dark"}>
-                            My Grades
-                        </Button>
+                    <Nav.Item style={{marginRight:"42%"}}>
+                        {
+                            this.props.role === "owner" || this.props.role === "mod" ? (<Button
+                                href={"http://41.232.114.112:4213/reports/"+this.props.sessionId+"/grades-pdf"}
+                                target={"_blank"}
+                                style={{marginRight: "0px",color: "white"}}
+                                variant={"outline-dark"}>
+                                My Grades
+                            </Button>
+                            ):("")
+                        }
                     </Nav.Item>
                     <Nav.Item>
                         <span className="custom-dropdown small">
