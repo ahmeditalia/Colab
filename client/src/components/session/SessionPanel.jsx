@@ -8,7 +8,7 @@ import {
     Form, FormControl,
     InputGroup,
     ProgressBar,
-    Row
+    Row, Nav , Tab
 } from 'react-bootstrap';
 import {connect} from "react-redux";
 import {SESSION_SOCKET} from "../../store/dataMapping/socket";
@@ -22,9 +22,11 @@ class SessionPanel extends Component{
 
 
     state =  {
+        activeUser: localStorage.getItem(USERNAME),
+        activePermissions: "",
         [SESSION_CONNECTED_USERS]: [],
         inviteeUser: "",
-        msg: ""
+        msg: "",
     };
 
     invite=()=>{
@@ -36,12 +38,8 @@ class SessionPanel extends Component{
     };
 
     componentDidMount() {
-        console.log("we came here");
         const {socket} = this.props;
-        console.log(socket);
         socket.on("current-users",(users, role ,callback)=>{
-            console.log("current users",users);
-            console.log("my role",role);
             this.props.setMyRole(role, ()=>{
                 let dataSource = users.map((user)=> {
                     return{
@@ -51,7 +49,6 @@ class SessionPanel extends Component{
                         grade:0
                     };
                 });
-                console.log(dataSource);
                 this.setState({[SESSION_CONNECTED_USERS]: dataSource});
                 callback();
             });
@@ -67,7 +64,7 @@ class SessionPanel extends Component{
                         className: "user",
                         disabled: false,
                         grade: 0
-                }];
+                    }];
                 console.log(dataSource);
                 this.setState({[SESSION_CONNECTED_USERS]: dataSource});
             }
@@ -92,15 +89,14 @@ class SessionPanel extends Component{
     };
 
     watchUser = (e)=>{
-        if(this.props[MY_ROLE] === "ghost" && localStorage.getItem(USERNAME) !== e.currentTarget.id) {
+        this.setState({activeUser : e.currentTarget.name});
+        if(this.props[MY_ROLE] === "ghost" && localStorage.getItem(USERNAME) !== e.currentTarget.name) {
             this.props.updateEditorInputReadOnly(true);
-            console.log("true");
         } else {
             this.props.updateEditorInputReadOnly(false);
-            console.log("false");
         }
         const {socket} = this.props;
-        socket.emit("watch-user", e.currentTarget.id);
+        socket.emit("watch-user", e.currentTarget.name);
     };
 
     changePermission = (e)=>{
@@ -110,52 +106,14 @@ class SessionPanel extends Component{
 
     ownerComponent = (data)=>{
         return (
-            <div key={data[USERNAME]}  disabled={data.disabled}>
-            <Card disabled={data.disabled}>
-                <Row style={{height: 50, marginTop: 4, borderBottom:"1px solid #dcdcdc"}}>
+            <Nav.Item disabled={data["disabled"]}>
+                <Row>
                     <Col md={{span:2,offset:1}}>
-                        <Accordion.Toggle name={data[USERNAME]} onClick={this.changeClass} variant={"link"} className={data.className} eventKey={data[USERNAME]}/>
+                        <Accordion.Toggle name={data[USERNAME]} onClick={this.changeClass} className={data.className} eventKey={data[USERNAME]}/>
                     </Col>
                     <div className={"mydiv"}>
-                        <a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>
-                            <img className="eimage" src={ GET_PROFILE_PIC+data[USERNAME] }/>
-                            <div className="ename">{data[USERNAME]}</div>
-                            <div className="ejob">{data[SESSION_USER_ROLE]}</div>
-                            {data[SESSION_USER_ROLE] === "ghost"?
-                                <div className={"progressbarDiv"}>
-                                    <ProgressBar className={"progressbar"} now={data.grade} label={data.grade+"%"} variant={"success"}/>
-                                </div>: <></>}
-                        </a>
-                    </div>
-                </Row>
-                {data[SESSION_USER_ROLE] !== "owner"?
-                <Accordion.Collapse eventKey={data[USERNAME]}>
-                    <Form.Group className={"formGroup"}>
-                        <Form.Check id={data[USERNAME]+"mod"} className={"formGroupItem"} custom={true} value={"mod"}
-                                    type="radio" label="Moderator" name={data[USERNAME]}
-                                    defaultChecked={data[SESSION_USER_ROLE] === "mod"}
-                                    onClick={this.changePermission}/>
-                        <Form.Check id={data[USERNAME]+"gh  ost"} className={"formGroupItem"} custom={true} value={"ghost"}
-                                    type="radio" label="Ghost" name={data[USERNAME]}
-                                    defaultChecked={data[SESSION_USER_ROLE] === "ghost"}
-                                    onClick={this.changePermission}/>
-                    </Form.Group>
-                </Accordion.Collapse>:<></>}
-            </Card>
-            </div>
-        );
-    };
-
-    ghostComponent = (data)=> {
-        return(
-            <div key={data[USERNAME]} disabled={data.disabled}>
-            <Card>
-                <Row style={{height: 50, marginTop: 4, borderBottom:"1px solid #dcdcdc"}}>
-                    <Col md={{span:2,offset:1}}>
-                        <Accordion.Toggle name={data[USERNAME]} onClick={this.changeClass} variant={"link"} className={data.className} eventKey={data[USERNAME]}/>
-                    </Col>
-                    <div className={"mydiv"}>
-                        <a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>
+                        <Nav.Link name={data[USERNAME]} eventKey={data[USERNAME]}  variant={"success"} onClick={this.watchUser} style={{height: "100%", padding:0}}>
+                            {/*<a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>*/}
                             <img className="eimage" src={ GET_PROFILE_PIC+data[USERNAME] }/>
                             <div className="ename">{data[USERNAME]}</div>
                             <div className="ejob">{data[SESSION_USER_ROLE]}</div>
@@ -163,11 +121,48 @@ class SessionPanel extends Component{
                                 <div className={"progressbarDiv"}>
                                     <ProgressBar className={"progressbar"} now={parseInt(data.grade)} label={data.grade+"%"} variant={"success"}/>
                                 </div>: <></>}
-                        </a>
+                        </Nav.Link>
                     </div>
                 </Row>
-            </Card>
-            </div>
+                {data[SESSION_USER_ROLE] !== "owner"?
+                    <Accordion.Collapse eventKey={data[USERNAME]}>
+                        <Form.Group className={"formGroup"}>
+                            <Form.Check id={data[USERNAME]+"mod"} className={"formGroupItem"} custom={true} value={"mod"}
+                                        type="radio" label="Moderator" name={data[USERNAME]}
+                                        defaultChecked={data[SESSION_USER_ROLE] === "mod"}
+                                        onClick={this.changePermission}/>
+                            <Form.Check id={data[USERNAME]+"gh  ost"} className={"formGroupItem"} custom={true} value={"ghost"}
+                                        type="radio" label="Ghost" name={data[USERNAME]}
+                                        defaultChecked={data[SESSION_USER_ROLE] === "ghost"}
+                                        onClick={this.changePermission}/>
+                        </Form.Group>
+                    </Accordion.Collapse>:<></>
+                }
+            </Nav.Item>
+        );
+    };
+
+    ghostComponent = (data)=> {
+        return(
+            <Nav.Item disabled={data["disabled"]}>
+                <Row>
+                    <Col md={{span:2,offset:1}}>
+                        <Accordion.Toggle name={data[USERNAME]} onClick={this.changeClass} variant={"link"} className={data.className} eventKey={data[USERNAME]}/>
+                    </Col>
+                    <div className={"mydiv"}>
+                        <Nav.Link name={data[USERNAME]} eventKey={data[USERNAME]} onClick={this.watchUser} style={{height: "100%",padding:0}}>
+                            {/*<a id={data[USERNAME]} onClick={this.watchUser} className={"parent"}>*/}
+                            <img className="eimage" src={ GET_PROFILE_PIC+data[USERNAME] }/>
+                            <div className="ename">{data[USERNAME]}</div>
+                            <div className="ejob">{data[SESSION_USER_ROLE]}</div>
+                            {data[SESSION_USER_ROLE] === "ghost"?
+                                <div className={"progressbarDiv"}>
+                                    <ProgressBar className={"progressbar"} now={parseInt(data.grade)} label={data.grade+"%"} variant={"success"}/>
+                                </div>: <></>}
+                        </Nav.Link>
+                    </div>
+                </Row>
+            </Nav.Item>
         );
     };
 
@@ -181,6 +176,7 @@ class SessionPanel extends Component{
     };
 
     changeClass = (e)=>{
+        this.setState({activePermissions: e.target.name !== this.state.activePermissions ? e.target.name : ""});
         this.updateUsers(USERNAME,e.target.name,"className", e.target.className === "user"? "user toggled":"user");
     };
 
@@ -195,22 +191,29 @@ class SessionPanel extends Component{
                 <div className={"panelSection"}>
                     <Card.Header as={"h4"}>
                         Users
-                        <DropdownButton disabled={this.props.tasks.length === 0} variant={"secondary"} id="grades" title="Grades" style={{float:"right",marginTop: "-5px", marginRight:" -8px"}}>
+                        <DropdownButton disabled={this.props.tasks.length === 0} variant={"success"} id="grades" title="Grades" style={{float:"right",marginTop: "-5px", marginRight:" -8px"}}>
                             {
                                 this.props.tasks.map((task)=>{
                                     return (
-                                    <Dropdown.Item id={task.taskId} onClick={this.showTaskGrades}>
-                                        {task.name}
-                                    </Dropdown.Item>
-                                )})
+                                        <Dropdown.Item id={task.taskId} onClick={this.showTaskGrades}>
+                                            {task.name}
+                                        </Dropdown.Item>
+                                    )})
                             }
                         </DropdownButton>
                     </Card.Header>
-                    <Accordion>
-                        {this.state[SESSION_CONNECTED_USERS].length > 0 && this.state[SESSION_CONNECTED_USERS].map((user)=>{
-                            return this.props[MY_ROLE] === "ghost"? this.ghostComponent(user): this.ownerComponent(user);
-                        })}
-                    </Accordion>
+                    <Tab.Container id="tabs" activeKey={this.state.activeUser}>
+
+                        <Accordion activeKey={this.state.activePermissions}>
+                            <Nav variant="pills success" className="flex-column">
+
+                                {this.state[SESSION_CONNECTED_USERS].length > 0 && this.state[SESSION_CONNECTED_USERS].map((user)=>{
+                                    return this.props[MY_ROLE] === "ghost"? this.ghostComponent(user): this.ownerComponent(user);
+                                })}
+                            </Nav>
+                        </Accordion>
+                    </Tab.Container>
+
                     <div style={{display:"flex", flexDirection: "column"}}>
                         <InputGroup style={{position:"absolute",bottom:4}} className="mb-3">
                             <FormControl
@@ -219,7 +222,7 @@ class SessionPanel extends Component{
                                 onChange={this.changeHandling}
                             />
                             <InputGroup.Append>
-                                <Button id="invite" variant={"secondary"} onClick={this.invite}>Invite</Button>
+                                <Button id="invite" variant={"success"} onClick={this.invite}>Invite</Button>
                             </InputGroup.Append>
                         </InputGroup>
                         <small style={{position:"absolute",bottom:4 , float:"right"}}>{this.state.msg}</small>

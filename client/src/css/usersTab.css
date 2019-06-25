@@ -94,11 +94,15 @@
     background-color: white;
 }
 
+.nav-pills .nav-link.active{
+    background-color: #28a745;
+}
 
 .mydiv{
     flex: 0 0 75%;
-    max-width: 66%;
     margin-left: -14px;
+    width: 75%;
+    padding-right: 15px;
 }
 .user
 {
