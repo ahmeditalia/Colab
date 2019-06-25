@@ -3,6 +3,7 @@ export const SIGN_IN = "/auth/sign-in"; //POST
 
 export const UPDATE_PROFILE = "/users/update-profile"; //POST
 export const GET_PROFILE_PIC = "/users/ppic/"; //GET //Add username to url
+export const GET_SESSION_PIC = "/sessions/spic/"; //GET //Add sessionId to url
 export const GET_PROFILE_INFO = "/users/profile/";  //GET //Add username to urlppic
 
 

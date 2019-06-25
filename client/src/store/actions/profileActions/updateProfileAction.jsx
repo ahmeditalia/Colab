@@ -2,7 +2,7 @@ import axios from "axios";
 import {
     EMAIL,
     FIRST_NAME,
-    IMAGE,
+    USER_IMAGE,
     LAST_NAME,
     NEW_PASSWORD,
     OLD_PASSWORD,
@@ -21,12 +21,16 @@ export const updateProfile = (profile,history)=>{
         data.append(OLD_PASSWORD, profile[OLD_PASSWORD]);
         data.append(NEW_PASSWORD, profile[NEW_PASSWORD]);
         data.append(EMAIL, profile[EMAIL]);
-        data.append(IMAGE, profile[IMAGE].file);
+        data.append(USER_IMAGE, profile[USER_IMAGE].file);
         axios.post(UPDATE_PROFILE, data, {headers: {'Authorization': "bearer " + localStorage.getItem('user')}})
-            .then(()=> dispatch({type:PROFILE_UPDATED}))
-            .then(()=> history.push(DASHBOARD_URL))
-            .catch((error) =>
-                dispatch({type: PROFILE_UPDATE_ERROR, payload: error.response.data.auth}))
+            .then(()=> {
+                history.push(DASHBOARD_URL);
+/*
+                window.location.reload();
+*/
+                dispatch({type:PROFILE_UPDATED})
+            })
+            .catch(() => dispatch({type: PROFILE_UPDATE_ERROR}))
 
     }
 };

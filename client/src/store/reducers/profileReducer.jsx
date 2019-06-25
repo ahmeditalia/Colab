@@ -2,7 +2,7 @@ import {
     CONFIRM_PASSWORD,
     EMAIL,
     FIRST_NAME,
-    IMAGE,
+    USER_IMAGE,
     LAST_NAME,
     NEW_PASSWORD,
     OLD_PASSWORD, PROFILE_RETRIEVAL_ERROR, PROFILE_RETRIEVED, PROFILE_UPDATE_ERROR, PROFILE_UPDATED,
@@ -10,6 +10,7 @@ import {
 
 const initState = {
     profile: null,
+    img: 1
 };
 
 const profileReducer = (state = initState ,action)=>{
@@ -17,7 +18,8 @@ const profileReducer = (state = initState ,action)=>{
         case PROFILE_UPDATED:
             return {
                 ...state,
-                profile: null
+                profile: null,
+                img: state.img+1
             };
         case PROFILE_UPDATE_ERROR:
             return {
@@ -82,12 +84,12 @@ const profileReducer = (state = initState ,action)=>{
                     [EMAIL]:action.value
                 }
             };
-        case IMAGE:
+        case USER_IMAGE:
             return {
                 ...state,
                 profile:{
                     ...state.profile,
-                    [IMAGE]: action.value
+                    [USER_IMAGE]: action.value
                 }
             };
         default:

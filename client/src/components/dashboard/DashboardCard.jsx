@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Card} from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
 import {SESSION_DESCRIPTION, SESSION_ID, SESSION_NAME} from "../../store/dataMapping/session";
-import {JOIN_SESSION} from "../../store/dataMapping/serverURLs";
+import {GET_SESSION_PIC, JOIN_SESSION} from "../../store/dataMapping/serverURLs";
 
 class DashboardCard extends Component{
     state = {
@@ -13,7 +13,7 @@ class DashboardCard extends Component{
         return(
             <Card onMouseEnter={()=> this.setState({collapse:true})}
                   onMouseLeave={()=> this.setState({collapse:false})}>
-                <img src={"../../images/python.jpg"} alt={this.props.session[SESSION_NAME]}/>
+                <img src={GET_SESSION_PIC + this.props.session[SESSION_ID]} alt={"CoLab"}/>
                     <Card.Body>
                         <Card.Title >{this.props.session[SESSION_NAME]}</Card.Title>
                         <div>

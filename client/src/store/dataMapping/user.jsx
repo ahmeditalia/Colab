@@ -6,7 +6,8 @@ export const OLD_PASSWORD = "oldHash";
 export const NEW_PASSWORD = "hash";
 export const CONFIRM_PASSWORD = "ConfirmPassword";
 export const EMAIL = "email";
-export const IMAGE = "ppic";
+export const USER_IMAGE = "ppic";
+export const SESSION_IMAGE = "spic";
 
 
 export const PROFILE_RETRIEVED = "profile_retrieved";

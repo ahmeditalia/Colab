@@ -3,7 +3,7 @@ import ProfileImage from "./ProfileImage";
 import {getProfile} from "../../store/actions/profileActions/getProfileAction";
 import ProfileInfo from "./ProfileInfo";
 import {connect} from "react-redux";
-import {Alert, Form, Spinner} from "react-bootstrap";
+import { Form, Spinner} from "react-bootstrap";
 import {updateProfile} from "../../store/actions/profileActions/updateProfileAction";
 import requireAuth from "../authentication/requireAuth";
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button, FormControl, Image, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {IMAGE} from "../../store/dataMapping/user";
+import {USER_IMAGE} from "../../store/dataMapping/user";
 
 class ImageUpload extends Component {
     state ={
@@ -23,7 +23,7 @@ class ImageUpload extends Component {
     };
 
     changeImage = ()=>{
-        this.props.handleProfileChange(IMAGE,this.state.img);
+        this.props.handleProfileChange(USER_IMAGE,this.state.img);
         this.props.onHide();
     };
 
@@ -41,7 +41,7 @@ class ImageUpload extends Component {
                             roundedCircle
                             src={this.state.img.URL}
                         />
-                        <FormControl variant={"dark"} className={"mt-4"} id={IMAGE} type={"file"} onChange={this.imageHandle}/>
+                        <FormControl variant={"dark"} className={"mt-4"} id={USER_IMAGE} type={"file"} onChange={this.imageHandle}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="info" disabled={this.state.button} onClick={this.changeImage}>Done</Button>
@@ -53,7 +53,7 @@ class ImageUpload extends Component {
 
 const mapStateToProps = (combinedReducers)=>{
     return {
-        img: combinedReducers.profile.profile[IMAGE]
+        img: combinedReducers.profile.profile[USER_IMAGE]
     }
 };
 

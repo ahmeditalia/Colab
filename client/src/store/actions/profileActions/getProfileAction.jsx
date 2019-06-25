@@ -1,5 +1,5 @@
 import axios from "axios";
-import {IMAGE, PROFILE_RETRIEVAL_ERROR, PROFILE_RETRIEVED, USERNAME} from "../../dataMapping/user";
+import {USER_IMAGE, PROFILE_RETRIEVAL_ERROR, PROFILE_RETRIEVED, USERNAME} from "../../dataMapping/user";
 import {GET_PROFILE_INFO, GET_PROFILE_PIC} from "../../dataMapping/serverURLs";
 
 
@@ -9,7 +9,7 @@ export const getProfile = (callback) => {
             .then((res)=> {
                 const user = {
                     ...res.data.user,
-                    [IMAGE]:{
+                    [USER_IMAGE]:{
                         URL: GET_PROFILE_PIC + localStorage.getItem(USERNAME)
                     }
                 };

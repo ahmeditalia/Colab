@@ -46,7 +46,7 @@ class UserPanel extends Component {
         return (
             <div>
             <Dropdown size="sm" className={"mr-5"}>
-                <Image style={{border: "1px solid", padding: "3px", objectFit: "cover"}} roundedCircle src={GET_PROFILE_PIC+localStorage.getItem(USERNAME)} width={32}
+                <Image style={{border: "1px solid", padding: "3px", objectFit: "cover"}} roundedCircle src={GET_PROFILE_PIC+localStorage.getItem(USERNAME)+"?hash="+this.props.img} width={32}
                        height={32}/>
                 <Dropdown.Toggle style={{color:"white"}} variant={"link"} className={"shadow-none"}>
                     <p style={{display: "inline"}}>{localStorage.getItem(USERNAME)}</p>
@@ -73,6 +73,7 @@ class UserPanel extends Component {
 const mapStateToProps = (combinedReducer)=>{
     return {
         socket: combinedReducer.sockets[DEFAULT_SOCKET],
+        img: combinedReducer.profile.img,
         [INVITATIONS]: combinedReducer.invitations[INVITATIONS],
     };
 };

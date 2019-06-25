@@ -9,7 +9,7 @@ import {PUBLIC_SESSIONS} from "../../store/dataMapping/session";
 class Dashboard extends Component{
 
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.getSessions();
     }
 

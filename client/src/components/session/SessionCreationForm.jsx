@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Form, FormControl, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {createSession} from "../../store/actions/sessionActions/createSessionAction";
-import {SESSION_DESCRIPTION,SESSION_PRIVACY, SESSION_NAME} from "../../store/dataMapping/session";
+import {SESSION_DESCRIPTION, SESSION_PRIVACY, SESSION_NAME, SESSION_ID, SESSION} from "../../store/dataMapping/session";
 import {CLOSE_FORM, SESSION_CREATION_FORM} from "../../store/dataMapping/form";
+import {JOIN_SESSION} from "../../store/dataMapping/serverURLs";
+import {SESSION_IMAGE, USER_IMAGE} from "../../store/dataMapping/user";
 
 class SessionCreationForm extends Component {
 
     state={
         [SESSION_NAME]: "",
         [SESSION_DESCRIPTION]: "",
-        [SESSION_PRIVACY]: null
+        [SESSION_PRIVACY]: null,
+        [SESSION_IMAGE]: null
     };
 
     changeState = (e)=>{
@@ -23,9 +26,13 @@ class SessionCreationForm extends Component {
             e.preventDefault();
             this.props.createSession(this.state,()=>{
                 this.props.closeSessionCreator();
-                /*this.props.history.push("/"+this.props.session.id);*/
+                this.props.history.push(JOIN_SESSION + this.props.session[SESSION_ID]);
             });
         }
+    };
+
+    changeImage = (e)=>{
+        this.setState({[SESSION_IMAGE]: e.target.files[0]})
     };
 
     render() {
@@ -57,6 +64,9 @@ class SessionCreationForm extends Component {
                                         id ={"hidden"} type="radio" label="Hidden" name={SESSION_PRIVACY}
                                         onClick={()=> this.setState({[SESSION_PRIVACY]: "hidden"})}/>
                         </Form.Group>
+                        <Form.Group>
+                            <FormControl variant={"dark"} id={SESSION_IMAGE} type={"file"} onChange={this.changeImage}/>
+                        </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -68,7 +78,7 @@ class SessionCreationForm extends Component {
 }
 const mapStateToProps = (combinedReducer)=>{
     return{
-        session: combinedReducer.sessionStorage.openedSession,
+        session: combinedReducer.sessionData[SESSION],
         display: combinedReducer.forms[SESSION_CREATION_FORM]
     }
 };

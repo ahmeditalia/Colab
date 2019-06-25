@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Button, Card, Image} from "react-bootstrap";
 import ImageUpload from "./ImageUpload";
 import {connect} from "react-redux";
-import {IMAGE, USERNAME} from "../../store/dataMapping/user";
+import {USER_IMAGE, USERNAME} from "../../store/dataMapping/user";
 
 class ProfileImage extends Component {
 
@@ -45,7 +45,7 @@ class ProfileImage extends Component {
 
 const mapStateToProps = (combinedReducers)=>{
     return {
-        img: combinedReducers.profile.profile[IMAGE]
+        img: combinedReducers.profile.profile[USER_IMAGE]
     }
 };
 
