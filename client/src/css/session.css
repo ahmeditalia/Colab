@@ -9,7 +9,7 @@
 }
 .sessionBody{
     height: 560px;
-    background-image: linear-gradient(to top, #4f4f4d, #40403e, #31312f, #232321, #161614);
+    /*background-image: linear-gradient(to top, #4f4f4d, #40403e, #31312f, #232321, #161614);*/
     width: 99%;
     margin-left: 6px;
     margin-top: 3px;
