@@ -44,7 +44,7 @@ class ImageUpload extends Component {
                         <FormControl variant={"dark"} className={"mt-4"} id={USER_IMAGE} type={"file"} onChange={this.imageHandle}/>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="info" disabled={this.state.button} onClick={this.changeImage}>Done</Button>
+                    <Button variant="success" disabled={this.state.button} onClick={this.changeImage}>Done</Button>
                 </Modal.Footer>
             </Modal>
         );

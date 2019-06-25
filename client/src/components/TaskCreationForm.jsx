@@ -93,7 +93,7 @@ class TaskCreationForm extends Component {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer >
-                    <Button variant={"outline-info"} onClick={this.submitTask}>Add</Button>
+                    <Button variant={"success"} onClick={this.submitTask}>Add</Button>
                 </Modal.Footer>
             </Modal>
         );

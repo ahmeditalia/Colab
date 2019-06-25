@@ -42,7 +42,7 @@ class SessionToolbar extends Component{
                                 href={"http://41.232.114.112:4213/reports/"+this.props.sessionId+"/grades-pdf"}
                                 target={"_blank"}
                                 style={{marginRight: "0px",color: "white"}}
-                                variant={"outline-dark"}>
+                                variant={"outline-success"}>
                                 My Grades
                             </Button>
                             ):("")
@@ -73,12 +73,12 @@ class SessionToolbar extends Component{
                         </span>
                     </Nav.Item>
                     <Nav.Item>
-                        <Button className={"barButtons"} size={"sm"} variant={"outline-success"} onClick={this.openForm}><MDBIcon icon="tasks" />  {this.props.role === "ghost" ? "View Task":"Create Task" }</Button>
+                        <Button className={"barButtons"} size={"sm"} variant={"success"} onClick={this.openForm}><MDBIcon icon="tasks" />  {this.props.role === "ghost" ? "View Task":"Create Task" }</Button>
                         <TaskCreationForm/>
                         <TaskViewForm/>
                     </Nav.Item>
                     <Nav.Item>
-                        <Button className={"barButtons"} onClick={this.run} size={"sm"} variant={"outline-success"}><MDBIcon icon="play" />{" Run"}</Button>
+                        <Button className={"barButtons"} onClick={this.run} size={"sm"} variant={"success"}><MDBIcon icon="play" />{" Run"}</Button>
                     </Nav.Item>
                 </Nav>
             </Row>

@@ -58,7 +58,7 @@ class ProfileInfo extends Component {
                     </InputGroup><br/>
                 </Card.Body>
                 <Card.Footer style={{display:"flex",justifyContent:"flex-end"}}>
-                    <Button form={"profile_form"} variant={"primary"} type={"submit"}>
+                    <Button form={"profile_form"} variant={"success"} type={"submit"}>
                         Save changes
                     </Button>
                 </Card.Footer>

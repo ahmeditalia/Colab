@@ -70,7 +70,7 @@ class SessionCreationForm extends Component {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button form={"create_session_form"} type={"submit"} variant={"outline-success"}>Create</Button>
+                    <Button form={"create_session_form"} type={"submit"} variant={"success"}>Create</Button>
                 </Modal.Footer>
             </Modal>
         );
