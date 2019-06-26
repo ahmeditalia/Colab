@@ -55,6 +55,10 @@ const editorReducer = (state = initState ,action)=>{
             action.payload.forEach((line)=>{
                 output += line+"\n";
             });
+            return ({
+                ...state,
+                [ACE_OUTPUT_TEXT]: output
+            });
         case ACE_CURRENT_USER_VIEW:
             return ({
                 ...state,

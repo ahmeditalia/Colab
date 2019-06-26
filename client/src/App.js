@@ -7,14 +7,19 @@ import Header from "./components/header/Header";
 import UserProfile from "./components/profile/UserProfile";
 import ErrorPage from "./components/Error/ErrorPage";
 import MySessions from "./components/session/MySessions";
+import {connect} from "react-redux";
+import {SIGN_IN_FORM} from "./store/dataMapping/form";
+import {AUTHENTICATION_ERROR} from "./store/dataMapping/auth";
 
 
 class App extends Component {
 
+
+
     render() {
         return (
             <BrowserRouter>
-                <div>
+                <div style={{backgroundImage: this.props.backgroundImage,backgroundSize: "cover", height: "100%"}}>
                     <Header/>
                     <Switch>
                         <Route exact path="/" component={Home}/>
@@ -32,6 +37,10 @@ class App extends Component {
     );
   }
 }
+const mapStateToProps = (combinedReducer)=>{
+    return{
+        backgroundImage: combinedReducer.sockets.backgroundImage
+    }
+};
 
-
-export default App;
+export default connect(mapStateToProps)(App);

@@ -84,7 +84,7 @@ class SessionLayout extends Component{
                 <div className={"codingSection"}>
                     <div className={"content"} style={{height:this.state.CodeSectionHeight+"%"}}>
                         <AceEditor
-                            id={"output"}
+                            id={"input"}
                             readOnly={this.props[ACE_INPUT_READONLY]}
                             value={this.props[ACE_INPUT_TEXT]}
                             onChange={this.handleChange}
@@ -117,7 +117,7 @@ class SessionLayout extends Component{
                             width={"100%"}
                             height={"100%"}
                             theme={this.props[ACE_THEME]}
-                            showPrintMargin={false}
+                            /*showPrintMargin={false}*/
                             name="outputArea"
                             editorProps={{$blockScrolling: true}}
                             readOnly={this.props[ACE_OUTPUT_READONLY]}

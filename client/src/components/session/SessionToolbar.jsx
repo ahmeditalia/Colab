@@ -39,7 +39,7 @@ class SessionToolbar extends Component{
                     <Nav.Item style={{marginRight:"42%"}}>
                         {
                             this.props.role === "owner" || this.props.role === "mod" ? (<Button
-                                href={"http://41.232.114.112:4213/reports/"+this.props.sessionId+"/grades-pdf"}
+                                href={"http://192.168.43.173:4213/reports/"+this.props.sessionId+"/grades-pdf"}
                                 target={"_blank"}
                                 style={{marginRight: "0px",color: "white"}}
                                 variant={"outline-success"}>

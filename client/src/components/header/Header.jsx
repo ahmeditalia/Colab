@@ -15,7 +15,7 @@ class Header extends Component {
     loggedInUserView = ()=>{
         return (
             <Nav>
-                {/*<SearchBar/>*/}
+                <SearchBar/>
                 <UserPanel/>
             </Nav>
         );
@@ -35,7 +35,7 @@ class Header extends Component {
     render()
     {
         return(
-            <Navbar style={{backgroundColor: "#070C14", borderBottom: "1px solid white"}} sticky="top">
+            <Navbar style={{borderBottom: "1px solid white"}} sticky="top">
                 <Navbar.Brand href="/Home">
                     <img
                         alt=""

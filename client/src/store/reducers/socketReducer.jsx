@@ -7,12 +7,18 @@ import {
 } from "../dataMapping/socket";
 
 const initState = {
+    backgroundImage: "",
     [DEFAULT_SOCKET]: null,
     [SESSION_SOCKET]: null
 };
 
 const socketReducer = (state = initState ,action)=>{
     switch (action.type) {
+        case "backgroundImage":
+            return {
+                ...state,
+                backgroundImage: action.payload
+            };
         case CONNECT_TO_DEFAULT_SOCKET:
             return {
                 ...state,

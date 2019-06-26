@@ -119,7 +119,7 @@ class SessionPanel extends Component{
                             <div className="ejob">{data[SESSION_USER_ROLE]}</div>
                             {data[SESSION_USER_ROLE] === "ghost"?
                                 <div className={"progressbarDiv"}>
-                                    <ProgressBar className={"progressbar"} now={parseInt(data.grade)} label={data.grade+"%"} variant={"success"}/>
+                                    <ProgressBar className={"progressbar"} now={data.grade} label={data.grade+"%"} variant={"info"}/>
                                 </div>: <></>}
                         </Nav.Link>
                     </div>
@@ -157,7 +157,7 @@ class SessionPanel extends Component{
                             <div className="ejob">{data[SESSION_USER_ROLE]}</div>
                             {data[SESSION_USER_ROLE] === "ghost"?
                                 <div className={"progressbarDiv"}>
-                                    <ProgressBar className={"progressbar"} now={parseInt(data.grade)} label={data.grade+"%"} variant={"success"}/>
+                                    <ProgressBar className={"progressbar"} now={data.grade} label={data.grade+"%"} variant={"info"}/>
                                 </div>: <></>}
                         </Nav.Link>
                     </div>
