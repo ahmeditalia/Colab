@@ -9,7 +9,7 @@
     "@syncfusion/ej2-react-dropdowns": "^17.1.49",
     "@syncfusion/ej2-react-navigations": "^17.1.49",
     "ace-builds": "^1.4.4",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "mdbreact": "^4.15.0",
     "prop-types": "latest",
